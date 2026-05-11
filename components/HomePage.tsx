@@ -7,16 +7,13 @@ import {
   BadgeCheck,
   CalendarCheck,
   Check,
-  ChevronRight,
-  Layers3,
   Menu,
-  ShieldCheck,
-  Sparkles
+  ShieldCheck
 } from "lucide-react";
-import { useState } from "react";
+import type { LucideIcon } from "lucide-react";
 import AnimatedConnectorLine from "@/components/AnimatedLinePath";
 import { BlueprintArt } from "@/components/BlueprintArt";
-import { portfolio, processSteps, services, whyCards, type Service } from "@/lib/content";
+import { portfolio, services, type Service } from "@/lib/content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -43,18 +40,14 @@ export default function HomePage() {
       <AnimatedConnectorLine />
       <MobileHeader />
       <HeroSection />
-      <ServiceCategoryRail />
-      <FeaturedServices />
-      <SignatureProjects />
-      <PrivateOffers />
-      <BestSellerServices />
-      <ProjectMoodSection />
-      <ProcessStorefront />
-      <ConsultationCard />
-      <TrustStrip />
-      <StorySection />
-      <ServiceCollectionSections />
-      <HelpChoosing />
+      <ServiceOverviewSection />
+      <TurnkeyAdvantageSection />
+      <ProjectTypesSection />
+      <ProcessSection />
+      <FeaturedProjectsSection />
+      <AboutSection />
+      <ServiceDetailSection />
+      <ConsultationCTASection />
       <FAQSection />
       <Footer />
     </main>
@@ -185,17 +178,17 @@ function HeroSection() {
     <section className="px-4 pb-8 pt-8 sm:px-6 lg:px-10">
       <div className="mx-auto grid max-w-7xl gap-8 lg:min-h-[82vh] lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <Reveal>
-          <p className="technical-label mb-5 text-[#ff2daa]">Welcome to</p>
-          <h1 className="font-display text-[clamp(4.5rem,19vw,11rem)] font-bold leading-[0.82] tracking-[-0.075em]">
-            SPACE.
+          <p className="technical-label mb-5 text-[#ff2daa]">SPACELYT / TURNKEY SPACE TRANSFORMATION</p>
+          <h1 className="font-display text-[clamp(3.6rem,15vw,8.5rem)] font-bold leading-[0.88] tracking-[-0.07em]">
+            From Blueprint
             <br />
-            <span className="gradient-text">LYT.</span>
+            to <span className="gradient-text">Beautiful Spaces</span>
           </h1>
           <p className="mt-5 max-w-xl text-balance font-display text-3xl font-semibold leading-[1.02] tracking-[-0.04em] sm:text-5xl">
-            One partner for every stage of your space.
+            One partner for planning, design, build and delivery.
           </p>
           <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--muted)]">
-            Planning, architecture, construction, interiors, exteriors, and building solutions delivered as one seamless turnkey experience.
+            Spacelyt brings planning, architecture, construction, interiors, exteriors, and building solutions together into one seamless turnkey experience.
           </p>
           <div className="mt-7 grid gap-3 sm:flex">
             <MagneticButton href="#contact">Start Your Project</MagneticButton>
@@ -207,10 +200,10 @@ function HeroSection() {
           <Image src={portfolio[0].image} alt="Spacelyt featured project" fill sizes="(min-width: 1024px) 52vw, 92vw" className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-t from-black/48 via-black/8 to-white/20" />
           <div className="absolute left-4 top-4 rounded-full bg-white/80 px-4 py-2 text-xs font-semibold shadow-soft backdrop-blur-xl">
-            Turnkey studio
+            Turnkey delivery studio
           </div>
           <div className="absolute bottom-4 left-4 right-4 rounded-[1.75rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-2xl">
-            <p className="technical-label text-[#ff2daa]">Featured delivery</p>
+            <p className="technical-label text-[#ff2daa]">Concept to completion</p>
             <h2 className="mt-2 font-display text-3xl font-semibold tracking-[-0.04em]">From first sketch to final handover.</h2>
             <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs font-semibold">
               <span className="rounded-full bg-white px-3 py-2">Plan</span>
@@ -224,37 +217,88 @@ function HeroSection() {
   );
 }
 
-function ServiceCategoryRail() {
+function ServiceOverviewSection() {
   return (
     <section id="services" className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead title="Shop by Service" action="Start" />
-        <Carousel className="gap-3">
+        <SectionHead title="Complete Turnkey Services" action="Start Project" />
+        <Carousel className="gap-4 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
           {services.map((service) => {
             const Icon = service.icon;
             return (
-              <a key={service.slug} href={`#${service.slug}`} className="min-w-[9.8rem] snap-start rounded-[1.5rem] border border-white/70 bg-white/78 p-4 shadow-soft backdrop-blur-xl">
-                <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#ff2daa,#ff8a3d,#38bdf8)] text-white">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <p className="font-display text-lg font-semibold leading-tight">{service.flowTitle}</p>
+              <a key={service.slug} href={`#${service.slug}`} className="relative min-w-[18.5rem] snap-start overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
+                <div className="absolute inset-0 opacity-[0.1]">
+                  <BlueprintArt type={service.art} />
+                </div>
+                <div className="relative z-10">
+                  <div className="mb-10 flex items-center justify-between">
+                    <span className="gradient-badge">{service.number}</span>
+                    <Icon className="h-6 w-6 text-[#ff2daa]" />
+                  </div>
+                  <h3 className="font-display text-2xl font-semibold tracking-[-0.03em]">{service.flowTitle}</h3>
+                  <p className="mt-3 line-clamp-2 text-sm leading-6 text-[var(--muted)]">{service.short}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#111] px-4 py-2 text-xs font-semibold text-white">
+                    View Service <ArrowRight className="h-4 w-4" />
+                  </span>
+                </div>
               </a>
             );
           })}
+        </Carousel>
+        <SectionCTA>Discuss Your Project</SectionCTA>
+      </div>
+    </section>
+  );
+}
+
+function TurnkeyAdvantageSection() {
+  const benefits: Array<{ icon: LucideIcon; title: string; text: string }> = [
+    { icon: ShieldCheck, title: "One accountable team", text: "Planning, design, site work, and handover stay under one coordinated project partner." },
+    { icon: CalendarCheck, title: "Clear scope and budget planning", text: "Scope, priorities, cost direction, and timelines are mapped before execution starts." },
+    { icon: BadgeCheck, title: "Design-to-execution coordination", text: "Architecture, interiors, construction, and vendor work move from the same project roadmap." },
+    { icon: Check, title: "Quality checks and handover support", text: "Site execution is reviewed through practical milestones before final delivery." }
+  ];
+  return (
+    <section className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Turnkey Advantage" title="Why Clients Choose Spacelyt" action="Book Consultation" />
+        <Carousel className="lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0">
+          {benefits.map(({ icon: BenefitIcon, title, text }) => {
+            return (
+            <Reveal key={title} className="min-w-[17.5rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#ff2daa,#ff8a3d,#38bdf8)] text-white">
+                <BenefitIcon className="h-5 w-5" />
+              </span>
+              <h3 className="mt-7 font-display text-2xl font-semibold">{title}</h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{text}</p>
+            </Reveal>
+          );})}
         </Carousel>
       </div>
     </section>
   );
 }
 
-function FeaturedServices() {
+function ProjectTypesSection() {
+  const projectTypes = [
+    ["Residential Spaces", "Homes planned, designed, built, and finished with one accountable team."],
+    ["Commercial Spaces", "Workspaces, retail, and hospitality environments coordinated from scope to delivery."],
+    ["Renovations", "Existing sites transformed with practical planning, execution control, and minimal chaos."],
+    ["Luxury Interiors", "Material-led interior design, detailing, lighting, furniture, and modular work."],
+    ["Facades & Exteriors", "Elevation, entry, landscape, boundary, and outdoor lighting brought together."],
+    ["Complete Turnkey Projects", "End-to-end project management for residential, commercial, and building work."]
+  ];
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Featured Services" title="Two ways we simplify complex projects." action="Book call" />
-        <Carousel className="md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0">
-          {[services[0], services[5]].map((service) => (
-            <FeatureCard key={service.slug} service={service} />
+        <SectionHead label="Project Types" title="Spaces We Create" action="Discuss Your Space" />
+        <Carousel className="gap-4 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
+          {projectTypes.map(([title, text], index) => (
+            <Reveal key={title} className="min-w-[17.5rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
+              <span className="technical-label text-[#ff2daa]">Type {String(index + 1).padStart(2, "0")}</span>
+              <h3 className="mt-7 font-display text-3xl font-semibold leading-tight tracking-[-0.04em]">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{text}</p>
+            </Reveal>
           ))}
         </Carousel>
       </div>
@@ -262,30 +306,57 @@ function FeaturedServices() {
   );
 }
 
-function FeatureCard({ service }: { service: Service }) {
+function ProcessSection() {
+  const steps = [
+    ["Consultation", "Understand your site, budget, goals, and expected outcome."],
+    ["Site & Scope Planning", "Map measurements, feasibility, project scope, and priorities."],
+    ["Design Direction", "Resolve planning, architecture, interiors, and visual language."],
+    ["Material & Vendor Coordination", "Align material systems, vendor roles, and procurement direction."],
+    ["Execution & Quality Checks", "Coordinate site progress, civil work, finishing, and reviews."],
+    ["Final Handover", "Close the project with delivery support and final checks."]
+  ];
   return (
-    <Reveal className="group relative min-h-[21rem] min-w-[19rem] snap-start overflow-hidden rounded-[2rem] shadow-soft md:min-w-0">
-      <Image src={service.image} alt={service.flowTitle} fill sizes="(min-width: 768px) 48vw, 92vw" className="image-depth object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/62 via-black/10 to-transparent" />
-      <div className="absolute inset-x-5 bottom-5 text-white">
-        <p className="technical-label text-white/72">S/{service.number}</p>
-        <h3 className="mt-2 font-display text-3xl font-semibold tracking-[-0.04em]">{service.flowTitle}</h3>
-        <p className="mt-2 max-w-md text-sm leading-6 text-white/82">{service.short}</p>
-        <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[var(--ink)]">
-          Explore <ChevronRight className="h-4 w-4" />
-        </span>
+    <section id="process" className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Process" title="A Clear Journey From Idea to Handover" action="Start Project" />
+        <div className="relative">
+          <motion.div
+            aria-hidden="true"
+            className="absolute left-4 right-4 top-9 hidden h-px bg-[linear-gradient(90deg,#ff2daa,#ff8a3d,#38bdf8)] lg:block"
+            initial={{ scaleX: 0, transformOrigin: "left" }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 1.2, ease }}
+          />
+        <Carousel className="sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+          {steps.map(([step, text], index) => (
+            <Reveal key={step} className="relative min-w-[17.5rem] snap-start overflow-hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl sm:min-w-0">
+              <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-[radial-gradient(circle,#ff2daa33,transparent_68%)]" />
+              <span className="gradient-badge">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="mt-8 font-display text-2xl font-semibold">{step}</h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{text}</p>
+            </Reveal>
+          ))}
+        </Carousel>
+        </div>
+        <SectionCTA>Plan My Project Journey</SectionCTA>
       </div>
-    </Reveal>
+    </section>
   );
 }
 
-function SignatureProjects() {
+function FeaturedProjectsSection() {
+  const selectedProjects = [
+    { ...portfolio[0], name: "Residential Turnkey", scope: "Planning, architecture, interiors, exteriors, and execution for complete homes." },
+    { ...portfolio[1], name: "Commercial Interior & Build", scope: "Commercial planning, interior systems, construction coordination, and handover." },
+    { ...portfolio[2], name: "Facade & Exterior Upgrade", scope: "Elevation, facade, landscape, entry, and outdoor lighting improvements." }
+  ];
   return (
     <section id="projects" className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Hot Picks" title="Project directions clients ask for most." action="Discuss" />
+        <SectionHead label="Portfolio" title="Selected Project Directions" action="Start Similar Project" />
         <Carousel className="lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
-          {portfolio.map((project) => (
+          {selectedProjects.map((project) => (
             <ProjectCard key={project.name} project={project} />
           ))}
         </Carousel>
@@ -296,140 +367,58 @@ function SignatureProjects() {
 
 function ProjectCard({ project }: { project: (typeof portfolio)[number] }) {
   return (
-    <Reveal className="min-w-[19rem] snap-start overflow-hidden rounded-[1.8rem] border border-white/70 bg-white/78 p-3 shadow-soft backdrop-blur-xl">
+    <Reveal className="min-w-[19rem] snap-start overflow-hidden rounded-[1.8rem] border border-white/70 bg-white/78 p-3 shadow-soft backdrop-blur-xl lg:min-w-0">
       <div className="relative aspect-[4/3] overflow-hidden rounded-[1.35rem]">
         <Image src={project.image} alt={project.name} fill sizes="330px" className="image-depth object-cover" />
       </div>
       <div className="p-2 pt-4">
         <div className="flex items-center justify-between gap-3">
           <span className="rounded-full bg-[linear-gradient(135deg,#ff2daa,#8b5cf6)] px-3 py-1.5 text-xs font-semibold text-white">{project.type}</span>
-          <span className="text-xs font-semibold text-[var(--muted)]">Turnkey</span>
+          <span className="text-xs font-semibold text-[var(--muted)]">Spacelyt direction</span>
         </div>
         <h3 className="mt-4 font-display text-2xl font-semibold tracking-[-0.03em]">{project.name}</h3>
         <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{project.scope}</p>
+        <a href="#contact" className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#111] px-4 py-2 text-xs font-semibold text-white">
+          Discuss Direction <ArrowRight className="h-4 w-4" />
+        </a>
       </div>
     </Reveal>
   );
 }
 
-function PrivateOffers() {
-  const offers = [
-    ["Free consultation", "For first project discovery call"],
-    ["Transparent milestones", "Clear scope, schedule, and handover path"],
-    ["One project partner", "No scattered vendor coordination"]
-  ];
+function AboutSection() {
   return (
-    <section className="px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <SectionHead label="Private Offers" title="Start with clarity." action="Claim" />
-        <Carousel className="md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0">
-          {offers.map(([title, text], index) => (
-            <Reveal key={title} className="min-w-[17rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl md:min-w-0">
-              <span className="gradient-badge">{index + 1}</span>
-              <h3 className="mt-7 font-display text-2xl font-semibold">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{text}</p>
-            </Reveal>
-          ))}
-        </Carousel>
+    <section className="px-4 py-10 sm:px-6 lg:px-10">
+      <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+        <Reveal className="relative min-h-[30rem] overflow-hidden rounded-[2rem] shadow-soft">
+          <Image src={services[3].image} alt="Spacelyt coordinated interiors and build delivery" fill sizes="(min-width: 1024px) 38vw, 92vw" className="object-cover" />
+        </Reveal>
+        <Reveal>
+          <p className="technical-label text-[#ff2daa]">About Spacelyt</p>
+          <h2 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.05em] sm:text-7xl">
+            Spaces,
+            <br />
+            <span className="gradient-text">Designed to be delivered.</span>
+          </h2>
+          <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--muted)]">
+            Spacelyt is built around one idea: better spaces come from better coordination. We connect planning, architecture, construction, interiors, exteriors, and building solutions from day one, so clients get clarity from concept to completion.
+          </p>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-function BestSellerServices() {
+function ConsultationCTASection() {
   return (
-    <section className="px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <SectionHead label="Best Sellers" title="Core turnkey services." action="Book" />
-        <Carousel className="sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
-          {services.map((service) => (
-            <SmallServiceCard key={service.slug} service={service} />
-          ))}
-        </Carousel>
-      </div>
-    </section>
-  );
-}
-
-function SmallServiceCard({ service }: { service: Service }) {
-  const Icon = service.icon;
-  return (
-    <a href={`#${service.slug}`} className="group flex min-w-[19rem] snap-start gap-4 rounded-[1.6rem] border border-white/70 bg-white/78 p-3 shadow-soft backdrop-blur-xl sm:min-w-0">
-      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-[1.2rem]">
-        <Image src={service.image} alt={service.flowTitle} fill sizes="120px" className="image-depth object-cover" />
-      </div>
-      <div className="min-w-0 flex-1 py-1">
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-semibold text-[#ff2daa]">S/{service.number}</span>
-          <Icon className="h-4 w-4 text-[#ff2daa]" />
-        </div>
-        <h3 className="mt-2 font-display text-lg font-semibold leading-tight">{service.flowTitle}</h3>
-        <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--muted)]">{service.short}</p>
-      </div>
-    </a>
-  );
-}
-
-function ProjectMoodSection() {
-  const moods = [
-    ["Residential", "Homes planned, designed, built, and finished."],
-    ["Commercial", "Workspaces, retail, and hospitality execution."],
-    ["Renovation", "Transform existing sites without chaos."],
-    ["Luxury Finish", "Material-led interiors and details."],
-    ["Facade", "First impressions, elevations, and outdoors."]
-  ];
-  return (
-    <section className="px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <SectionHead label="Shop by Project Mood" title="Choose the kind of space you want to build." action="Ask us" />
-        <Carousel className="gap-3">
-          {moods.map(([title, text], index) => (
-            <Reveal key={title} className="min-w-[16rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
-              <span className="technical-label text-[#ff2daa]">Mood {String(index + 1).padStart(2, "0")}</span>
-              <h3 className="mt-7 font-display text-3xl font-semibold tracking-[-0.04em]">{title}</h3>
-              <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{text}</p>
-              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold">
-                Explore <ArrowRight className="h-4 w-4" />
-              </span>
-            </Reveal>
-          ))}
-        </Carousel>
-      </div>
-    </section>
-  );
-}
-
-function ProcessStorefront() {
-  return (
-    <section id="process" className="px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <SectionHead label="Process" title="A turnkey journey made simple." action="Start" />
-        <Carousel className="sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
-          {processSteps.map((step, index) => (
-            <Reveal key={step} className="relative min-w-[16.5rem] snap-start overflow-hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl sm:min-w-0">
-              <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-[radial-gradient(circle,#ff2daa33,transparent_68%)]" />
-              <span className="gradient-badge">{String(index + 1).padStart(2, "0")}</span>
-              <h3 className="mt-8 font-display text-2xl font-semibold">{step}</h3>
-              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{["Understand the vision.", "Plot scope and budget.", "Resolve the design language.", "Select material systems.", "Coordinate site execution.", "Deliver the finished space."][index]}</p>
-            </Reveal>
-          ))}
-        </Carousel>
-        <SectionCTA>Plan My Project</SectionCTA>
-      </div>
-    </section>
-  );
-}
-
-function ConsultationCard() {
-  return (
-    <section className="px-4 py-8 sm:px-6 lg:px-10">
+    <section id="contact" className="px-4 py-8 sm:px-6 lg:px-10">
       <Reveal className="mx-auto grid max-w-7xl gap-6 overflow-hidden rounded-[2rem] border border-white/70 bg-white/78 p-6 shadow-glow backdrop-blur-2xl lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
         <div>
-          <p className="technical-label text-[#ff2daa]">Project Card</p>
-          <h2 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.05em]">Let us map your space.</h2>
-          <p className="mt-5 text-base leading-8 text-[var(--muted)]">Share your requirements and get matched with a practical planning, design, and execution direction.</p>
+          <p className="technical-label text-[#ff2daa]">Consultation</p>
+          <h2 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.05em]">Not sure where to start?</h2>
+          <p className="mt-5 text-base leading-8 text-[var(--muted)]">Share your site, budget, and vision. Spacelyt will help map the right service mix for your project.</p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {["Residential", "Commercial", "Renovation", "Turnkey"].map((item) => (
+            {["Planning", "Design", "Construction", "Turnkey Delivery"].map((item) => (
               <span key={item} className="rounded-full bg-white px-4 py-2 text-xs font-semibold shadow-soft">{item}</span>
             ))}
           </div>
@@ -438,9 +427,9 @@ function ConsultationCard() {
           <div className="rounded-[1.5rem] bg-white/90 p-5">
             <p className="technical-label">SPACELYT MATCH</p>
             <h3 className="mt-6 font-display text-3xl font-semibold">Find your project route</h3>
-            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">A quick consultation helps define scope, budget, timeline, and the service mix you need.</p>
-            <a href="#contact" className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#111] px-5 py-4 text-sm font-semibold text-white">
-              Start Consultation
+            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">A focused consultation helps define scope, budget, timeline, and the right service mix.</p>
+            <a href="mailto:hello@spacelyt.com" className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#111] px-5 py-4 text-sm font-semibold text-white">
+              Book a Consultation
             </a>
           </div>
         </div>
@@ -449,63 +438,17 @@ function ConsultationCard() {
   );
 }
 
-function TrustStrip() {
-  const trust = [
-    [ShieldCheck, "Clear Scope"],
-    [CalendarCheck, "Timeline Control"],
-    [BadgeCheck, "Quality Checks"]
-  ];
-  return (
-    <section className="px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto grid max-w-7xl gap-3 sm:grid-cols-3">
-        {trust.map(([Icon, label]) => {
-          const TrustIcon = Icon as typeof ShieldCheck;
-          return (
-            <Reveal key={label as string} className="flex items-center gap-4 rounded-[1.5rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
-              <TrustIcon className="h-6 w-6 text-[#ff2daa]" />
-              <span className="font-display text-xl font-semibold">{label as string}</span>
-            </Reveal>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function StorySection() {
-  return (
-    <section className="px-4 py-10 sm:px-6 lg:px-10">
-      <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-        <Reveal className="relative min-h-[30rem] overflow-hidden rounded-[2rem] shadow-soft">
-          <Image src={services[3].image} alt="Spacelyt story" fill sizes="(min-width: 1024px) 38vw, 92vw" className="object-cover" />
-        </Reveal>
-        <Reveal>
-          <p className="technical-label text-[#ff2daa]">Our Story</p>
-          <h2 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.05em] sm:text-7xl">
-            Spaces,
-            <br />
-            <span className="gradient-text">Designed to be delivered.</span>
-          </h2>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--muted)]">
-            Spacelyt is built around one idea: a better space comes from better coordination. Planning, architecture, construction, interiors, exteriors, and building solutions work together from day one.
-          </p>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-function ServiceCollectionSections() {
+function ServiceDetailSection() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Collections" title="Swipe the service system." action="Book now" />
+        <SectionHead label="Service Detail" title="Explore Our Service System" action="Book Consultation" />
         <Carousel className="lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0">
           {services.map((service, index) => (
             <ServiceCollectionCard key={service.slug} service={service} index={index} />
           ))}
         </Carousel>
-        <SectionCTA>Get Turnkey Plan</SectionCTA>
+        <SectionCTA>Get a Turnkey Plan</SectionCTA>
       </div>
     </section>
   );
@@ -539,27 +482,11 @@ function ServiceCollectionCard({ service, index }: { service: Service; index: nu
             ))}
           </div>
           <a href="#contact" className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#111] px-5 text-sm font-semibold text-white">
-            Start this service <ArrowRight className="h-4 w-4" />
+            Start With This Service <ArrowRight className="h-4 w-4" />
           </a>
         </div>
       </div>
     </Reveal>
-  );
-}
-
-function HelpChoosing() {
-  return (
-    <section id="contact" className="px-4 py-8 sm:px-6 lg:px-10">
-      <Reveal className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-[#111] p-6 text-white shadow-glow lg:p-10">
-        <p className="technical-label text-[#ff5c8a]">Need guidance</p>
-        <h2 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.05em]">Need help choosing?</h2>
-        <p className="mt-5 max-w-2xl text-base leading-8 text-white/68">Tell us your site, budget, and goal. We will suggest the right mix of planning, design, construction, interiors, exteriors, and project delivery.</p>
-        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-          <a href="mailto:hello@spacelyt.com" className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-[#111]">Start Project</a>
-          <a href="#services" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/18 px-6 text-sm font-semibold text-white">Browse Services</a>
-        </div>
-      </Reveal>
-    </section>
   );
 }
 
@@ -573,7 +500,7 @@ function FAQSection() {
   return (
     <section className="px-4 py-10 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Questions" title="Common curiosities." action="Contact" />
+        <SectionHead label="FAQ" title="Common Questions" action="Contact" />
         <Carousel className="lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0">
           {faqs.map(([question, answer]) => (
             <Reveal key={question} className="min-w-[19rem] snap-start rounded-[1.5rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
@@ -597,8 +524,8 @@ function Footer() {
           <h2 className="font-display text-3xl font-semibold tracking-[0.12em]">SPACELYT</h2>
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/62">One partner for planning, architecture, construction, interiors, exteriors, and complete building solutions.</p>
         </div>
-        <FooterList title="Services" items={services.map((service) => service.flowTitle)} />
-        <FooterList title="Studio" items={["Process", "Portfolio", "Why Spacelyt", "Consultation"]} />
+        <FooterList title="Services" items={["Planning", "Architecture", "Construction", "Interiors", "Exteriors", "Building Solutions"]} />
+        <FooterList title="Studio" items={["Process", "Projects", "Why Spacelyt", "Consultation"]} />
         <FooterList title="Contact" items={["hello@spacelyt.com", "+91 - - -", "India"]} />
       </div>
       <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-3 border-t border-white/12 pt-6 font-mono text-[0.68rem] uppercase tracking-[0.18em] text-white/46 sm:flex-row">
