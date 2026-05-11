@@ -132,11 +132,13 @@ function MagneticButton({
 function SectionHead({
   label,
   title,
-  action
+  action,
+  href = "#contact"
 }: {
   label?: string;
   title: React.ReactNode;
   action?: string;
+  href?: string;
 }) {
   return (
     <div className="mb-6 flex items-end justify-between gap-4 px-1">
@@ -145,10 +147,35 @@ function SectionHead({
         <h2 className="font-display text-balance text-[clamp(2rem,8vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.04em]">{title}</h2>
       </div>
       {action ? (
-        <a href="#contact" className="shrink-0 rounded-full border border-black/8 bg-white/70 px-4 py-2 text-xs font-semibold shadow-soft">
+        <a href={href} className="shrink-0 rounded-full border border-black/8 bg-white/70 px-4 py-2 text-xs font-semibold shadow-soft">
           {action}
         </a>
       ) : null}
+    </div>
+  );
+}
+
+function Carousel({
+  children,
+  className = ""
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+function SectionCTA({ href = "#contact", children = "Start Your Project" }: { href?: string; children?: React.ReactNode }) {
+  return (
+    <div className="mt-5 px-1">
+      <a href={href} className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] px-6 text-sm font-semibold text-white shadow-glow sm:w-auto">
+        {children}
+        <ArrowRight className="h-4 w-4" />
+      </a>
     </div>
   );
 }
@@ -201,8 +228,8 @@ function ServiceCategoryRail() {
   return (
     <section id="services" className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead title="Shop by Service" action="View all" />
-        <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
+        <SectionHead title="Shop by Service" action="Start" />
+        <Carousel className="gap-3">
           {services.map((service) => {
             const Icon = service.icon;
             return (
@@ -214,7 +241,7 @@ function ServiceCategoryRail() {
               </a>
             );
           })}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
@@ -224,12 +251,12 @@ function FeaturedServices() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Featured Services" title="Two ways we simplify complex projects." />
-        <div className="grid gap-4 md:grid-cols-2">
+        <SectionHead label="Featured Services" title="Two ways we simplify complex projects." action="Book call" />
+        <Carousel className="md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0">
           {[services[0], services[5]].map((service) => (
             <FeatureCard key={service.slug} service={service} />
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
@@ -237,7 +264,7 @@ function FeaturedServices() {
 
 function FeatureCard({ service }: { service: Service }) {
   return (
-    <Reveal className="group relative min-h-[23rem] overflow-hidden rounded-[2rem] shadow-soft">
+    <Reveal className="group relative min-h-[21rem] min-w-[19rem] snap-start overflow-hidden rounded-[2rem] shadow-soft md:min-w-0">
       <Image src={service.image} alt={service.flowTitle} fill sizes="(min-width: 768px) 48vw, 92vw" className="image-depth object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/62 via-black/10 to-transparent" />
       <div className="absolute inset-x-5 bottom-5 text-white">
@@ -256,12 +283,12 @@ function SignatureProjects() {
   return (
     <section id="projects" className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Hot Picks" title="Project directions clients ask for most." action="View all" />
-        <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:grid lg:grid-cols-3 lg:overflow-visible">
+        <SectionHead label="Hot Picks" title="Project directions clients ask for most." action="Discuss" />
+        <Carousel className="lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
           {portfolio.map((project) => (
             <ProjectCard key={project.name} project={project} />
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
@@ -294,16 +321,16 @@ function PrivateOffers() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Private Offers" title="Start with clarity." />
-        <div className="grid gap-3 md:grid-cols-3">
+        <SectionHead label="Private Offers" title="Start with clarity." action="Claim" />
+        <Carousel className="md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0">
           {offers.map(([title, text], index) => (
-            <Reveal key={title} className="rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
+            <Reveal key={title} className="min-w-[17rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl md:min-w-0">
               <span className="gradient-badge">{index + 1}</span>
               <h3 className="mt-7 font-display text-2xl font-semibold">{title}</h3>
               <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{text}</p>
             </Reveal>
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
@@ -313,12 +340,12 @@ function BestSellerServices() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Best Sellers" title="Core turnkey services." action="View all" />
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <SectionHead label="Best Sellers" title="Core turnkey services." action="Book" />
+        <Carousel className="sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
           {services.map((service) => (
             <SmallServiceCard key={service.slug} service={service} />
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
@@ -327,7 +354,7 @@ function BestSellerServices() {
 function SmallServiceCard({ service }: { service: Service }) {
   const Icon = service.icon;
   return (
-    <a href={`#${service.slug}`} className="group flex gap-4 rounded-[1.6rem] border border-white/70 bg-white/78 p-3 shadow-soft backdrop-blur-xl">
+    <a href={`#${service.slug}`} className="group flex min-w-[19rem] snap-start gap-4 rounded-[1.6rem] border border-white/70 bg-white/78 p-3 shadow-soft backdrop-blur-xl sm:min-w-0">
       <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-[1.2rem]">
         <Image src={service.image} alt={service.flowTitle} fill sizes="120px" className="image-depth object-cover" />
       </div>
@@ -354,8 +381,8 @@ function ProjectMoodSection() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Shop by Project Mood" title="Choose the kind of space you want to build." />
-        <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
+        <SectionHead label="Shop by Project Mood" title="Choose the kind of space you want to build." action="Ask us" />
+        <Carousel className="gap-3">
           {moods.map(([title, text], index) => (
             <Reveal key={title} className="min-w-[16rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
               <span className="technical-label text-[#ff2daa]">Mood {String(index + 1).padStart(2, "0")}</span>
@@ -366,7 +393,7 @@ function ProjectMoodSection() {
               </span>
             </Reveal>
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
@@ -376,17 +403,18 @@ function ProcessStorefront() {
   return (
     <section id="process" className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="New Arrivals" title="A turnkey journey made simple." action="View all" />
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <SectionHead label="Process" title="A turnkey journey made simple." action="Start" />
+        <Carousel className="sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
           {processSteps.map((step, index) => (
-            <Reveal key={step} className="relative overflow-hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
+            <Reveal key={step} className="relative min-w-[16.5rem] snap-start overflow-hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl sm:min-w-0">
               <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-[radial-gradient(circle,#ff2daa33,transparent_68%)]" />
               <span className="gradient-badge">{String(index + 1).padStart(2, "0")}</span>
               <h3 className="mt-8 font-display text-2xl font-semibold">{step}</h3>
               <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{["Understand the vision.", "Plot scope and budget.", "Resolve the design language.", "Select material systems.", "Coordinate site execution.", "Deliver the finished space."][index]}</p>
             </Reveal>
           ))}
-        </div>
+        </Carousel>
+        <SectionCTA>Plan My Project</SectionCTA>
       </div>
     </section>
   );
@@ -472,11 +500,12 @@ function ServiceCollectionSections() {
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <SectionHead label="Collections" title="Swipe the service system." action="Book now" />
-        <div className="space-y-4">
+        <Carousel className="lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0">
           {services.map((service, index) => (
             <ServiceCollectionCard key={service.slug} service={service} index={index} />
           ))}
-        </div>
+        </Carousel>
+        <SectionCTA>Get Turnkey Plan</SectionCTA>
       </div>
     </section>
   );
@@ -485,8 +514,8 @@ function ServiceCollectionSections() {
 function ServiceCollectionCard({ service, index }: { service: Service; index: number }) {
   const Icon = service.icon;
   return (
-    <Reveal id={service.slug} className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl md:grid md:grid-cols-[0.7fr_1.3fr] md:gap-6">
-      <div className="relative mb-5 min-h-[15rem] overflow-hidden rounded-[1.5rem] md:mb-0">
+    <Reveal id={service.slug} className="relative min-w-[20.5rem] snap-start overflow-hidden rounded-[2rem] border border-white/70 bg-white/78 p-4 shadow-soft backdrop-blur-xl md:grid md:min-w-0 md:grid-cols-[0.7fr_1.3fr] md:gap-6 md:p-5">
+      <div className="relative mb-4 min-h-[12.5rem] overflow-hidden rounded-[1.5rem] md:mb-0 md:min-h-[15rem]">
         <Image src={service.image} alt={service.flowTitle} fill sizes="(min-width: 768px) 30vw, 88vw" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/36 to-transparent" />
       </div>
@@ -495,20 +524,23 @@ function ServiceCollectionCard({ service, index }: { service: Service; index: nu
           <BlueprintArt type={service.art} />
         </div>
         <div className="relative z-10">
-          <div className="mb-7 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between md:mb-7">
             <p className="technical-label text-[#ff2daa]">{String(index + 1).padStart(2, "0")} - Service</p>
             <Icon className="h-6 w-6 text-[#ff2daa]" />
           </div>
-          <h3 className="font-display text-4xl font-semibold tracking-[-0.04em]">{service.title}</h3>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--muted)]">{service.short}</p>
-          <div className="mt-6 grid gap-2 sm:grid-cols-2">
-            {service.bullets.map((bullet) => (
+          <h3 className="font-display text-2xl font-semibold leading-tight tracking-[-0.04em] md:text-4xl">{service.title}</h3>
+          <p className="mt-3 line-clamp-3 max-w-2xl text-sm leading-6 text-[var(--muted)] md:mt-4 md:line-clamp-none md:leading-7">{service.short}</p>
+          <div className="mt-5 grid gap-2 md:grid-cols-2">
+            {service.bullets.slice(0, 4).map((bullet) => (
               <span key={bullet} className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm shadow-[0_12px_35px_rgba(17,17,17,.05)]">
                 <Check className="h-4 w-4 text-[#ff2daa]" />
                 {bullet}
               </span>
             ))}
           </div>
+          <a href="#contact" className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#111] px-5 text-sm font-semibold text-white">
+            Start this service <ArrowRight className="h-4 w-4" />
+          </a>
         </div>
       </div>
     </Reveal>
@@ -541,15 +573,16 @@ function FAQSection() {
   return (
     <section className="px-4 py-10 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Questions" title="Common curiosities." />
-        <div className="grid gap-3 lg:grid-cols-2">
+        <SectionHead label="Questions" title="Common curiosities." action="Contact" />
+        <Carousel className="lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0">
           {faqs.map(([question, answer]) => (
-            <Reveal key={question} className="rounded-[1.5rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
+            <Reveal key={question} className="min-w-[19rem] snap-start rounded-[1.5rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
               <h3 className="font-display text-xl font-semibold">{question}</h3>
               <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{answer}</p>
             </Reveal>
           ))}
-        </div>
+        </Carousel>
+        <SectionCTA>Talk to Spacelyt</SectionCTA>
       </div>
     </section>
   );
