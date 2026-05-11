@@ -1,0 +1,1450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Spacelyt — Wireframe Explorations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Architects+Daughter&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --ink-soft:#3a3a3a;
+    --paper:#f5f2ec;
+    --paper-2:#ece7dd;
+    --rule:#1a1a1a;
+    --accent:#c64a1a; /* sketchy red marker */
+    --grid:#d8d2c4;
+    --hand:"Architects Daughter", "Caveat", cursive;
+    --note:"Caveat", cursive;
+    --mono:"JetBrains Mono", ui-monospace, monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--mono);}
+  body{
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px, 28px 28px;
+    background-position: -1px -1px;
+  }
+
+  /* ============ Top bar / tabs ============ */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(245,242,236,.92);
+    backdrop-filter: blur(4px);
+    border-bottom:1.5px solid var(--ink);
+    padding:14px 28px;
+    display:flex; align-items:center; gap:24px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    font-family:var(--hand);
+    font-size:22px;
+    letter-spacing:.04em;
+  }
+  .brand .dot{display:inline-block;width:10px;height:10px;background:var(--accent);border-radius:50%;margin-right:8px;transform:translateY(-2px)}
+  .crumbs{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.18em}
+  .tabs{
+    margin-left:auto;
+    display:flex; gap:6px; flex-wrap:wrap;
+  }
+  .tab{
+    font-family:var(--hand);
+    font-size:15px;
+    padding:8px 14px;
+    border:1.5px solid var(--ink);
+    background:var(--paper);
+    cursor:pointer;
+    border-radius:2px;
+    transform: rotate(-.3deg);
+  }
+  .tab:nth-child(2n){transform:rotate(.4deg)}
+  .tab:hover{background:var(--paper-2)}
+  .tab.active{background:var(--ink);color:var(--paper);}
+  .legend{
+    display:flex;gap:18px;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);
+    text-transform:uppercase;letter-spacing:.16em;
+  }
+  .legend i{display:inline-block;width:18px;height:0;border-top:1.5px solid var(--ink);margin-right:6px;vertical-align:middle}
+  .legend i.dash{border-top-style:dashed}
+  .legend i.acc{border-top-color:var(--accent)}
+
+  /* ============ Page intro ============ */
+  .intro{padding:34px 36px 8px;max-width:1180px;}
+  .intro h1{
+    font-family:var(--hand);
+    font-weight:400;
+    font-size:38px;
+    margin:0 0 6px;
+    letter-spacing:-.005em;
+  }
+  .intro h1 em{font-style:normal;border-bottom:2px solid var(--accent);}
+  .intro p{
+    font-family:var(--mono);font-size:13px;color:var(--ink-soft);
+    max-width:760px;line-height:1.6;margin:0 0 6px;
+  }
+  .intro .pin{
+    display:inline-block; margin-top:14px; padding:6px 12px;
+    border:1.5px dashed var(--ink); font-family:var(--hand); font-size:14px;
+    transform:rotate(-.5deg);
+  }
+
+  /* ============ Approach panels ============ */
+  .panel{display:none;padding:18px 36px 80px;}
+  .panel.active{display:block;}
+  .approach-head{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:24px; flex-wrap:wrap;
+    border-bottom:1.5px solid var(--ink);
+    padding-bottom:14px; margin-bottom:26px;
+  }
+  .approach-head h2{
+    font-family:var(--hand); font-weight:400; font-size:30px; margin:0;
+  }
+  .approach-head .codename{
+    font-family:var(--mono); font-size:11px; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.22em;
+  }
+  .approach-head .desc{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);max-width:520px;line-height:1.6}
+
+  /* ============ Shared sketch primitives ============ */
+  .frame{
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    border-radius:2px;
+    position:relative;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .frame .label{
+    position:absolute; top:-12px; left:14px;
+    background:var(--paper); padding:0 8px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  .frame .num{
+    position:absolute; top:8px; right:10px;
+    font-family:var(--hand); font-size:18px; color:var(--accent);
+  }
+  .hand{font-family:var(--hand);}
+  .note{font-family:var(--note); color:var(--ink-soft);}
+  .mono{font-family:var(--mono);}
+  .blk{background:var(--ink); color:var(--paper);}
+  .accent-rule{border-top:1.5px solid var(--accent);}
+  .scribble{
+    background-image: repeating-linear-gradient(135deg, var(--ink) 0 1px, transparent 1px 6px);
+    opacity:.18;
+  }
+  .img-ph{
+    border:1.5px solid var(--ink);
+    background:
+      linear-gradient(135deg, transparent 49.2%, var(--ink) 49.2% 50.8%, transparent 50.8%),
+      linear-gradient(45deg, transparent 49.2%, var(--ink) 49.2% 50.8%, transparent 50.8%);
+    background-size: 100% 100%;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-soft);
+    font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    background-color:var(--paper-2);
+  }
+  .img-ph span{background:var(--paper);padding:3px 7px;border:1px solid var(--ink)}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1.5px solid var(--ink); padding:8px 14px;
+    font-family:var(--hand); font-size:15px;
+    background:var(--paper);
+    border-radius:2px;
+  }
+  .btn.dark{background:var(--ink);color:var(--paper)}
+  .btn .arr{font-family:var(--mono);font-size:12px}
+  .pill{
+    display:inline-block;border:1.5px solid var(--ink);
+    padding:3px 10px;font-family:var(--mono);font-size:10px;
+    letter-spacing:.15em;text-transform:uppercase;border-radius:99px;
+  }
+  .tag{
+    display:inline-block;font-family:var(--mono);font-size:10px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .h-line{height:0;border-top:1.5px solid var(--ink)}
+  .h-line.dash{border-top-style:dashed}
+  .h-line.acc{border-top-color:var(--accent)}
+  .arrow-down{font-family:var(--mono);}
+  .stamp{
+    display:inline-block;border:2px solid var(--accent);color:var(--accent);
+    font-family:var(--mono); font-weight:500; font-size:10px; letter-spacing:.25em;
+    padding:4px 8px; transform:rotate(-6deg); text-transform:uppercase;
+  }
+  .scratch{
+    text-decoration: line-through;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+  }
+  .annotate{
+    position:absolute;font-family:var(--hand);font-size:14px;color:var(--accent);
+    pointer-events:none;
+  }
+  .annotate svg{display:block}
+
+  /* ============ APPROACH A · CENTER SPINE ============ */
+  .A-stack{
+    max-width:980px; margin:0 auto;
+    display:grid; gap:34px;
+    position:relative;
+    padding:10px 60px;
+  }
+  .A-stack::before{
+    content:""; position:absolute; left:50%; top:0; bottom:0;
+    border-left:1.5px dashed var(--ink);
+    transform:translateX(-1px);
+  }
+  .A-stack::after{
+    /* accent "drawn" line overlay */
+    content:""; position:absolute; left:50%; top:60px; height:calc(100% - 120px);
+    border-left:1.5px solid var(--accent);
+    transform:translateX(-1px);
+    opacity:.65;
+  }
+  .A-node{
+    position:relative;
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    border-radius:2px;
+    box-shadow: 3px 3px 0 var(--ink);
+    padding:22px 24px;
+  }
+  .A-node .label{position:absolute;top:-11px;left:18px;background:var(--paper);padding:0 8px;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+  .A-node .num{position:absolute;top:8px;right:12px;font-family:var(--hand);font-size:18px;color:var(--accent)}
+  .A-hero{text-align:center;padding:54px 24px}
+  .A-hero .logo{
+    font-family:var(--hand); font-size:74px; letter-spacing:.18em; line-height:1;
+    margin-bottom:18px;
+  }
+  .A-hero .tag{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:.32em;margin-bottom:18px}
+  .A-hero .sub{font-family:var(--hand);font-size:22px;margin:14px 0 22px}
+  .A-hero .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .A-hero .corners::before,
+  .A-hero .corners::after{
+    content:""; position:absolute; width:34px; height:34px;
+    border:1.5px solid var(--ink);
+  }
+  .A-hero .corners::before{top:14px;left:14px;border-right:0;border-bottom:0}
+  .A-hero .corners::after{bottom:14px;right:14px;border-left:0;border-top:0}
+
+  .A-services{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:18px;
+    padding:22px;
+  }
+  .svc-card{
+    border:1.5px solid var(--ink); padding:16px; min-height:140px;
+    position:relative; background:var(--paper);
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .svc-card .shape{
+    width:42px;height:42px;border:1.5px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:10px;color:var(--ink-soft);
+  }
+  .svc-card .shape.tri{
+    border:0; width:0;height:0;
+    border-left:21px solid transparent;border-right:21px solid transparent;
+    border-bottom:36px solid var(--ink);
+  }
+  .svc-card .shape.cir{border-radius:50%}
+  .svc-card .shape.dia{transform:rotate(45deg);width:30px;height:30px}
+  .svc-card .shape.hex{
+    width:42px;height:24px;background:var(--paper);
+    border-left:0;border-right:0;
+    position:relative;
+  }
+  .svc-card .shape.hex::before,
+  .svc-card .shape.hex::after{
+    content:"";position:absolute;left:0;width:42px;height:0;
+    border-left:21px solid transparent;border-right:21px solid transparent;
+  }
+  .svc-card .shape.hex::before{bottom:100%;border-bottom:12px solid var(--ink)}
+  .svc-card .shape.hex::after{top:100%;border-top:12px solid var(--ink)}
+  .svc-card h4{margin:0;font-family:var(--hand);font-weight:600;font-size:20px}
+  .svc-card .li{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);line-height:1.65}
+  .svc-card .nodot{position:absolute;top:10px;right:14px;font-family:var(--mono);font-size:10px;color:var(--ink-soft)}
+
+  .A-statement{padding:40px 30px;text-align:center}
+  .A-statement h3{font-family:var(--hand);font-weight:400;font-size:34px;margin:0 0 12px;line-height:1.15}
+  .A-statement .model{
+    margin:18px auto 12px;width:60%;height:160px;
+    border:1.5px solid var(--ink);
+    background:
+      radial-gradient(circle at 50% 60%, var(--ink) 0 2px, transparent 3px),
+      repeating-linear-gradient(45deg, transparent 0 11px, var(--grid) 11px 12px);
+    position:relative;
+  }
+  .A-statement .model::before{
+    content:"3D model — slow rotate";
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    font-family:var(--mono);font-size:11px;background:var(--paper);padding:4px 8px;
+    border:1px solid var(--ink);
+  }
+
+  .A-detail{padding:24px}
+  .A-detail .row{display:grid; grid-template-columns: 1.1fr 1fr; gap:22px; align-items:center}
+  .A-detail h3{font-family:var(--hand);font-weight:400;font-size:26px;margin:0 0 10px;line-height:1.15}
+  .A-detail ul{padding-left:18px;margin:8px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);line-height:1.8}
+  .A-detail .vis{height:180px}
+
+  .A-process{padding:30px}
+  .A-process .steps{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;align-items:start}
+  .A-process .steps::before{
+    content:"";position:absolute;left:5%;right:5%;top:18px;
+    border-top:1.5px solid var(--accent);
+  }
+  .A-process .step{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;background:var(--paper);padding:0 6px}
+  .A-process .step .ring{
+    width:36px;height:36px;border:1.5px solid var(--ink);border-radius:50%;
+    background:var(--paper);display:flex;align-items:center;justify-content:center;
+    font-family:var(--hand);font-size:16px;
+  }
+  .A-process .step .nm{font-family:var(--hand);font-size:15px;text-align:center}
+  .A-process .step .sub{font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.16em}
+
+  .A-portfolio{padding:24px}
+  .A-portfolio .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .A-portfolio .grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:160px 160px;gap:14px}
+  .A-portfolio .grid > div{position:relative}
+  .A-portfolio .grid .big{grid-row:span 2}
+  .A-portfolio .grid .ovl{
+    position:absolute;left:10px;bottom:10px;font-family:var(--hand);font-size:16px;
+    background:var(--paper);padding:3px 8px;border:1px solid var(--ink);
+  }
+  .A-portfolio .grid .meta{
+    position:absolute;left:10px;top:10px;font-family:var(--mono);font-size:9px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);
+    background:var(--paper);padding:2px 6px;
+  }
+
+  .A-why{padding:24px}
+  .A-why .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .A-why .item{
+    border:1.5px solid var(--ink);padding:14px;min-height:110px;position:relative;background:var(--paper);
+  }
+  .A-why .item .n{font-family:var(--hand);font-size:24px;color:var(--accent)}
+  .A-why .item .t{font-family:var(--hand);font-size:18px;margin:4px 0 6px}
+  .A-why .item .d{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);line-height:1.55}
+
+  .A-final{padding:54px 30px;text-align:center}
+  .A-final h3{font-family:var(--hand);font-weight:400;font-size:40px;margin:0 0 8px}
+  .A-final p{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);max-width:520px;margin:0 auto 22px;line-height:1.6}
+
+  .A-footer{
+    border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);
+    padding:22px 24px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:18px;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .A-footer .col h5{margin:0 0 8px;font-family:var(--hand);font-weight:400;font-size:18px}
+  .A-footer .col li,.A-footer .col p{font-family:var(--mono);font-size:11px;list-style:none;padding:0;margin:0 0 4px;color:#cfcfcf;line-height:1.6}
+  .A-footer ul{padding:0;margin:0}
+
+  /* ============ APPROACH B · SITE PLAN ============ */
+  .B-plan{
+    position:relative;
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    box-shadow:4px 4px 0 var(--ink);
+    padding:30px;
+    overflow:hidden;
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px,transparent 1px);
+    background-size:24px 24px;
+  }
+  .B-plan .plot-title{
+    position:absolute;top:14px;left:18px;font-family:var(--mono);font-size:10px;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .B-plan .plot-meta{
+    position:absolute;top:14px;right:18px;font-family:var(--mono);font-size:10px;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .B-grid{
+    display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:60px;gap:12px;
+    margin-top:28px;
+  }
+  .B-cell{
+    background:var(--paper); border:1.5px solid var(--ink);
+    padding:12px 14px; position:relative;
+    box-shadow: 2px 2px 0 var(--ink);
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .B-cell .id{position:absolute;top:6px;right:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--ink-soft)}
+  .B-cell h4{margin:0;font-family:var(--hand);font-size:20px;font-weight:600;line-height:1}
+  .B-cell .sub{font-family:var(--mono);font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.16em}
+  .B-cell .body{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.55}
+  .B-cell.dark{background:var(--ink);color:var(--paper);box-shadow:2px 2px 0 var(--accent)}
+  .B-cell.dark .sub,.B-cell.dark .body{color:#c8c4ba}
+  .B-cell .corner-fold{
+    position:absolute;right:-1px;bottom:-1px;width:14px;height:14px;
+    background:linear-gradient(135deg, var(--paper) 50%, var(--ink) 50%);
+    border-left:1.5px solid var(--ink); border-top:1.5px solid var(--ink);
+  }
+  .B-hero{grid-column: 1 / span 7; grid-row: 1 / span 5;}
+  .B-hero .logo{font-family:var(--hand);font-size:96px;letter-spacing:.16em;line-height:1;margin-top:18px}
+  .B-hero .lead{font-family:var(--hand);font-size:24px;margin-top:18px}
+  .B-hero .ctas{display:flex;gap:12px;margin-top:18px}
+  .B-hero::after{
+    /* compass */
+    content:"N"; position:absolute; right:18px; bottom:18px;
+    width:54px;height:54px;border:1.5px solid var(--ink);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--hand);font-size:16px;
+    background:
+      conic-gradient(from 0deg, var(--ink) 0 2deg, transparent 2deg 90deg, var(--ink) 90deg 92deg, transparent 92deg 180deg, var(--ink) 180deg 182deg, transparent 182deg 270deg, var(--ink) 270deg 272deg, transparent 272deg 360deg);
+  }
+  .B-stamp{grid-column: 8 / span 5; grid-row:1 / span 2;}
+  .B-statement{grid-column: 8 / span 5; grid-row: 3 / span 3;}
+  .B-statement h4{font-size:22px}
+  .B-svc{padding:10px 12px}
+  .B-svc.a{grid-column: 1 / span 4; grid-row: 6 / span 3;}
+  .B-svc.b{grid-column: 5 / span 4; grid-row: 6 / span 3;}
+  .B-svc.c{grid-column: 9 / span 4; grid-row: 6 / span 3;}
+  .B-svc.d{grid-column: 1 / span 4; grid-row: 9 / span 3;}
+  .B-svc.e{grid-column: 5 / span 4; grid-row: 9 / span 3;}
+  .B-svc.f{grid-column: 9 / span 4; grid-row: 9 / span 3;}
+  .B-process{grid-column: 1 / span 12; grid-row: 12 / span 2;}
+  .B-process .row{display:grid;grid-template-columns:repeat(6,1fr);gap:0;align-items:center;margin-top:6px}
+  .B-process .row .n{
+    position:relative;font-family:var(--hand);font-size:18px;text-align:center;padding:6px 0;
+  }
+  .B-process .row .n::before{
+    content:"";position:absolute;top:50%;right:0;width:100%;
+    border-top:1.5px dashed var(--ink);transform:translateY(-50%);z-index:-1;
+  }
+  .B-process .row .n span{background:var(--paper);padding:0 8px;border:1.5px solid var(--ink);border-radius:99px;}
+  .B-port{grid-column:1 / span 7; grid-row: 14 / span 4}
+  .B-port .imgs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;height:130px}
+  .B-why{grid-column:8 / span 5; grid-row: 14 / span 4}
+  .B-why ol{margin:6px 0 0 18px;padding:0;font-family:var(--mono);font-size:11px;line-height:1.85;color:var(--ink-soft)}
+  .B-cta{grid-column:1 / span 12; grid-row:18 / span 2}
+  .B-cta{display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .B-cta h3{font-family:var(--hand);font-size:32px;font-weight:400;margin:0}
+
+  /* dotted connection overlay lines */
+  .B-plan svg.connections{
+    position:absolute; inset:0; pointer-events:none;
+  }
+
+  /* ============ APPROACH C · FILMSTRIP ============ */
+  .C-strip{
+    overflow-x:auto; overflow-y:hidden;
+    border:1.5px solid var(--ink);
+    box-shadow:4px 4px 0 var(--ink);
+    background:var(--paper);
+    padding:18px 18px 28px;
+    position:relative;
+  }
+  .C-strip::before{
+    content:"FILMSTRIP — scroll →";
+    position:absolute; top:-11px; left:14px; background:var(--paper);
+    padding:0 8px; font-family:var(--mono); font-size:10px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  .C-rail{
+    display:grid; grid-auto-flow:column; grid-auto-columns: 460px; gap:0;
+    align-items:stretch; min-width:max-content;
+  }
+  .C-frame{
+    border:1.5px solid var(--ink); padding:18px;
+    position:relative; background:var(--paper);
+    height:540px; display:flex; flex-direction:column;
+    border-right:0;
+  }
+  .C-rail .C-frame:last-child{border-right:1.5px solid var(--ink)}
+  .C-frame .sprocket-top, .C-frame .sprocket-bot{
+    position:absolute; left:0; right:0; height:14px;
+    background-image: radial-gradient(circle, var(--ink) 0 3px, transparent 4px);
+    background-size: 30px 14px; background-position: 0 50%;
+    background-repeat: repeat-x;
+    opacity:.6;
+  }
+  .C-frame .sprocket-top{top:0}
+  .C-frame .sprocket-bot{bottom:0}
+  .C-frame .num-big{
+    position:absolute; top:24px; right:18px;
+    font-family:var(--hand); font-size:60px; color:var(--paper-2);
+    line-height:1; z-index:0;
+  }
+  .C-frame > *{position:relative;z-index:1}
+  .C-frame .shot{
+    font-family:var(--mono); font-size:10px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--ink-soft); margin-top:18px;
+  }
+  .C-frame h3{font-family:var(--hand);font-weight:400;font-size:26px;margin:8px 0 8px;line-height:1.1}
+  .C-frame .body{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.6}
+  .C-frame .vis{flex:1;margin-top:14px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center}
+  .C-frame .vis .ph{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);text-align:center;padding:10px}
+  .C-frame.title-frame{background:var(--ink);color:var(--paper)}
+  .C-frame.title-frame .num-big{color:#2a2a2a}
+  .C-frame.title-frame .shot,.C-frame.title-frame .body{color:#bdbdbd}
+  .C-frame.title-frame .logo{
+    font-family:var(--hand);font-size:60px;letter-spacing:.18em;margin:18px 0 6px;
+  }
+  .C-frame .ctas{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .C-frame .btn{background:transparent;color:inherit;border-color:currentColor}
+  .C-timer{
+    margin-top:14px; display:flex; align-items:center; gap:18px;
+    font-family:var(--mono); font-size:10.5px; color:var(--ink-soft);
+    letter-spacing:.18em; text-transform:uppercase;
+  }
+  .C-timer .bar{flex:1;height:4px;background:var(--paper-2);position:relative;border:1px solid var(--ink)}
+  .C-timer .bar::after{content:"";position:absolute;left:0;top:0;bottom:0;width:18%;background:var(--accent)}
+  .C-timer .tick{display:flex;gap:14px}
+  .C-timer .tick span{position:relative}
+  .C-timer .tick span::before{content:"";position:absolute;top:-9px;left:50%;width:1.5px;height:5px;background:var(--ink)}
+
+  /* ============ APPROACH D · EDITORIAL GRID ============ */
+  .D-wrap{display:grid;gap:18px}
+  .D-mast{
+    border:1.5px solid var(--ink);background:var(--paper);
+    padding:24px 28px;display:grid;grid-template-columns:1fr 1fr;
+    align-items:end;gap:24px;box-shadow:3px 3px 0 var(--ink);
+    position:relative;
+  }
+  .D-mast::after{
+    content:"VOL. 01 / ISSUE — SPACELYT WORKS";
+    position:absolute; top:8px; right:14px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--ink-soft);
+  }
+  .D-mast h1{font-family:var(--hand);font-weight:400;font-size:84px;letter-spacing:.12em;margin:0;line-height:.9}
+  .D-mast .right{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.7;text-align:right}
+  .D-mast .right strong{display:block;font-family:var(--hand);font-weight:400;font-size:22px;color:var(--ink);margin-bottom:6px;text-align:right}
+
+  .D-row{display:grid;gap:18px}
+  .D-row.r-2{grid-template-columns:2fr 1fr}
+  .D-row.r-3{grid-template-columns:repeat(3,1fr)}
+  .D-row.r-12{grid-template-columns:1fr 2fr}
+  .D-row.r-3-2{grid-template-columns:1fr 1fr 2fr}
+  .D-card{
+    border:1.5px solid var(--ink);background:var(--paper);
+    padding:18px;position:relative;box-shadow:3px 3px 0 var(--ink);
+    min-height:170px;display:flex;flex-direction:column;gap:8px;
+  }
+  .D-card .sec{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--ink-soft);text-transform:uppercase;display:flex;justify-content:space-between}
+  .D-card h3{font-family:var(--hand);font-weight:400;font-size:28px;margin:6px 0 6px;line-height:1.1}
+  .D-card .lede{font-family:var(--mono);font-size:11.5px;line-height:1.6;color:var(--ink-soft);max-width:42ch}
+  .D-card.dark{background:var(--ink);color:var(--paper)}
+  .D-card.dark .sec,.D-card.dark .lede{color:#c8c4ba}
+  .D-card .bignum{
+    font-family:var(--hand);font-size:90px;line-height:.85;color:var(--accent);margin:0 0 -6px;
+  }
+  .D-card .col-list{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;font-family:var(--mono);font-size:10.5px;line-height:1.85;color:var(--ink-soft);margin:6px 0 0;padding:0;list-style:none}
+  .D-card .col-list li::before{content:"— ";color:var(--ink)}
+  .D-card .ftr{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.18em}
+  .D-card .ftr .read{border-bottom:1.5px solid var(--accent);padding-bottom:1px}
+
+  .D-spread{
+    border:1.5px solid var(--ink);background:var(--paper);
+    box-shadow:3px 3px 0 var(--ink);
+    display:grid;grid-template-columns:1fr 1fr;
+  }
+  .D-spread .l{padding:24px;border-right:1.5px dashed var(--ink)}
+  .D-spread .r{padding:0}
+  .D-spread .l h2{font-family:var(--hand);font-weight:400;font-size:42px;margin:0 0 8px;line-height:1.05}
+  .D-spread .l .deck{font-family:var(--mono);font-size:11.5px;line-height:1.65;color:var(--ink-soft)}
+  .D-spread .l .by{font-family:var(--mono);font-size:10px;color:var(--ink-soft);letter-spacing:.22em;text-transform:uppercase;margin-top:14px}
+  .D-spread .r .img-ph{height:100%;min-height:300px;border:0}
+
+  .D-toc{
+    border:1.5px solid var(--ink);padding:18px 22px;background:var(--paper);
+    display:grid;grid-template-columns:1fr 2fr;gap:18px;box-shadow:3px 3px 0 var(--ink);
+  }
+  .D-toc h4{font-family:var(--hand);font-size:24px;font-weight:400;margin:0 0 6px}
+  .D-toc .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.7}
+  .D-toc ol{margin:0;padding:0;list-style:none;column-count:2;column-gap:30px;font-family:var(--mono);font-size:11.5px;color:var(--ink)}
+  .D-toc ol li{padding:5px 0;border-bottom:1px dotted var(--ink);display:flex;justify-content:space-between}
+  .D-toc ol li b{font-weight:400;color:var(--ink-soft);font-family:var(--mono);font-size:10.5px}
+
+  .D-final{
+    border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);
+    padding:44px 30px; text-align:center; box-shadow:3px 3px 0 var(--accent);
+    position:relative;
+  }
+  .D-final h2{font-family:var(--hand);font-weight:400;font-size:52px;margin:0 0 6px}
+  .D-final p{font-family:var(--mono);font-size:12.5px;color:#cccccc;max-width:560px;margin:0 auto 20px;line-height:1.6}
+
+  /* annotations */
+  .anno{
+    font-family:var(--hand); color:var(--accent);
+    font-size:14px;
+  }
+  .anno-row{display:flex;gap:18px;align-items:center;margin-top:10px;flex-wrap:wrap}
+  .arrow-svg{display:inline-block;vertical-align:middle}
+
+  /* responsive niceties */
+  @media (max-width: 900px){
+    .A-services,.A-portfolio .grid,.A-why .grid,.D-row.r-3,.D-row.r-3-2{grid-template-columns:1fr 1fr}
+    .D-mast h1{font-size:64px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================ TOPBAR ============================ -->
+<header class="topbar">
+  <div class="brand"><span class="dot"></span>SPACELYT — wireframes</div>
+  <div class="crumbs">v0.1 · exploration round 1 · 4 directions</div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-t="A">A · Center Spine</button>
+    <button class="tab" data-t="B">B · Site Plan</button>
+    <button class="tab" data-t="C">C · Filmstrip</button>
+    <button class="tab" data-t="D">D · Editorial</button>
+    <button class="tab" data-t="X">↔ Compare</button>
+  </nav>
+  <div class="legend">
+    <span><i></i>structure</span>
+    <span><i class="dash"></i>connection</span>
+    <span><i class="acc"></i>motion line</span>
+  </div>
+</header>
+
+<!-- ============================ INTRO ============================ -->
+<section class="intro">
+  <h1>Four ways to lay out the <em>Spacelyt homepage</em>.</h1>
+  <p>Same content from your brief — 13 sections, same brand voice, same turnkey story. The variable is how the "living blueprint" idea translates into structure. Each option has trade-offs in production, motion budget, and editorial flexibility. Click any tab.</p>
+  <span class="pin">↳ rough sketches — pre-visual, focus on flow not finish</span>
+</section>
+
+<!-- ============================ A · CENTER SPINE ============================ -->
+<section class="panel active" data-p="A">
+  <div class="approach-head">
+    <div>
+      <div class="codename">Option A · safe pick · matches brief literally</div>
+      <h2>Center Spine — line draws straight down</h2>
+    </div>
+    <p class="desc">A single accent line travels from the hero through every section, anchored to the page's centerline. Each section is a "node" the line passes through. Closest to your brief, easiest to build, calmest to read.</p>
+  </div>
+
+  <div class="A-stack">
+
+    <!-- HERO -->
+    <div class="A-node A-hero corners">
+      <div class="label">01 · hero</div>
+      <div class="num">§01</div>
+      <span class="tag">— pure white load · border line draws in —</span>
+      <div class="logo">SPACELYT</div>
+      <div class="hand" style="font-size:14px;color:var(--ink-soft)">⌜ letter-by-letter fade in ⌝</div>
+      <div class="sub">Design. Plan. Build. Deliver.<br><span class="note" style="font-size:16px">A complete turnkey space transformation company.</span></div>
+      <div class="ctas">
+        <span class="btn dark">Start Your Project <span class="arr">→</span></span>
+        <span class="btn">Explore Services <span class="arr">↓</span></span>
+      </div>
+      <div style="margin-top:22px" class="tag">scroll cue ↓</div>
+    </div>
+
+    <!-- SERVICES FLOW -->
+    <div class="A-node">
+      <div class="label">02 · service flow</div>
+      <div class="num">§02</div>
+      <div style="text-align:center" class="hand">— line plots six services like a roadmap —</div>
+      <div class="A-services">
+        <div class="svc-card"><span class="nodot">S/01</span><div class="shape">▢</div><h4>Planning</h4><div class="li">Site · Space · Budget · Timeline</div></div>
+        <div class="svc-card"><span class="nodot">S/02</span><div class="shape tri"></div><h4>Architecture</h4><div class="li">Concept · Elevation · Plans</div></div>
+        <div class="svc-card"><span class="nodot">S/03</span><div class="shape cir">○</div><h4>Construction</h4><div class="li">Civil · Site · Quality</div></div>
+        <div class="svc-card"><span class="nodot">S/04</span><div class="shape dia"></div><h4>Interior Design</h4><div class="li">Styling · Furniture · Lighting</div></div>
+        <div class="svc-card"><span class="nodot">S/05</span><div class="shape hex"></div><h4>Exterior Design</h4><div class="li">Facade · Landscape · Boundary</div></div>
+        <div class="svc-card"><span class="nodot">S/06</span><div class="shape">▤</div><h4>Building Solutions</h4><div class="li">Residential · Commercial · PM</div></div>
+      </div>
+    </div>
+
+    <!-- STATEMENT -->
+    <div class="A-node A-statement">
+      <div class="label">03 · turnkey statement</div>
+      <div class="num">§03</div>
+      <h3>From first idea to final handover,<br>Spacelyt handles everything.</h3>
+      <p class="note" style="font-size:16px;max-width:560px;margin:0 auto">Planning, architecture, construction, interiors, exteriors, building execution — one seamless turnkey experience.</p>
+      <div class="model"></div>
+      <span class="btn dark">Book a Project Consultation <span class="arr">→</span></span>
+    </div>
+
+    <!-- PLANNING -->
+    <div class="A-node A-detail">
+      <div class="label">04 · planning</div>
+      <div class="num">§04</div>
+      <div class="row">
+        <div>
+          <h3>Planning That Defines the Entire Project</h3>
+          <ul><li>Site analysis</li><li>Space planning</li><li>Budget planning</li><li>Project feasibility</li><li>Material direction</li><li>Timeline strategy</li></ul>
+        </div>
+        <div class="img-ph vis"><span>blueprint grid · floor plan draws on scroll</span></div>
+      </div>
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <div class="A-node A-detail">
+      <div class="label">05 · architecture</div>
+      <div class="num">§05</div>
+      <div class="row" style="grid-template-columns:1fr 1.1fr">
+        <div class="img-ph vis"><span>wireframe building → solid</span></div>
+        <div>
+          <h3>Architecture With Purpose, Form & Function</h3>
+          <ul><li>Concept design</li><li>Elevation design</li><li>Floor plans</li><li>Structural coordination</li><li>3D visualization</li><li>Design documentation</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONSTRUCTION -->
+    <div class="A-node A-detail">
+      <div class="label">06 · construction</div>
+      <div class="num">§06</div>
+      <div class="row">
+        <div>
+          <h3>Construction Managed From Start to Finish</h3>
+          <ul><li>Civil work</li><li>Site execution</li><li>Vendor coordination</li><li>Material procurement</li><li>Quality checks</li><li>Timeline control</li></ul>
+        </div>
+        <div class="img-ph vis"><span>progress path · milestones reveal on scroll</span></div>
+      </div>
+    </div>
+
+    <!-- INTERIOR -->
+    <div class="A-node A-detail">
+      <div class="label">07 · interior design</div>
+      <div class="num">§07</div>
+      <div class="row" style="grid-template-columns:1fr 1.1fr">
+        <div class="img-ph vis"><span>before / after split · material swatches</span></div>
+        <div>
+          <h3>Interior Design — Personal & Premium</h3>
+          <ul><li>Space styling</li><li>Furniture planning</li><li>Lighting design</li><li>Material selection</li><li>Modular work</li><li>Luxury detailing</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXTERIOR -->
+    <div class="A-node A-detail">
+      <div class="label">08 · exterior design</div>
+      <div class="num">§08</div>
+      <div class="row">
+        <div>
+          <h3>Exterior Design — Lasting First Impressions</h3>
+          <ul><li>Facade design</li><li>Landscape planning</li><li>Outdoor lighting</li><li>Entrance design</li><li>Boundary wall</li><li>Elevation enhancement</li></ul>
+        </div>
+        <div class="img-ph vis"><span>facade · sun/shadow moves with scroll</span></div>
+      </div>
+    </div>
+
+    <!-- BUILDING SOLUTIONS -->
+    <div class="A-node A-detail">
+      <div class="label">09 · building solutions</div>
+      <div class="num">§09</div>
+      <div class="row" style="grid-template-columns:1fr 1.1fr">
+        <div class="img-ph vis"><span>six lines converge → one completed model</span></div>
+        <div>
+          <h3>Complete Building Solutions Under One Roof</h3>
+          <ul><li>Residential projects</li><li>Commercial projects</li><li>Renovations</li><li>Turnkey execution</li><li>Project management</li><li>End-to-end delivery</li></ul>
+          <div style="margin-top:14px"><span class="stamp">handover ✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROCESS -->
+    <div class="A-node A-process">
+      <div class="label">10 · 6-step process</div>
+      <div class="num">§10</div>
+      <h3 class="hand" style="margin:0 0 16px;font-weight:400;font-size:24px;text-align:center">A Seamless 6-Step Turnkey Process</h3>
+      <div class="steps">
+        <div class="step"><div class="ring">1</div><div class="nm">Consultation</div><div class="sub">Week 1</div></div>
+        <div class="step"><div class="ring">2</div><div class="nm">Planning</div><div class="sub">Week 2–3</div></div>
+        <div class="step"><div class="ring">3</div><div class="nm">Design</div><div class="sub">Week 4–6</div></div>
+        <div class="step"><div class="ring">4</div><div class="nm">Material</div><div class="sub">Week 7</div></div>
+        <div class="step"><div class="ring">5</div><div class="nm">Execution</div><div class="sub">Week 8–N</div></div>
+        <div class="step"><div class="ring">6</div><div class="nm">Handover</div><div class="sub">Final</div></div>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="A-node A-portfolio">
+      <div class="label">11 · portfolio</div>
+      <div class="num">§11</div>
+      <h3 class="hand" style="font-weight:400;margin:0 0 8px;font-size:24px">Spaces Designed & Built With Precision</h3>
+      <div class="filters">
+        <span class="pill">All</span>
+        <span class="pill">Residential</span>
+        <span class="pill">Commercial</span>
+        <span class="pill">Interiors</span>
+        <span class="pill">Exteriors</span>
+        <span class="pill">Construction</span>
+      </div>
+      <div class="grid">
+        <div class="img-ph big"><span class="meta">featured · before / after</span><span class="ovl">Project Aria — Mumbai</span></div>
+        <div class="img-ph"><span class="meta">residential</span><span class="ovl">Villa Noir</span></div>
+        <div class="img-ph"><span class="meta">commercial</span><span class="ovl">Workspace 09</span></div>
+        <div class="img-ph"><span class="meta">interior</span><span class="ovl">Penthouse 22</span></div>
+        <div class="img-ph"><span class="meta">exterior</span><span class="ovl">House on Hill</span></div>
+      </div>
+    </div>
+
+    <!-- WHY -->
+    <div class="A-node A-why">
+      <div class="label">12 · why spacelyt</div>
+      <div class="num">§12</div>
+      <h3 class="hand" style="font-weight:400;margin:0 0 12px;font-size:24px">Why Clients Choose Spacelyt</h3>
+      <div class="grid">
+        <div class="item"><div class="n">01</div><div class="t">One company, full execution</div><div class="d">No subcontractor handoffs. Plan to handover under one team.</div></div>
+        <div class="item"><div class="n">02</div><div class="t">Better coordination</div><div class="d">Architecture and execution talk to each other from day one.</div></div>
+        <div class="item"><div class="n">03</div><div class="t">Clear timelines</div><div class="d">Milestones, not vague promises.</div></div>
+        <div class="item"><div class="n">04</div><div class="t">Premium design quality</div><div class="d">Material-led, detail-obsessed.</div></div>
+        <div class="item"><div class="n">05</div><div class="t">Transparent process</div><div class="d">Live updates, line-item budgets.</div></div>
+        <div class="item"><div class="n">06</div><div class="t">End-to-end accountability</div><div class="d">One signature. One owner of the outcome.</div></div>
+      </div>
+    </div>
+
+    <!-- FINAL CTA -->
+    <div class="A-node A-final">
+      <div class="label">13 · final cta</div>
+      <div class="num">§13</div>
+      <h3>Ready to Transform Your Space?</h3>
+      <p class="note" style="font-size:16px">Tell us your vision. We'll plan, design, build, and deliver it.</p>
+      <span class="btn dark">Start Your Project <span class="arr">→</span></span>
+      <div style="margin-top:18px" class="tag">— line loops back to SPACELYT logo —</div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="A-footer">
+      <div class="col">
+        <h5>SPACELYT</h5>
+        <p class="note" style="color:#ddd;font-size:14px">From blueprint to beautiful spaces.</p>
+        <p>© Spacelyt · est. 2026</p>
+      </div>
+      <div class="col"><h5>Services</h5><ul><li>Planning</li><li>Architecture</li><li>Construction</li><li>Interiors</li><li>Exteriors</li></ul></div>
+      <div class="col"><h5>Studio</h5><ul><li>About</li><li>Process</li><li>Portfolio</li><li>Journal</li></ul></div>
+      <div class="col"><h5>Contact</h5><ul><li>hello@spacelyt.com</li><li>+91 — — —</li><li>Studio address</li></ul></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ B · SITE PLAN ============================ -->
+<section class="panel" data-p="B">
+  <div class="approach-head">
+    <div>
+      <div class="codename">Option B · novel · most "architectural"</div>
+      <h2>Site Plan — page laid out like a plot</h2>
+    </div>
+    <p class="desc">Sections are placed like buildings on a site plan: hero is the main structure, services are out-buildings, process and portfolio are pathways. Reads top-down as a 2D map; on mobile collapses to a vertical stack. Risk: harder to scan if you don't lean into the metaphor.</p>
+  </div>
+
+  <div class="B-plan">
+    <div class="plot-title">Plot · spacelyt.com / sheet 01 / scale 1:100</div>
+    <div class="plot-meta">N ↑ · last rev. 0001</div>
+
+    <div class="B-grid">
+      <!-- HERO -->
+      <div class="B-cell B-hero">
+        <div class="id">A · HERO</div>
+        <div class="sub">main building</div>
+        <div class="logo">SPACELYT</div>
+        <div class="lead">From blueprint to beautiful spaces.</div>
+        <div class="body" style="margin-top:8px">A complete turnkey space transformation company — planning, architecture, construction, interiors, exteriors, building solutions.</div>
+        <div class="ctas">
+          <span class="btn dark">Start Your Project →</span>
+          <span class="btn">Explore Services ↓</span>
+        </div>
+        <div class="corner-fold"></div>
+      </div>
+
+      <!-- TURNKEY STAMP -->
+      <div class="B-cell dark B-stamp">
+        <div class="id">B · STAMP</div>
+        <div class="sub" style="color:#c8c4ba">title block</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:6px">
+          <div style="font-family:var(--hand);font-size:36px;line-height:1">Turnkey<br>Studio</div>
+          <div style="border-left:1.5px solid #555;padding-left:14px">
+            <div class="body" style="color:#c8c4ba">est. 2026 · India</div>
+            <div class="body" style="color:#c8c4ba">14 projects · 6 services</div>
+            <div class="body" style="color:#c8c4ba">1 partner, end-to-end</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TURNKEY STATEMENT -->
+      <div class="B-cell B-statement">
+        <div class="id">C · STATEMENT</div>
+        <div class="sub">manifesto block</div>
+        <h4>From first idea to final handover,<br>Spacelyt handles everything.</h4>
+        <div class="body">Six services. One contract. One team. One outcome you can sign off on without three subcontractors in the room.</div>
+        <div style="margin-top:auto"><span class="btn">Book Consultation →</span></div>
+      </div>
+
+      <!-- 6 SERVICES -->
+      <div class="B-cell B-svc a">
+        <div class="id">S/01 — A1</div>
+        <h4>Planning</h4>
+        <div class="sub">site · space · budget · timeline</div>
+        <div class="body">▢ site analysis · feasibility · material direction</div>
+      </div>
+      <div class="B-cell B-svc b">
+        <div class="id">S/02 — A2</div>
+        <h4>Architecture</h4>
+        <div class="sub">concept · elevation · 3D</div>
+        <div class="body">△ floor plans · structural coordination · docs</div>
+      </div>
+      <div class="B-cell B-svc c">
+        <div class="id">S/03 — A3</div>
+        <h4>Construction</h4>
+        <div class="sub">civil · execution · qa</div>
+        <div class="body">○ vendors · procurement · timeline control</div>
+      </div>
+      <div class="B-cell B-svc d">
+        <div class="id">S/04 — B1</div>
+        <h4>Interior Design</h4>
+        <div class="sub">styling · furniture · lighting</div>
+        <div class="body">◇ modular work · materials · luxury detailing</div>
+      </div>
+      <div class="B-cell B-svc e">
+        <div class="id">S/05 — B2</div>
+        <h4>Exterior Design</h4>
+        <div class="sub">facade · landscape · entrance</div>
+        <div class="body">⬡ outdoor lighting · boundary · elevation</div>
+      </div>
+      <div class="B-cell B-svc f">
+        <div class="id">S/06 — B3</div>
+        <h4>Building Solutions</h4>
+        <div class="sub">residential · commercial · PM</div>
+        <div class="body">▤ renovations · turnkey · end-to-end</div>
+      </div>
+
+      <!-- PROCESS as pathway -->
+      <div class="B-cell B-process">
+        <div class="id">P · PATHWAY</div>
+        <div class="sub">6-step process · main approach road</div>
+        <div class="row">
+          <div class="n"><span>1 · Consult</span></div>
+          <div class="n"><span>2 · Plan</span></div>
+          <div class="n"><span>3 · Design</span></div>
+          <div class="n"><span>4 · Material</span></div>
+          <div class="n"><span>5 · Execute</span></div>
+          <div class="n"><span>6 · Handover</span></div>
+        </div>
+      </div>
+
+      <!-- PORTFOLIO -->
+      <div class="B-cell B-port">
+        <div class="id">G · GALLERY</div>
+        <h4>Spaces Built With Precision</h4>
+        <div class="sub">portfolio · filterable</div>
+        <div class="imgs">
+          <div class="img-ph"><span>Villa Noir</span></div>
+          <div class="img-ph"><span>Workspace 09</span></div>
+          <div class="img-ph"><span>Penthouse 22</span></div>
+        </div>
+      </div>
+
+      <!-- WHY -->
+      <div class="B-cell B-why">
+        <div class="id">W · WHY</div>
+        <h4>Why Spacelyt</h4>
+        <div class="sub">six reasons · floating cards</div>
+        <ol>
+          <li>One company, complete execution</li>
+          <li>Better coordination across trades</li>
+          <li>Clear, documented timelines</li>
+          <li>Premium design quality</li>
+          <li>Transparent process & pricing</li>
+          <li>End-to-end accountability</li>
+        </ol>
+      </div>
+
+      <!-- CTA -->
+      <div class="B-cell B-cta dark">
+        <div class="id">Z · ENTRY</div>
+        <div>
+          <h3 style="color:var(--paper)">Ready to break ground?</h3>
+          <div class="body" style="color:#c8c4ba">Tell us your vision — we'll plan, design, build, deliver.</div>
+        </div>
+        <span class="btn" style="color:var(--paper);border-color:var(--paper);background:transparent">Start Your Project →</span>
+      </div>
+    </div>
+
+    <!-- annotation text -->
+    <div style="margin-top:18px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);letter-spacing:.18em;text-transform:uppercase">
+      <span>— dotted lines connect related cells on scroll —</span>
+      <span>cells = sections · grid = site map · scroll reveals one cluster at a time</span>
+      <span>FOOTER omitted from plan view ↘</span>
+    </div>
+  </div>
+
+  <div style="margin-top:22px" class="anno-row">
+    <span class="anno">↻ on mobile this collapses to a vertical reading order:</span>
+    <span class="pill">A → B → C → S01–06 → P → G → W → Z</span>
+  </div>
+</section>
+
+<!-- ============================ C · FILMSTRIP ============================ -->
+<section class="panel" data-p="C">
+  <div class="approach-head">
+    <div>
+      <div class="codename">Option C · cinematic · highest motion-budget</div>
+      <h2>Filmstrip — horizontal scroll, shot by shot</h2>
+    </div>
+    <p class="desc">The page is a film. Each section is a frame; the line is the "camera" panning right. Heavy on scroll-jacking and animation but creates strongest cinematic feel. Each frame can hold one big idea, one big visual. Less content per screen, more drama.</p>
+  </div>
+
+  <div class="C-strip">
+    <div class="C-rail">
+
+      <div class="C-frame title-frame">
+        <div class="sprocket-top"></div><div class="num-big">01</div>
+        <div class="shot">Shot 01 · cold open</div>
+        <div class="logo">SPACELYT</div>
+        <div class="body">Design. Plan. Build. Deliver.</div>
+        <div class="body" style="margin-top:6px">From blueprint to beautiful spaces.</div>
+        <div class="vis" style="border-color:#555"><div class="ph" style="color:#888">white screen · border line draws in · logo letters fade</div></div>
+        <div class="ctas"><span class="btn">Start Project →</span><span class="btn">Services ↓</span></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">02</div>
+        <div class="shot">Shot 02 · the diagram</div>
+        <h3>Six services. One line.</h3>
+        <div class="body">Camera pans right as line plots six service cards in sequence.</div>
+        <div class="vis">
+          <div class="ph">▢ → △ → ○ <br> ◇ → ⬡ → ▤<br>connected blueprint</div>
+        </div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">03</div>
+        <div class="shot">Shot 03 · the manifesto</div>
+        <h3>From first idea to final handover.</h3>
+        <div class="body">A 3D model rotates slowly. Floating labels orbit. Big breathing room.</div>
+        <div class="vis"><div class="ph">⟲ rotating model<br>labels orbit</div></div>
+        <div class="ctas"><span class="btn">Book Consult →</span></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">04</div>
+        <div class="shot">Shot 04 · Planning</div>
+        <h3>Planning defines everything.</h3>
+        <div class="body">— site · space · budget · feasibility · material · timeline</div>
+        <div class="vis"><div class="ph">floor plan draws on enter<br>measurement marks</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">05</div>
+        <div class="shot">Shot 05 · Architecture</div>
+        <h3>Form. Function. Purpose.</h3>
+        <div class="body">— concept · elevation · plans · structural · 3D · docs</div>
+        <div class="vis"><div class="ph">wireframe building<br>becomes solid</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">06</div>
+        <div class="shot">Shot 06 · Construction</div>
+        <h3>Managed start to finish.</h3>
+        <div class="body">— civil · site · vendors · procurement · QA · timeline</div>
+        <div class="vis"><div class="ph">progress path<br>milestones pop in</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">07</div>
+        <div class="shot">Shot 07 · Interior</div>
+        <h3>Personal. Premium.</h3>
+        <div class="body">— styling · furniture · lighting · materials · modular · detailing</div>
+        <div class="vis"><div class="ph">before / after split<br>swatches float</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">08</div>
+        <div class="shot">Shot 08 · Exterior</div>
+        <h3>Lasting first impressions.</h3>
+        <div class="body">— facade · landscape · outdoor light · entrance · boundary · elevation</div>
+        <div class="vis"><div class="ph">facade fades in,<br>sun arcs across</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">09</div>
+        <div class="shot">Shot 09 · Building Solutions</div>
+        <h3>Everything, under one roof.</h3>
+        <div class="body">— residential · commercial · renovations · turnkey · PM · delivery</div>
+        <div class="vis"><div class="ph">6 lines merge → 1 building<br>handover stamp lands</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">10</div>
+        <div class="shot">Shot 10 · Process</div>
+        <h3>Six steps, one line.</h3>
+        <div class="body">Consult → Plan → Design → Material → Execute → Handover</div>
+        <div class="vis"><div class="ph">single line crosses 6 nodes<br>left to right</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">11</div>
+        <div class="shot">Shot 11 · Portfolio</div>
+        <h3>Built with precision.</h3>
+        <div class="body">— fullscreen cards · hover reveals · before/after · filters</div>
+        <div class="vis"><div class="ph">stacked project tiles<br>parallax on pan</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame">
+        <div class="sprocket-top"></div><div class="num-big">12</div>
+        <div class="shot">Shot 12 · Why Spacelyt</div>
+        <h3>Six reasons clients pick us.</h3>
+        <div class="body">— one company · coordination · timelines · quality · transparency · accountability</div>
+        <div class="vis"><div class="ph">6 benefit cards drift in<br>connected by line</div></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+      <div class="C-frame title-frame">
+        <div class="sprocket-top"></div><div class="num-big">13</div>
+        <div class="shot">Shot 13 · final cta</div>
+        <h3 style="color:var(--paper)">Ready to transform your space?</h3>
+        <div class="body">Tell us your vision. We'll plan, design, build & deliver.</div>
+        <div class="vis" style="border-color:#555"><div class="ph" style="color:#888">line loops back to SPACELYT logo<br>fade to white</div></div>
+        <div class="ctas"><span class="btn">Start Your Project →</span></div>
+        <div class="sprocket-bot"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="C-timer">
+    <span>00:00</span>
+    <div class="bar"><div class="tick" style="position:absolute;left:0;right:0;display:flex;justify-content:space-between;padding:0 4px;top:-7px"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+    <span>scroll progress</span>
+  </div>
+
+  <div style="margin-top:18px;display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);letter-spacing:.18em;text-transform:uppercase">
+    <span>↔ each frame = ~1 viewport · pinned section · scroll-driven motion</span>
+    <span class="anno hand" style="text-transform:none;letter-spacing:normal;font-size:14px">⚠ test on slow connections — locked scroll can frustrate users</span>
+  </div>
+</section>
+
+<!-- ============================ D · EDITORIAL ============================ -->
+<section class="panel" data-p="D">
+  <div class="approach-head">
+    <div>
+      <div class="codename">Option D · editorial · most "studio portfolio"</div>
+      <h2>Editorial — magazine-style modular blocks</h2>
+    </div>
+    <p class="desc">Treats the homepage like a printed monograph. Big mast, table of contents, asymmetric spreads, generous numbering. Motion is subtler (focus is typography and rhythm) but feels expensive and considered. Works well if portfolio imagery will carry weight.</p>
+  </div>
+
+  <div class="D-wrap">
+
+    <!-- MASTHEAD -->
+    <div class="D-mast">
+      <h1>SPACELYT</h1>
+      <div class="right">
+        <strong>From Blueprint to Beautiful Spaces.</strong>
+        Spacelyt delivers planning, architecture, construction, interiors, exteriors & building solutions as one complete turnkey experience.<br>
+        <span class="tag" style="margin-top:8px;display:inline-block">— start your project →</span>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <div class="D-toc">
+      <div>
+        <h4>In this issue</h4>
+        <div class="meta">A reading of Spacelyt's complete turnkey practice. Thirteen sections, six services, one studio.</div>
+      </div>
+      <ol>
+        <li><span>01 — The Studio</span><b>p.01</b></li>
+        <li><span>02 — Service Index</span><b>p.02</b></li>
+        <li><span>03 — Turnkey Manifesto</span><b>p.03</b></li>
+        <li><span>04 — Planning</span><b>p.04</b></li>
+        <li><span>05 — Architecture</span><b>p.05</b></li>
+        <li><span>06 — Construction</span><b>p.06</b></li>
+        <li><span>07 — Interior Design</span><b>p.07</b></li>
+        <li><span>08 — Exterior Design</span><b>p.08</b></li>
+        <li><span>09 — Building Solutions</span><b>p.09</b></li>
+        <li><span>10 — The Process</span><b>p.10</b></li>
+        <li><span>11 — Portfolio</span><b>p.11</b></li>
+        <li><span>12 — Why Spacelyt</span><b>p.12</b></li>
+      </ol>
+    </div>
+
+    <!-- SPREAD: TURNKEY MANIFESTO -->
+    <div class="D-spread">
+      <div class="l">
+        <div class="tag">§ 03 · manifesto</div>
+        <h2>From first idea to final handover,<br>one studio handles everything.</h2>
+        <div class="deck">Most projects fail in the seams — between architect and builder, between designer and vendor, between drawing and delivery. Spacelyt deletes the seams. Six services, one signature, one accountable team.</div>
+        <div class="by">— Studio statement</div>
+        <div style="margin-top:18px"><span class="btn dark">Book a Consultation →</span></div>
+      </div>
+      <div class="r"><div class="img-ph"><span>rotating 3D architectural model</span></div></div>
+    </div>
+
+    <!-- SERVICE INDEX as 3-col row -->
+    <div class="D-row r-3">
+      <div class="D-card">
+        <div class="sec"><span>§ 04 · planning</span><span>S/01</span></div>
+        <p class="bignum">01</p>
+        <h3>Planning that defines the project</h3>
+        <ul class="col-list">
+          <li>Site analysis</li><li>Space planning</li>
+          <li>Budget</li><li>Feasibility</li>
+          <li>Material direction</li><li>Timeline</li>
+        </ul>
+        <div class="ftr"><span>read full →</span><span class="read">06 min read</span></div>
+      </div>
+      <div class="D-card">
+        <div class="sec"><span>§ 05 · architecture</span><span>S/02</span></div>
+        <p class="bignum">02</p>
+        <h3>Form, function & purpose</h3>
+        <ul class="col-list">
+          <li>Concept design</li><li>Elevation</li>
+          <li>Floor plans</li><li>Structural</li>
+          <li>3D viz</li><li>Documentation</li>
+        </ul>
+        <div class="ftr"><span>read full →</span><span class="read">07 min read</span></div>
+      </div>
+      <div class="D-card dark">
+        <div class="sec"><span>§ 06 · construction</span><span>S/03</span></div>
+        <p class="bignum" style="color:var(--paper)">03</p>
+        <h3>Start to finish, managed.</h3>
+        <ul class="col-list" style="color:#c8c4ba">
+          <li>Civil work</li><li>Site execution</li>
+          <li>Vendors</li><li>Procurement</li>
+          <li>Quality</li><li>Timeline</li>
+        </ul>
+        <div class="ftr" style="color:#bdbdbd"><span>read full →</span><span class="read">08 min read</span></div>
+      </div>
+    </div>
+
+    <!-- Second row of 3 services -->
+    <div class="D-row r-3">
+      <div class="D-card">
+        <div class="sec"><span>§ 07 · interior</span><span>S/04</span></div>
+        <p class="bignum">04</p>
+        <h3>Personal & premium</h3>
+        <ul class="col-list">
+          <li>Space styling</li><li>Furniture</li>
+          <li>Lighting</li><li>Materials</li>
+          <li>Modular</li><li>Detailing</li>
+        </ul>
+        <div class="ftr"><span>read full →</span><span class="read">05 min read</span></div>
+      </div>
+      <div class="D-card">
+        <div class="sec"><span>§ 08 · exterior</span><span>S/05</span></div>
+        <p class="bignum">05</p>
+        <h3>Lasting first impressions</h3>
+        <ul class="col-list">
+          <li>Facade</li><li>Landscape</li>
+          <li>Outdoor light</li><li>Entrance</li>
+          <li>Boundary</li><li>Elevation</li>
+        </ul>
+        <div class="ftr"><span>read full →</span><span class="read">05 min read</span></div>
+      </div>
+      <div class="D-card">
+        <div class="sec"><span>§ 09 · building solutions</span><span>S/06</span></div>
+        <p class="bignum">06</p>
+        <h3>Everything, under one roof</h3>
+        <ul class="col-list">
+          <li>Residential</li><li>Commercial</li>
+          <li>Renovations</li><li>Turnkey</li>
+          <li>PM</li><li>End-to-end</li>
+        </ul>
+        <div class="ftr"><span>read full →</span><span class="read">06 min read</span></div>
+      </div>
+    </div>
+
+    <!-- FEATURED PORTFOLIO SPREAD -->
+    <div class="D-spread">
+      <div class="l">
+        <div class="tag">§ 11 · featured</div>
+        <h2>Villa Noir — coastal residence, 6,800 sqft</h2>
+        <div class="deck">A turnkey commission. Concept through handover in 14 months. Spacelyt led architecture, interiors, landscape and execution. The page slides into the full filterable archive on scroll.</div>
+        <div class="by">— Portfolio · case study 01 of 12</div>
+        <div style="margin-top:18px">
+          <span class="pill">Residential</span>
+          <span class="pill">Commercial</span>
+          <span class="pill">Interiors</span>
+          <span class="pill">Exteriors</span>
+        </div>
+      </div>
+      <div class="r"><div class="img-ph"><span>large project photo · before/after slider</span></div></div>
+    </div>
+
+    <!-- PROCESS + WHY -->
+    <div class="D-row r-12">
+      <div class="D-card">
+        <div class="sec"><span>§ 10 · process</span><span>6 steps</span></div>
+        <h3>A seamless turnkey path</h3>
+        <ol style="margin:6px 0 0 18px;padding:0;font-family:var(--mono);font-size:11px;line-height:2;color:var(--ink-soft)">
+          <li>Consultation</li><li>Planning</li>
+          <li>Design</li><li>Material Selection</li>
+          <li>Execution</li><li>Final Handover</li>
+        </ol>
+      </div>
+      <div class="D-card">
+        <div class="sec"><span>§ 12 · why spacelyt</span><span>six reasons</span></div>
+        <h3>One studio. End-to-end accountability.</h3>
+        <ul class="col-list" style="font-size:11.5px;line-height:1.85">
+          <li>One company, complete execution</li>
+          <li>Better coordination across trades</li>
+          <li>Clear, documented timelines</li>
+          <li>Premium design quality</li>
+          <li>Transparent process & pricing</li>
+          <li>End-to-end accountability</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FINAL CTA -->
+    <div class="D-final">
+      <div class="tag" style="color:#bbb">§ 13 · final</div>
+      <h2>Ready to transform your space?</h2>
+      <p>Tell us your vision. We'll plan, design, build & deliver it — as one studio, end-to-end.</p>
+      <span class="btn" style="background:var(--paper);color:var(--ink);">Start Your Project →</span>
+      <div style="margin-top:22px" class="tag" style="color:#888">— colophon · Spacelyt 2026 · all spaces, one studio —</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ X · COMPARE ============================ -->
+<section class="panel" data-p="X">
+  <div class="approach-head">
+    <div>
+      <div class="codename">Compare · side-by-side</div>
+      <h2>The four directions, miniaturized</h2>
+    </div>
+    <p class="desc">A quick visual diff — pick the one that feels closest, or mix two (e.g. <b>A's spine</b> + <b>D's editorial blocks</b> is very buildable).</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+    <!-- thumb A -->
+    <div class="frame" style="padding:14px;min-height:380px">
+      <div class="label">A · spine</div>
+      <div class="num">→</div>
+      <div class="hand" style="font-size:16px;margin-top:6px">Center Spine</div>
+      <div class="tag" style="margin-top:4px">vertical · safe · brief-literal</div>
+      <div style="position:relative;height:260px;margin-top:14px;border:1.5px dashed var(--ink);border-radius:2px">
+        <div style="position:absolute;left:50%;top:0;bottom:0;border-left:1.5px solid var(--accent)"></div>
+        <div style="position:absolute;left:14px;right:14px;top:14px;height:40px;border:1.5px solid var(--ink);background:var(--paper);display:flex;align-items:center;justify-content:center" class="hand">SPACELYT</div>
+        <div style="position:absolute;left:14px;right:14px;top:64px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
+          <div style="height:22px;border:1px solid var(--ink)"></div>
+          <div style="height:22px;border:1px solid var(--ink)"></div>
+          <div style="height:22px;border:1px solid var(--ink)"></div>
+          <div style="height:22px;border:1px solid var(--ink)"></div>
+          <div style="height:22px;border:1px solid var(--ink)"></div>
+          <div style="height:22px;border:1px solid var(--ink)"></div>
+        </div>
+        <div style="position:absolute;left:14px;right:14px;top:124px;height:30px;border:1px solid var(--ink);background:var(--paper)"></div>
+        <div style="position:absolute;left:14px;right:14px;top:160px;height:24px;border:1px solid var(--ink)"></div>
+        <div style="position:absolute;left:14px;right:14px;top:190px;height:24px;border:1px solid var(--ink)"></div>
+        <div style="position:absolute;left:14px;right:14px;bottom:14px;height:22px;background:var(--ink)"></div>
+      </div>
+      <div class="note" style="margin-top:8px;font-size:13px">Pros: easy build. Calm.<br>Cons: predictable.</div>
+    </div>
+
+    <!-- thumb B -->
+    <div class="frame" style="padding:14px;min-height:380px">
+      <div class="label">B · site plan</div>
+      <div class="num">⌧</div>
+      <div class="hand" style="font-size:16px;margin-top:6px">Site Plan</div>
+      <div class="tag" style="margin-top:4px">asymmetric · architectural</div>
+      <div style="position:relative;height:260px;margin-top:14px;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:14px 14px;border:1.5px solid var(--ink)">
+        <div style="position:absolute;left:10px;top:10px;width:60%;height:90px;border:1.5px solid var(--ink);background:var(--paper);display:flex;align-items:center;justify-content:center" class="hand">SPACELYT</div>
+        <div style="position:absolute;right:10px;top:10px;width:32%;height:42px;background:var(--ink)"></div>
+        <div style="position:absolute;right:10px;top:58px;width:32%;height:42px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+        <div style="position:absolute;left:10px;top:110px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;width:calc(100% - 20px)">
+          <div style="height:34px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:34px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:34px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:34px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:34px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:34px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+        </div>
+        <div style="position:absolute;left:10px;right:10px;bottom:36px;height:18px;border-top:1.5px dashed var(--ink)"></div>
+        <div style="position:absolute;left:10px;right:10px;bottom:10px;height:22px;background:var(--ink)"></div>
+      </div>
+      <div class="note" style="margin-top:8px;font-size:13px">Pros: most original.<br>Cons: harder to scan.</div>
+    </div>
+
+    <!-- thumb C -->
+    <div class="frame" style="padding:14px;min-height:380px">
+      <div class="label">C · filmstrip</div>
+      <div class="num">▷</div>
+      <div class="hand" style="font-size:16px;margin-top:6px">Filmstrip</div>
+      <div class="tag" style="margin-top:4px">horizontal · cinematic</div>
+      <div style="position:relative;height:260px;margin-top:14px;border:1.5px solid var(--ink);overflow:hidden">
+        <div style="position:absolute;left:0;right:0;top:6px;height:8px;background-image:radial-gradient(circle, var(--ink) 0 2px, transparent 3px);background-size:14px 8px;background-repeat:repeat-x"></div>
+        <div style="position:absolute;left:0;right:0;bottom:6px;height:8px;background-image:radial-gradient(circle, var(--ink) 0 2px, transparent 3px);background-size:14px 8px;background-repeat:repeat-x"></div>
+        <div style="position:absolute;left:8px;right:8px;top:22px;bottom:22px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
+          <div style="background:var(--ink)"></div>
+          <div style="border:1.5px solid var(--ink);background:var(--paper);display:flex;align-items:center;justify-content:center" class="hand">02</div>
+          <div style="border:1.5px solid var(--ink);background:var(--paper);display:flex;align-items:center;justify-content:center" class="hand">03</div>
+          <div style="border:1.5px solid var(--ink);background:var(--paper);display:flex;align-items:center;justify-content:center" class="hand">04</div>
+          <div style="border:1.5px solid var(--ink);background:var(--paper);display:flex;align-items:center;justify-content:center" class="hand">05</div>
+        </div>
+        <div style="position:absolute;right:4px;top:40%;font-family:var(--mono);font-size:10px;color:var(--ink-soft)">→</div>
+      </div>
+      <div class="note" style="margin-top:8px;font-size:13px">Pros: cinematic.<br>Cons: motion-heavy.</div>
+    </div>
+
+    <!-- thumb D -->
+    <div class="frame" style="padding:14px;min-height:380px">
+      <div class="label">D · editorial</div>
+      <div class="num">§</div>
+      <div class="hand" style="font-size:16px;margin-top:6px">Editorial</div>
+      <div class="tag" style="margin-top:4px">modular · printed feel</div>
+      <div style="position:relative;height:260px;margin-top:14px;border:1.5px solid var(--ink);padding:8px">
+        <div style="height:34px;border-bottom:1.5px solid var(--ink);display:flex;align-items:flex-end;padding-bottom:4px" class="hand">SPACELYT</div>
+        <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div style="height:50px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:50px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:50px;border:1.5px solid var(--ink);background:var(--ink)"></div>
+        </div>
+        <div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div style="height:50px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:50px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:50px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+        </div>
+        <div style="margin-top:6px;display:grid;grid-template-columns:1fr 2fr;gap:6px">
+          <div style="height:40px;border:1.5px solid var(--ink);background:var(--paper)"></div>
+          <div style="height:40px;border:1.5px solid var(--ink);background:var(--paper);display:flex;align-items:center;justify-content:center" class="hand">spread</div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:8px;font-size:13px">Pros: looks expensive.<br>Cons: motion = less central.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:28px;padding:18px 22px;border:1.5px dashed var(--ink);background:var(--paper)">
+    <div class="hand" style="font-size:20px;margin-bottom:6px">Notes for next round</div>
+    <ul style="font-family:var(--mono);font-size:12px;line-height:1.8;color:var(--ink-soft);margin:0;padding-left:18px">
+      <li>If you want the cleanest, fastest-to-ship homepage → <b>A · Center Spine</b></li>
+      <li>If you want the most "architecture studio" expression → <b>B · Site Plan</b></li>
+      <li>If portfolio video & cinematic motion are core → <b>C · Filmstrip</b></li>
+      <li>If positioning is "luxury monograph" → <b>D · Editorial</b></li>
+      <li class="scratch">Combine A + D — spine carries motion, sections are editorial blocks.</li>
+      <li><b>← that "scratch" line is my actual recommendation. A's spine for motion, D's typography for content density.</b></li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  (function(){
+    const tabs = document.querySelectorAll('#tabs .tab');
+    const panels = document.querySelectorAll('.panel');
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      t.classList.add('active');
+      const target = t.dataset.t;
+      document.querySelector('.panel[data-p="'+target+'"]').classList.add('active');
+      window.scrollTo({top:0, behavior:'instant'});
+    }));
+  })();
+</script>
+
+</body>
+</html>
