@@ -4,16 +4,14 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
-  BadgeCheck,
-  CalendarCheck,
   Check,
-  Menu,
-  ShieldCheck
+  Menu
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import AnimatedConnectorLine from "@/components/AnimatedLinePath";
 import { BlueprintArt } from "@/components/BlueprintArt";
 import PopupManager from "@/components/lead/PopupManager";
+import ProcessJourneySection from "@/components/ProcessJourneySection";
+import WhyChooseSpacelyt from "@/components/WhyChooseSpacelyt";
 import { portfolio, services, type Service } from "@/lib/content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -42,9 +40,9 @@ export default function HomePage() {
       <MobileHeader />
       <HeroSection />
       <ServiceOverviewSection />
-      <TurnkeyAdvantageSection />
+      <WhyChooseSpacelyt />
       <ProjectTypesSection />
-      <ProcessSection />
+      <ProcessJourneySection />
       <FeaturedProjectsSection />
       <AboutSection />
       <ServiceDetailSection />
@@ -253,34 +251,6 @@ function ServiceOverviewSection() {
   );
 }
 
-function TurnkeyAdvantageSection() {
-  const benefits: Array<{ icon: LucideIcon; title: string; text: string }> = [
-    { icon: ShieldCheck, title: "One accountable team", text: "Planning, design, site work, and handover stay under one coordinated project partner." },
-    { icon: CalendarCheck, title: "Clear scope and budget planning", text: "Scope, priorities, cost direction, and timelines are mapped before execution starts." },
-    { icon: BadgeCheck, title: "Design-to-execution coordination", text: "Architecture, interiors, construction, and vendor work move from the same project roadmap." },
-    { icon: Check, title: "Quality checks and handover support", text: "Site execution is reviewed through practical milestones before final delivery." }
-  ];
-  return (
-    <section className="px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <SectionHead label="Turnkey Advantage" title="Why Clients Choose Spacelyt" action="Request Callback" />
-        <Carousel className="lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0">
-          {benefits.map(({ icon: BenefitIcon, title, text }) => {
-            return (
-            <Reveal key={title} className="min-w-[17.5rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#ff2daa,#ff8a3d,#38bdf8)] text-white">
-                <BenefitIcon className="h-5 w-5" />
-              </span>
-              <h3 className="mt-7 font-display text-2xl font-semibold">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{text}</p>
-            </Reveal>
-          );})}
-        </Carousel>
-      </div>
-    </section>
-  );
-}
-
 function ProjectTypesSection() {
   const projectTypes = [
     ["Residential Spaces", "Homes planned, designed, built, and finished with one accountable team."],
@@ -303,45 +273,6 @@ function ProjectTypesSection() {
             </Reveal>
           ))}
         </Carousel>
-      </div>
-    </section>
-  );
-}
-
-function ProcessSection() {
-  const steps = [
-    ["Consultation", "Understand your site, budget, goals, and expected outcome."],
-    ["Site & Scope Planning", "Map measurements, feasibility, project scope, and priorities."],
-    ["Design Direction", "Resolve planning, architecture, interiors, and visual language."],
-    ["Material & Vendor Coordination", "Align material systems, vendor roles, and procurement direction."],
-    ["Execution & Quality Checks", "Coordinate site progress, civil work, finishing, and reviews."],
-    ["Final Handover", "Close the project with delivery support and final checks."]
-  ];
-  return (
-    <section id="process" className="px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl">
-        <SectionHead label="Process" title="A Clear Journey From Idea to Handover" action="Start Your Project" />
-        <div className="relative">
-          <motion.div
-            aria-hidden="true"
-            className="absolute left-4 right-4 top-9 hidden h-px bg-[linear-gradient(90deg,#ff2daa,#ff8a3d,#38bdf8)] lg:block"
-            initial={{ scaleX: 0, transformOrigin: "left" }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 1.2, ease }}
-          />
-        <Carousel className="sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
-          {steps.map(([step, text], index) => (
-            <Reveal key={step} className="relative min-w-[17.5rem] snap-start overflow-hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl sm:min-w-0">
-              <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-[radial-gradient(circle,#ff2daa33,transparent_68%)]" />
-              <span className="gradient-badge">{String(index + 1).padStart(2, "0")}</span>
-              <h3 className="mt-8 font-display text-2xl font-semibold">{step}</h3>
-              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{text}</p>
-            </Reveal>
-          ))}
-        </Carousel>
-        </div>
-        <SectionCTA>Start Your Project</SectionCTA>
       </div>
     </section>
   );
