@@ -13,6 +13,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import AnimatedConnectorLine from "@/components/AnimatedLinePath";
 import { BlueprintArt } from "@/components/BlueprintArt";
+import PopupManager from "@/components/lead/PopupManager";
 import { portfolio, services, type Service } from "@/lib/content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -50,6 +51,7 @@ export default function HomePage() {
       <ConsultationCTASection />
       <FAQSection />
       <Footer />
+      <PopupManager />
     </main>
   );
 }
@@ -86,7 +88,7 @@ function MobileHeader() {
           <a href="#contact">Contact</a>
         </nav>
         <a href="#contact" className="hidden rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-2.5 text-sm font-semibold text-white shadow-glow md:inline-flex">
-          Start Project
+          Start Your Project
         </a>
         <button className="flex h-11 w-11 items-center justify-center rounded-full border border-black/8 bg-white shadow-soft md:hidden" aria-label="Open menu">
           <Menu className="h-5 w-5" />
@@ -221,7 +223,7 @@ function ServiceOverviewSection() {
   return (
     <section id="services" className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead title="Complete Turnkey Services" action="Start Project" />
+        <SectionHead title="Complete Turnkey Services" action="Get Free Consultation" />
         <Carousel className="gap-4 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
           {services.map((service) => {
             const Icon = service.icon;
@@ -238,14 +240,14 @@ function ServiceOverviewSection() {
                   <h3 className="font-display text-2xl font-semibold tracking-[-0.03em]">{service.flowTitle}</h3>
                   <p className="mt-3 line-clamp-2 text-sm leading-6 text-[var(--muted)]">{service.short}</p>
                   <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#111] px-4 py-2 text-xs font-semibold text-white">
-                    View Service <ArrowRight className="h-4 w-4" />
+                    Discuss This Service <ArrowRight className="h-4 w-4" />
                   </span>
                 </div>
               </a>
             );
           })}
         </Carousel>
-        <SectionCTA>Discuss Your Project</SectionCTA>
+        <SectionCTA>Get Free Consultation</SectionCTA>
       </div>
     </section>
   );
@@ -261,7 +263,7 @@ function TurnkeyAdvantageSection() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Turnkey Advantage" title="Why Clients Choose Spacelyt" action="Book Consultation" />
+        <SectionHead label="Turnkey Advantage" title="Why Clients Choose Spacelyt" action="Request Callback" />
         <Carousel className="lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0">
           {benefits.map(({ icon: BenefitIcon, title, text }) => {
             return (
@@ -291,7 +293,7 @@ function ProjectTypesSection() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Project Types" title="Spaces We Create" action="Discuss Your Space" />
+        <SectionHead label="Project Types" title="Spaces We Create" action="Get Project Estimate" />
         <Carousel className="gap-4 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
           {projectTypes.map(([title, text], index) => (
             <Reveal key={title} className="min-w-[17.5rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
@@ -318,7 +320,7 @@ function ProcessSection() {
   return (
     <section id="process" className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Process" title="A Clear Journey From Idea to Handover" action="Start Project" />
+        <SectionHead label="Process" title="A Clear Journey From Idea to Handover" action="Start Your Project" />
         <div className="relative">
           <motion.div
             aria-hidden="true"
@@ -339,7 +341,7 @@ function ProcessSection() {
           ))}
         </Carousel>
         </div>
-        <SectionCTA>Plan My Project Journey</SectionCTA>
+        <SectionCTA>Start Your Project</SectionCTA>
       </div>
     </section>
   );
@@ -354,7 +356,7 @@ function FeaturedProjectsSection() {
   return (
     <section id="projects" className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Portfolio" title="Selected Project Directions" action="Start Similar Project" />
+        <SectionHead label="Portfolio" title="Selected Project Directions" action="Request Callback" />
         <Carousel className="lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
           {selectedProjects.map((project) => (
             <ProjectCard key={project.name} project={project} />
@@ -379,7 +381,7 @@ function ProjectCard({ project }: { project: (typeof portfolio)[number] }) {
         <h3 className="mt-4 font-display text-2xl font-semibold tracking-[-0.03em]">{project.name}</h3>
         <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{project.scope}</p>
         <a href="#contact" className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#111] px-4 py-2 text-xs font-semibold text-white">
-          Discuss Direction <ArrowRight className="h-4 w-4" />
+          Discuss This Service <ArrowRight className="h-4 w-4" />
         </a>
       </div>
     </Reveal>
@@ -442,13 +444,13 @@ function ServiceDetailSection() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Service Detail" title="Explore Our Service System" action="Book Consultation" />
+        <SectionHead label="Service Detail" title="Explore Our Service System" action="Get Free Consultation" />
         <Carousel className="lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0">
           {services.map((service, index) => (
             <ServiceCollectionCard key={service.slug} service={service} index={index} />
           ))}
         </Carousel>
-        <SectionCTA>Get a Turnkey Plan</SectionCTA>
+        <SectionCTA>Get Project Estimate</SectionCTA>
       </div>
     </section>
   );
@@ -500,7 +502,7 @@ function FAQSection() {
   return (
     <section className="px-4 py-10 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="FAQ" title="Common Questions" action="Contact" />
+        <SectionHead label="FAQ" title="Common Questions" action="Request Callback" />
         <Carousel className="lg:mx-0 lg:grid lg:grid-cols-2 lg:overflow-visible lg:px-0">
           {faqs.map(([question, answer]) => (
             <Reveal key={question} className="min-w-[19rem] snap-start rounded-[1.5rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
