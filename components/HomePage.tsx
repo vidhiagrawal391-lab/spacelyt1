@@ -1,36 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowDown,
   ArrowRight,
+  BadgeCheck,
+  CalendarCheck,
   Check,
+  ChevronRight,
   Layers3,
+  Menu,
+  ShieldCheck,
   Sparkles
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import AnimatedConnectorLine from "@/components/AnimatedLinePath";
 import { BlueprintArt } from "@/components/BlueprintArt";
 import { portfolio, processSteps, services, whyCards, type Service } from "@/lib/content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const reveal = {
-  hidden: { opacity: 0, y: 34, filter: "blur(8px)" },
-  visible: { opacity: 1, y: 0, filter: "blur(0px)" }
-};
-
-function MotionBlock({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Reveal({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   const reduced = useReducedMotion();
   return (
     <motion.div
       className={className}
-      initial={reduced ? false : "hidden"}
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.22 }}
-      variants={reveal}
-      transition={{ duration: 0.82, ease }}
+      id={id}
+      initial={reduced ? false : { opacity: 0, y: 28, filter: "blur(8px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.72, ease }}
     >
       {children}
     </motion.div>
@@ -42,16 +41,21 @@ export default function HomePage() {
     <main className="relative isolate overflow-hidden bg-[var(--background)] text-[var(--ink)]">
       <GradientBackground />
       <AnimatedConnectorLine />
+      <MobileHeader />
       <HeroSection />
-      <ServiceSystemSection />
-      <TurnkeyStatementSection />
-      {services.map((service, index) => (
-        <ServiceDetailSection key={service.slug} service={service} index={index} />
-      ))}
-      <ProcessRailSection />
-      <PortfolioBentoSection />
-      <WhySpacelytSection />
-      <FinalCTASection />
+      <ServiceCategoryRail />
+      <FeaturedServices />
+      <SignatureProjects />
+      <PrivateOffers />
+      <BestSellerServices />
+      <ProjectMoodSection />
+      <ProcessStorefront />
+      <ConsultationCard />
+      <TrustStrip />
+      <StorySection />
+      <ServiceCollectionSections />
+      <HelpChoosing />
+      <FAQSection />
       <Footer />
     </main>
   );
@@ -61,491 +65,326 @@ function GradientBackground() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       <motion.div
-        className="gradient-orb left-[-12rem] top-[8rem] h-[34rem] w-[34rem] from-[#ff2daa]/28 via-[#ff8a3d]/18 to-[#38bdf8]/20"
-        animate={{ x: [0, 52, 0], y: [0, 34, 0], scale: [1, 1.08, 1] }}
+        className="gradient-orb left-[-10rem] top-[8rem] h-[28rem] w-[28rem] from-[#ff2daa]/24 via-[#ff8a3d]/16 to-[#38bdf8]/16"
+        animate={{ x: [0, 38, 0], y: [0, 30, 0], scale: [1, 1.08, 1] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="gradient-orb right-[-10rem] top-[36rem] h-[30rem] w-[30rem] from-[#8b5cf6]/20 via-[#ff5c8a]/24 to-[#38bdf8]/18"
-        animate={{ x: [0, -42, 0], y: [0, 60, 0], scale: [1, 0.94, 1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="gradient-orb right-[-12rem] top-[42rem] h-[32rem] w-[32rem] from-[#38bdf8]/18 via-[#ff5c8a]/18 to-[#8b5cf6]/14"
+        animate={{ x: [0, -42, 0], y: [0, 46, 0], scale: [1, 0.94, 1] }}
+        transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
       />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(17,17,17,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(17,17,17,.035)_1px,transparent_1px)] bg-[size:72px_72px]" />
     </div>
   );
 }
 
+function MobileHeader() {
+  return (
+    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/78 px-4 py-3 backdrop-blur-2xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+        <a href="#" className="font-display text-lg font-bold tracking-[0.18em]">
+          SPACELYT
+        </a>
+        <nav className="hidden items-center gap-6 text-sm font-medium text-[var(--muted)] md:flex">
+          <a href="#services">Services</a>
+          <a href="#projects">Projects</a>
+          <a href="#process">Process</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a href="#contact" className="hidden rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-2.5 text-sm font-semibold text-white shadow-glow md:inline-flex">
+          Start Project
+        </a>
+        <button className="flex h-11 w-11 items-center justify-center rounded-full border border-black/8 bg-white shadow-soft md:hidden" aria-label="Open menu">
+          <Menu className="h-5 w-5" />
+        </button>
+      </div>
+    </header>
+  );
+}
+
 function MagneticButton({
-  children,
   href,
+  children,
   variant = "primary"
 }: {
-  children: React.ReactNode;
   href: string;
+  children: React.ReactNode;
   variant?: "primary" | "secondary";
 }) {
   return (
     <motion.a
       href={href}
-      className={`group inline-flex min-h-12 items-center justify-center gap-3 rounded-full px-6 text-sm font-semibold shadow-soft transition ${
+      className={`inline-flex min-h-12 items-center justify-center gap-3 rounded-full px-6 text-sm font-semibold transition ${
         variant === "primary"
-          ? "bg-[linear-gradient(135deg,#111,#ff2daa_55%,#ff8a3d)] text-white"
-          : "border border-black/10 bg-white/70 text-[var(--ink)] backdrop-blur-xl hover:border-pink-400/50"
+          ? "bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] text-white shadow-glow"
+          : "border border-black/8 bg-white/78 text-[var(--ink)] shadow-soft backdrop-blur-xl"
       }`}
       whileHover={{ y: -3, scale: 1.015 }}
       whileTap={{ scale: 0.985 }}
     >
       {children}
-      {variant === "primary" ? <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /> : null}
+      <ArrowRight className="h-4 w-4" />
     </motion.a>
+  );
+}
+
+function SectionHead({
+  label,
+  title,
+  action
+}: {
+  label?: string;
+  title: React.ReactNode;
+  action?: string;
+}) {
+  return (
+    <div className="mb-6 flex items-end justify-between gap-4 px-1">
+      <div>
+        {label ? <p className="technical-label mb-2 text-[#ff2daa]">{label}</p> : null}
+        <h2 className="font-display text-balance text-[clamp(2rem,8vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.04em]">{title}</h2>
+      </div>
+      {action ? (
+        <a href="#contact" className="shrink-0 rounded-full border border-black/8 bg-white/70 px-4 py-2 text-xs font-semibold shadow-soft">
+          {action}
+        </a>
+      ) : null}
+    </div>
   );
 }
 
 function HeroSection() {
-  const heroImages = [
-    services[1],
-    services[3],
-    services[2],
-    services[0]
-  ];
-
   return (
-    <section className="section-shell flex min-h-screen items-center overflow-hidden pt-10">
-      <div className="content-grid relative z-20 grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
-        <MotionBlock>
-          <div className="technical-label mb-5 text-[#ff2daa]">SPACELYT / TURNKEY SPACE TRANSFORMATION</div>
-          <h1 className="font-display text-balance text-[clamp(3.15rem,7vw,8.4rem)] font-semibold leading-[0.9] tracking-[-0.04em]">
-            One Partner.
+    <section className="px-4 pb-8 pt-8 sm:px-6 lg:px-10">
+      <div className="mx-auto grid max-w-7xl gap-8 lg:min-h-[82vh] lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <Reveal>
+          <p className="technical-label mb-5 text-[#ff2daa]">Welcome to</p>
+          <h1 className="font-display text-[clamp(4.5rem,19vw,11rem)] font-bold leading-[0.82] tracking-[-0.075em]">
+            SPACE.
             <br />
-            <span className="gradient-text">Every Stage</span>
-            <br />
-            of Your Space.
+            <span className="gradient-text">LYT.</span>
           </h1>
-          <p className="mt-7 max-w-2xl text-balance text-base leading-8 text-[var(--muted)] sm:text-lg">
-            Spacelyt brings planning, architecture, construction, interiors, exteriors, and building solutions into one seamless turnkey experience.
+          <p className="mt-5 max-w-xl text-balance font-display text-3xl font-semibold leading-[1.02] tracking-[-0.04em] sm:text-5xl">
+            One partner for every stage of your space.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--muted)]">
+            Planning, architecture, construction, interiors, exteriors, and building solutions delivered as one seamless turnkey experience.
+          </p>
+          <div className="mt-7 grid gap-3 sm:flex">
             <MagneticButton href="#contact">Start Your Project</MagneticButton>
-            <MagneticButton href="#services" variant="secondary">
-              Explore Services <ArrowDown className="h-4 w-4" />
-            </MagneticButton>
+            <MagneticButton href="#services" variant="secondary">Explore Services</MagneticButton>
           </div>
-        </MotionBlock>
+        </Reveal>
 
-        <MotionBlock className="relative min-h-[28rem] sm:min-h-[36rem] lg:min-h-[42rem]">
-          <div className="absolute left-1/2 top-1/2 h-[20rem] w-[20rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-pink-400/30 bg-white/30 shadow-[0_0_100px_rgba(255,45,170,.18)] backdrop-blur-2xl sm:h-[28rem] sm:w-[28rem]" />
-          <motion.svg
-            aria-hidden="true"
-            viewBox="0 0 560 560"
-            className="absolute left-1/2 top-1/2 h-[25rem] w-[25rem] -translate-x-1/2 -translate-y-1/2 sm:h-[36rem] sm:w-[36rem]"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
-          >
-            <circle cx="280" cy="280" r="230" className="fill-none stroke-[#ff2daa]/35 stroke-[1.5]" strokeDasharray="12 18" />
-            <circle cx="280" cy="280" r="178" className="fill-none stroke-[#38bdf8]/25 stroke-[1]" />
-          </motion.svg>
-          <div className="absolute left-1/2 top-1/2 z-10 w-[14rem] -translate-x-1/2 -translate-y-1/2 rounded-[2rem] border border-white/70 bg-white/80 p-4 text-center shadow-glow backdrop-blur-2xl sm:w-[21rem] sm:p-5">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#ff2daa,#ff8a3d,#38bdf8)] text-white">
-              <Layers3 className="h-7 w-7" />
-            </div>
-            <p className="mt-4 font-display text-xl font-semibold sm:mt-5 sm:text-2xl">Turnkey Delivery</p>
-            <p className="mt-2 text-xs leading-5 text-[var(--muted)] sm:mt-3 sm:text-sm sm:leading-6">One coordinated studio from plan to handover.</p>
+        <Reveal className="relative min-h-[34rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/70 p-3 shadow-glow backdrop-blur-2xl">
+          <Image src={portfolio[0].image} alt="Spacelyt featured project" fill sizes="(min-width: 1024px) 52vw, 92vw" className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/48 via-black/8 to-white/20" />
+          <div className="absolute left-4 top-4 rounded-full bg-white/80 px-4 py-2 text-xs font-semibold shadow-soft backdrop-blur-xl">
+            Turnkey studio
           </div>
-          {heroImages.map((service, index) => (
-            <FloatingHeroCard key={service.slug} service={service} index={index} />
-          ))}
-        </MotionBlock>
+          <div className="absolute bottom-4 left-4 right-4 rounded-[1.75rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-2xl">
+            <p className="technical-label text-[#ff2daa]">Featured delivery</p>
+            <h2 className="mt-2 font-display text-3xl font-semibold tracking-[-0.04em]">From first sketch to final handover.</h2>
+            <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs font-semibold">
+              <span className="rounded-full bg-white px-3 py-2">Plan</span>
+              <span className="rounded-full bg-white px-3 py-2">Build</span>
+              <span className="rounded-full bg-white px-3 py-2">Deliver</span>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-function FloatingHeroCard({ service, index }: { service: Service; index: number }) {
-  const positions = [
-    "left-0 top-4 sm:top-8",
-    "right-0 top-10 sm:right-2 sm:top-2",
-    "left-4 bottom-4 hidden sm:block",
-    "right-0 bottom-16 hidden sm:block"
-  ];
-  const Icon = service.icon;
+function ServiceCategoryRail() {
   return (
-    <motion.div
-      className={`group absolute ${positions[index]} w-[11.5rem] overflow-hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-3 shadow-soft backdrop-blur-xl sm:w-[15.5rem]`}
-      initial={{ opacity: 0, y: 28, scale: 0.92 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 0.28 + index * 0.12, duration: 0.72, ease }}
-      whileHover={{ y: -8, rotate: index % 2 ? 1.4 : -1.4 }}
-    >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem]">
-        <Image src={service.image} alt={service.flowTitle} fill sizes="260px" className="image-depth object-cover" priority={index < 2} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/36 to-transparent" />
-      </div>
-      <div className="mt-3 flex items-center justify-between">
-        <div>
-          <p className="technical-label text-[#ff2daa]">S/{service.number}</p>
-          <p className="font-display text-base font-semibold">{service.flowTitle}</p>
+    <section id="services" className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead title="Shop by Service" action="View all" />
+        <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
+          {services.map((service) => {
+            const Icon = service.icon;
+            return (
+              <a key={service.slug} href={`#${service.slug}`} className="min-w-[9.8rem] snap-start rounded-[1.5rem] border border-white/70 bg-white/78 p-4 shadow-soft backdrop-blur-xl">
+                <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#ff2daa,#ff8a3d,#38bdf8)] text-white">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <p className="font-display text-lg font-semibold leading-tight">{service.flowTitle}</p>
+              </a>
+            );
+          })}
         </div>
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] text-white">
-          <Icon className="h-4 w-4" />
+      </div>
+    </section>
+  );
+}
+
+function FeaturedServices() {
+  return (
+    <section className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Featured Services" title="Two ways we simplify complex projects." />
+        <div className="grid gap-4 md:grid-cols-2">
+          {[services[0], services[5]].map((service) => (
+            <FeatureCard key={service.slug} service={service} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeatureCard({ service }: { service: Service }) {
+  return (
+    <Reveal className="group relative min-h-[23rem] overflow-hidden rounded-[2rem] shadow-soft">
+      <Image src={service.image} alt={service.flowTitle} fill sizes="(min-width: 768px) 48vw, 92vw" className="image-depth object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/62 via-black/10 to-transparent" />
+      <div className="absolute inset-x-5 bottom-5 text-white">
+        <p className="technical-label text-white/72">S/{service.number}</p>
+        <h3 className="mt-2 font-display text-3xl font-semibold tracking-[-0.04em]">{service.flowTitle}</h3>
+        <p className="mt-2 max-w-md text-sm leading-6 text-white/82">{service.short}</p>
+        <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-[var(--ink)]">
+          Explore <ChevronRight className="h-4 w-4" />
         </span>
       </div>
-    </motion.div>
+    </Reveal>
   );
 }
 
-function ServiceSystemSection() {
+function SignatureProjects() {
   return (
-    <section id="services" className="section-shell">
-      <div className="content-grid">
-        <div className="grid items-end gap-8 lg:grid-cols-[0.82fr_1.18fr]">
-          <MotionBlock>
-            <p className="technical-label text-[#ff2daa]">SERVICE SYSTEM</p>
-            <h2 className="font-display mt-4 text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.04em] sm:text-7xl">
-              Six services.
-              <br />
-              <span className="gradient-text">One orbit.</span>
-            </h2>
-            <p className="mt-6 max-w-xl text-base leading-8 text-[var(--muted)]">
-              A complete delivery system where planning, design, execution, and handover stay connected instead of becoming separate handoffs.
-            </p>
-          </MotionBlock>
-          <div className="grid auto-rows-[13rem] gap-4 md:grid-cols-6">
-            {services.map((service, index) => (
-              <ServiceBentoCard key={service.slug} service={service} index={index} />
-            ))}
-          </div>
+    <section id="projects" className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Hot Picks" title="Project directions clients ask for most." action="View all" />
+        <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:grid lg:grid-cols-3 lg:overflow-visible">
+          {portfolio.map((project) => (
+            <ProjectCard key={project.name} project={project} />
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-function ServiceBentoCard({ service, index }: { service: Service; index: number }) {
+function ProjectCard({ project }: { project: (typeof portfolio)[number] }) {
+  return (
+    <Reveal className="min-w-[19rem] snap-start overflow-hidden rounded-[1.8rem] border border-white/70 bg-white/78 p-3 shadow-soft backdrop-blur-xl">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[1.35rem]">
+        <Image src={project.image} alt={project.name} fill sizes="330px" className="image-depth object-cover" />
+      </div>
+      <div className="p-2 pt-4">
+        <div className="flex items-center justify-between gap-3">
+          <span className="rounded-full bg-[linear-gradient(135deg,#ff2daa,#8b5cf6)] px-3 py-1.5 text-xs font-semibold text-white">{project.type}</span>
+          <span className="text-xs font-semibold text-[var(--muted)]">Turnkey</span>
+        </div>
+        <h3 className="mt-4 font-display text-2xl font-semibold tracking-[-0.03em]">{project.name}</h3>
+        <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{project.scope}</p>
+      </div>
+    </Reveal>
+  );
+}
+
+function PrivateOffers() {
+  const offers = [
+    ["Free consultation", "For first project discovery call"],
+    ["Transparent milestones", "Clear scope, schedule, and handover path"],
+    ["One project partner", "No scattered vendor coordination"]
+  ];
+  return (
+    <section className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Private Offers" title="Start with clarity." />
+        <div className="grid gap-3 md:grid-cols-3">
+          {offers.map(([title, text], index) => (
+            <Reveal key={title} className="rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
+              <span className="gradient-badge">{index + 1}</span>
+              <h3 className="mt-7 font-display text-2xl font-semibold">{title}</h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{text}</p>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BestSellerServices() {
+  return (
+    <section className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Best Sellers" title="Core turnkey services." action="View all" />
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => (
+            <SmallServiceCard key={service.slug} service={service} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SmallServiceCard({ service }: { service: Service }) {
   const Icon = service.icon;
-  const spans = [
-    "md:col-span-4",
-    "md:col-span-2 md:row-span-2",
-    "md:col-span-3",
-    "md:col-span-3",
-    "md:col-span-2",
-    "md:col-span-4"
-  ];
   return (
-    <motion.a
-      href={`#${service.slug}`}
-      className={`group premium-card relative overflow-hidden rounded-[2rem] p-5 ${spans[index]}`}
-      initial={{ opacity: 0, y: 34, scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.28 }}
-      transition={{ delay: index * 0.07, duration: 0.7, ease }}
-      whileHover={{ y: -6 }}
-    >
-      <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-[radial-gradient(circle,#ff2daa55,transparent_67%)] transition group-hover:scale-125" />
-      <div className="absolute inset-0 opacity-[0.16]">
-        <BlueprintArt type={service.art} />
+    <a href={`#${service.slug}`} className="group flex gap-4 rounded-[1.6rem] border border-white/70 bg-white/78 p-3 shadow-soft backdrop-blur-xl">
+      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-[1.2rem]">
+        <Image src={service.image} alt={service.flowTitle} fill sizes="120px" className="image-depth object-cover" />
       </div>
-      <div className="relative z-10 flex h-full flex-col justify-between">
-        <div className="flex items-start justify-between gap-5">
-          <span className="gradient-badge">0{index + 1}</span>
-          <Icon className="h-7 w-7 text-[#ff2daa]" strokeWidth={1.5} />
+      <div className="min-w-0 flex-1 py-1">
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-xs font-semibold text-[#ff2daa]">S/{service.number}</span>
+          <Icon className="h-4 w-4 text-[#ff2daa]" />
         </div>
-        <div>
-          <h3 className="font-display text-2xl font-semibold tracking-[-0.02em]">{service.flowTitle}</h3>
-          <p className="mt-3 max-w-md text-sm leading-6 text-[var(--muted)]">{service.short}</p>
-        </div>
+        <h3 className="mt-2 font-display text-lg font-semibold leading-tight">{service.flowTitle}</h3>
+        <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--muted)]">{service.short}</p>
       </div>
-    </motion.a>
+    </a>
   );
 }
 
-function TurnkeyStatementSection() {
+function ProjectMoodSection() {
+  const moods = [
+    ["Residential", "Homes planned, designed, built, and finished."],
+    ["Commercial", "Workspaces, retail, and hospitality execution."],
+    ["Renovation", "Transform existing sites without chaos."],
+    ["Luxury Finish", "Material-led interiors and details."],
+    ["Facade", "First impressions, elevations, and outdoors."]
+  ];
   return (
-    <section className="section-shell flex items-center">
-      <div className="content-grid">
-        <MotionBlock className="relative overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/72 p-6 shadow-glow backdrop-blur-2xl sm:p-10 lg:p-14">
-          <div className="absolute -right-20 -top-24 h-96 w-96 rounded-full bg-[radial-gradient(circle,#ff2daa38,transparent_64%)]" />
-          <div className="grid items-center gap-10 lg:grid-cols-[1fr_.9fr]">
-            <div>
-              <p className="technical-label text-[#ff2daa]">TURNKEY STATEMENT</p>
-              <h2 className="font-display mt-5 text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.04em] sm:text-7xl">
-                Not just design.
-                <br />
-                <span className="gradient-text">Complete project delivery.</span>
-              </h2>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--muted)]">
-                From first consultation to final handover, every stage is coordinated by one team.
-              </p>
-            </div>
-            <div className="relative min-h-[24rem] overflow-hidden rounded-[2rem]">
-              <Image src={services[3].image} alt="Interior delivery preview" fill sizes="(min-width: 1024px) 42vw, 90vw" className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/82 via-white/42 to-[#ff2daa]/18" />
-              <div className="absolute inset-x-6 bottom-6 rounded-[1.5rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {["Plan", "Design", "Build", "Deliver"].map((item, index) => (
-                    <div key={item} className="relative rounded-2xl bg-white/74 p-4 text-center">
-                      <span className="mx-auto mb-3 block h-2 w-2 rounded-full bg-[linear-gradient(135deg,#ff2daa,#38bdf8)] shadow-[0_0_18px_rgba(255,45,170,.6)]" />
-                      <p className="font-display text-sm font-semibold">{item}</p>
-                      {index < 3 ? <ArrowRight className="absolute -right-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-[#ff2daa] sm:block" /> : null}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </MotionBlock>
+    <section className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Shop by Project Mood" title="Choose the kind of space you want to build." />
+        <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none]">
+          {moods.map(([title, text], index) => (
+            <Reveal key={title} className="min-w-[16rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
+              <span className="technical-label text-[#ff2daa]">Mood {String(index + 1).padStart(2, "0")}</span>
+              <h3 className="mt-7 font-display text-3xl font-semibold tracking-[-0.04em]">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{text}</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold">
+                Explore <ArrowRight className="h-4 w-4" />
+              </span>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function ServiceDetailSection({ service, index }: { service: Service; index: number }) {
-  const variants = [
-    PlanningLayout,
-    ArchitectureLayout,
-    ConstructionLayout,
-    InteriorLayout,
-    ExteriorLayout,
-    SolutionsLayout
-  ];
-  const Layout = variants[index] ?? PlanningLayout;
-  return <Layout service={service} index={index} />;
-}
-
-function ServiceShell({
-  service,
-  index,
-  children,
-  className = ""
-}: {
-  service: Service;
-  index: number;
-  children: React.ReactNode;
-  className?: string;
-}) {
+function ProcessStorefront() {
   return (
-    <section id={service.slug} className={`section-shell flex items-center ${className}`}>
-      <div className="content-grid">{children}</div>
-    </section>
-  );
-}
-
-function ImagePanel({ service, className = "" }: { service: Service; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["-7%", "7%"]);
-  return (
-    <div ref={ref} className={`relative overflow-hidden rounded-[2rem] shadow-soft ${className}`}>
-      <motion.div style={{ y }} className="absolute -inset-y-8 inset-x-0">
-        <Image src={service.image} alt={`${service.flowTitle} reference`} fill sizes="(min-width: 1024px) 48vw, 92vw" className="object-cover" />
-      </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/28 via-transparent to-white/10" />
-    </div>
-  );
-}
-
-function BulletCloud({ service }: { service: Service }) {
-  return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      {service.bullets.map((bullet) => (
-        <div key={bullet} className="flex items-center gap-3 rounded-full border border-black/8 bg-white/70 px-4 py-3 text-sm shadow-[0_12px_35px_rgba(17,17,17,.05)] backdrop-blur-xl">
-          <Check className="h-4 w-4 text-[#ff2daa]" />
-          {bullet}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function PlanningLayout({ service, index }: { service: Service; index: number }) {
-  return (
-    <ServiceShell service={service} index={index}>
-      <div className="grid items-center gap-10 lg:grid-cols-[1.02fr_.98fr]">
-        <MotionBlock>
-          <p className="technical-label text-[#ff2daa]">SERVICE 01 / BLUEPRINT PHASE</p>
-          <h2 className="font-display mt-4 text-balance text-5xl font-semibold leading-[0.95] tracking-[-0.04em] sm:text-7xl">
-            Planning that plots the whole project.
-          </h2>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--muted)]">{service.short}</p>
-          <div className="relative mt-9 rounded-[2rem] border border-pink-300/30 bg-white/62 p-5 shadow-soft backdrop-blur-xl">
-            <BlueprintArt type="planning" />
-            <BulletCloud service={service} />
-          </div>
-        </MotionBlock>
-        <MotionBlock className="relative">
-          <ImagePanel service={service} className="h-[34rem]" />
-          <span className="absolute -bottom-5 left-8 rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-3 text-sm font-semibold text-white shadow-glow">Feasibility mapped first</span>
-        </MotionBlock>
-      </div>
-    </ServiceShell>
-  );
-}
-
-function ArchitectureLayout({ service, index }: { service: Service; index: number }) {
-  return (
-    <ServiceShell service={service} index={index}>
-      <div className="grid items-center gap-8 lg:grid-cols-[.42fr_1fr]">
-        <MotionBlock className="hidden lg:block">
-          <p className="font-display text-[8rem] font-semibold leading-none tracking-[-0.07em] text-black/[0.04] [writing-mode:vertical-rl]">ARCHITECTURE</p>
-        </MotionBlock>
-        <div className="grid gap-8 lg:grid-cols-[.92fr_1.08fr]">
-          <MotionBlock>
-            <p className="technical-label text-[#8b5cf6]">SERVICE 02 / FORM + FUNCTION</p>
-            <h2 className="font-display mt-4 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.04em] sm:text-7xl">{service.title}</h2>
-            <p className="mt-6 text-base leading-8 text-[var(--muted)]">{service.short}</p>
-            <div className="mt-8">
-              <BulletCloud service={service} />
-            </div>
-          </MotionBlock>
-          <MotionBlock className="premium-card relative min-h-[34rem] overflow-hidden rounded-[2.25rem] p-4">
-            <ImagePanel service={service} className="absolute inset-4" />
-            <BlueprintArt type="architecture" />
-          </MotionBlock>
-        </div>
-      </div>
-    </ServiceShell>
-  );
-}
-
-function ConstructionLayout({ service, index }: { service: Service; index: number }) {
-  const stages = ["Site", "Structure", "Finishing", "Handover"];
-  return (
-    <ServiceShell service={service} index={index}>
-      <div className="grid items-center gap-10 lg:grid-cols-[1fr_.95fr]">
-        <MotionBlock>
-          <p className="technical-label text-[#ff8a3d]">SERVICE 03 / SITE EXECUTION</p>
-          <h2 className="font-display mt-4 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.04em] sm:text-7xl">Construction managed like a live progress system.</h2>
-          <div className="mt-10 space-y-4">
-            {stages.map((stage, stageIndex) => (
-              <div key={stage} className="grid grid-cols-[3.5rem_1fr] items-start gap-4">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#ff8a3d,#ff2daa)] font-mono text-xs text-white shadow-glow">{stageIndex + 1}</span>
-                <div className="rounded-[1.5rem] border border-black/8 bg-white/68 p-5 shadow-soft backdrop-blur-xl">
-                  <h3 className="font-display text-xl font-semibold">{stage}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{service.bullets[stageIndex]} coordinated with timeline control and quality review.</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </MotionBlock>
-        <MotionBlock className="relative">
-          <ImagePanel service={service} className="h-[38rem]" />
-          <div className="absolute inset-x-6 bottom-6 rounded-[1.5rem] border border-white/70 bg-white/72 p-5 backdrop-blur-xl">
-            <p className="technical-label text-[#ff2daa]">LIVE SITE CONTROL</p>
-            <p className="mt-2 font-display text-2xl font-semibold">Civil, vendor, material, and quality checks in one loop.</p>
-          </div>
-        </MotionBlock>
-      </div>
-    </ServiceShell>
-  );
-}
-
-function InteriorLayout({ service, index }: { service: Service; index: number }) {
-  return (
-    <ServiceShell service={service} index={index}>
-      <div className="grid gap-8 lg:grid-cols-[1.15fr_.85fr]">
-        <MotionBlock className="relative min-h-[42rem] overflow-hidden rounded-[2.5rem]">
-          <Image src={service.image} alt={service.flowTitle} fill sizes="(min-width: 1024px) 58vw, 92vw" className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/34 via-transparent to-white/8" />
-          <div className="absolute bottom-7 left-7 right-7 rounded-[1.8rem] border border-white/70 bg-white/76 p-6 shadow-soft backdrop-blur-2xl">
-            <p className="technical-label text-[#ff2daa]">SERVICE 04 / MATERIAL STORY</p>
-            <h2 className="font-display mt-3 text-4xl font-semibold tracking-[-0.04em] sm:text-6xl">Interior Design That Feels Personal and Premium</h2>
-          </div>
-          <div className="absolute right-6 top-6 grid gap-3">
-            {["Marble", "Wood", "Fabric"].map((item, itemIndex) => (
-              <span key={item} className={`rounded-full px-4 py-2 text-xs font-semibold shadow-soft ${itemIndex === 0 ? "bg-white" : itemIndex === 1 ? "bg-[#ff8a3d]/85 text-white" : "bg-[#ff2daa]/85 text-white"}`}>{item}</span>
-            ))}
-          </div>
-        </MotionBlock>
-        <MotionBlock className="flex flex-col justify-center">
-          <p className="text-xl leading-9 text-[var(--muted)]">{service.short}</p>
-          <div className="mt-9">
-            <BulletCloud service={service} />
-          </div>
-        </MotionBlock>
-      </div>
-    </ServiceShell>
-  );
-}
-
-function ExteriorLayout({ service, index }: { service: Service; index: number }) {
-  return (
-    <ServiceShell service={service} index={index}>
-      <div className="space-y-8">
-        <MotionBlock className="grid items-end gap-6 lg:grid-cols-[1fr_.72fr]">
-          <div>
-            <p className="technical-label text-[#38bdf8]">SERVICE 05 / ELEVATION + LIGHT</p>
-            <h2 className="font-display mt-4 max-w-5xl text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.04em] sm:text-7xl">{service.title}</h2>
-          </div>
-          <p className="text-base leading-8 text-[var(--muted)]">{service.short}</p>
-        </MotionBlock>
-        <MotionBlock className="premium-card relative min-h-[32rem] overflow-hidden rounded-[2.5rem] p-4">
-          <ImagePanel service={service} className="absolute inset-4" />
-          <BlueprintArt type="exterior" />
-          <motion.div
-            aria-hidden="true"
-            className="absolute right-16 top-12 h-24 w-24 rounded-full bg-[radial-gradient(circle,#fff,#ff8a3d_38%,transparent_70%)] opacity-70 blur-sm"
-            animate={{ x: [0, -42, 0], y: [0, 28, 0] }}
-            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </MotionBlock>
-        <BulletCloud service={service} />
-      </div>
-    </ServiceShell>
-  );
-}
-
-function SolutionsLayout({ service, index }: { service: Service; index: number }) {
-  return (
-    <ServiceShell service={service} index={index}>
-      <div className="grid items-center gap-10 lg:grid-cols-[.9fr_1.1fr]">
-        <MotionBlock>
-          <p className="technical-label text-[#ff2daa]">SERVICE 06 / FINAL HANDOVER</p>
-          <h2 className="font-display mt-4 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.04em] sm:text-7xl">{service.title}</h2>
-          <p className="mt-6 text-base leading-8 text-[var(--muted)]">{service.short}</p>
-          <div className="mt-8 inline-flex rounded-full bg-[linear-gradient(135deg,#ff2daa,#8b5cf6,#38bdf8)] p-px">
-            <span className="rounded-full bg-white px-5 py-3 text-sm font-semibold">End-to-End Delivery</span>
-          </div>
-        </MotionBlock>
-        <MotionBlock className="premium-card relative min-h-[36rem] overflow-hidden rounded-[2.5rem] p-8">
-          <ImagePanel service={service} className="absolute inset-6" />
-          <div className="absolute inset-0 bg-white/42" />
-          <div className="relative z-10 grid h-full content-center gap-4">
-            {services.map((item, itemIndex) => (
-              <div key={item.slug} className="flex items-center gap-4 rounded-full border border-white/80 bg-white/74 p-3 shadow-soft backdrop-blur-xl">
-                <span className="h-2 w-16 rounded-full bg-[linear-gradient(90deg,#ff2daa,#ff8a3d,#38bdf8)]" />
-                <span className="font-display text-lg font-semibold">{item.flowTitle}</span>
-                <span className="ml-auto font-mono text-xs text-[var(--muted)]">0{itemIndex + 1}</span>
-              </div>
-            ))}
-          </div>
-        </MotionBlock>
-      </div>
-    </ServiceShell>
-  );
-}
-
-function ProcessRailSection() {
-  return (
-    <section className="section-shell">
-      <div className="content-grid">
-        <MotionBlock className="mx-auto max-w-4xl text-center">
-          <p className="technical-label text-[#ff2daa]">TURNKEY JOURNEY RAIL</p>
-          <h2 className="font-display mt-4 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.04em] sm:text-7xl">A seamless path from consult to handover.</h2>
-        </MotionBlock>
-        <div className="relative mt-14 grid gap-4 lg:grid-cols-6">
-          <motion.div
-            aria-hidden="true"
-            className="absolute left-0 right-0 top-10 hidden h-1 rounded-full bg-[linear-gradient(90deg,#ff2daa,#ff8a3d,#8b5cf6,#38bdf8)] lg:block"
-            initial={{ scaleX: 0, transformOrigin: "left" }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, amount: 0.45 }}
-            transition={{ duration: 1.4, ease }}
-          />
+    <section id="process" className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="New Arrivals" title="A turnkey journey made simple." action="View all" />
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {processSteps.map((step, index) => (
-            <MotionBlock key={step} className="relative rounded-[1.75rem] border border-white/70 bg-white/72 p-5 shadow-soft backdrop-blur-xl">
-              <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,#ff2daa,#38bdf8)] font-mono text-xs font-semibold text-white shadow-glow">{index + 1}</span>
-              <h3 className="font-display mt-7 text-2xl font-semibold">{step}</h3>
-              <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{["Understand the vision.", "Plot scope and budget.", "Resolve the design language.", "Select material systems.", "Coordinate site execution.", "Deliver the finished space."][index]}</p>
-            </MotionBlock>
+            <Reveal key={step} className="relative overflow-hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
+              <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-[radial-gradient(circle,#ff2daa33,transparent_68%)]" />
+              <span className="gradient-badge">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="mt-8 font-display text-2xl font-semibold">{step}</h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{["Understand the vision.", "Plot scope and budget.", "Resolve the design language.", "Select material systems.", "Coordinate site execution.", "Deliver the finished space."][index]}</p>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -553,81 +392,89 @@ function ProcessRailSection() {
   );
 }
 
-function PortfolioBentoSection() {
-  const [active, setActive] = useState("Residential");
-  const filters = ["Residential", "Commercial", "Interiors", "Exteriors", "Construction"];
-  const visibleProjects = portfolio.filter((project) => project.categories.includes(active));
+function ConsultationCard() {
   return (
-    <section className="section-shell">
-      <div className="content-grid">
-        <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-          <MotionBlock className="max-w-4xl">
-            <p className="technical-label text-[#ff2daa]">PORTFOLIO</p>
-            <h2 className="font-display mt-4 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.04em] sm:text-7xl">Featured spaces, framed with delivery intent.</h2>
-          </MotionBlock>
-          <div className="flex flex-wrap gap-2">
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                type="button"
-                onClick={() => setActive(filter)}
-                className={`rounded-full px-4 py-2 text-xs font-semibold transition ${
-                  active === filter
-                    ? "bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] text-white shadow-glow"
-                    : "border border-black/8 bg-white/68 text-[var(--muted)] hover:border-pink-300"
-                }`}
-              >
-                {filter}
-              </button>
+    <section className="px-4 py-8 sm:px-6 lg:px-10">
+      <Reveal className="mx-auto grid max-w-7xl gap-6 overflow-hidden rounded-[2rem] border border-white/70 bg-white/78 p-6 shadow-glow backdrop-blur-2xl lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
+        <div>
+          <p className="technical-label text-[#ff2daa]">Project Card</p>
+          <h2 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.05em]">Let us map your space.</h2>
+          <p className="mt-5 text-base leading-8 text-[var(--muted)]">Share your requirements and get matched with a practical planning, design, and execution direction.</p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {["Residential", "Commercial", "Renovation", "Turnkey"].map((item) => (
+              <span key={item} className="rounded-full bg-white px-4 py-2 text-xs font-semibold shadow-soft">{item}</span>
             ))}
           </div>
         </div>
-        <div className="mt-12 grid auto-rows-[18rem] gap-5 lg:grid-cols-4">
-          {visibleProjects.map((project, index) => (
-            <MotionBlock key={project.name} className={`group relative overflow-hidden rounded-[2rem] shadow-soft ${index === 0 ? "lg:col-span-2 lg:row-span-2" : "lg:col-span-2"}`}>
-              <Image src={project.image} alt={project.name} fill sizes="(min-width: 1024px) 48vw, 92vw" className="image-depth object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/62 via-black/12 to-transparent" />
-              <div className="absolute left-5 top-5 rounded-full bg-[linear-gradient(135deg,#ff2daa,#8b5cf6)] px-4 py-2 text-xs font-semibold text-white shadow-glow">{project.type}</div>
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <h3 className="font-display text-3xl font-semibold tracking-[-0.03em]">{project.name}</h3>
-                <p className="mt-2 max-w-md translate-y-2 text-sm opacity-0 transition group-hover:translate-y-0 group-hover:opacity-90">{project.scope}</p>
-              </div>
-            </MotionBlock>
-          ))}
+        <div className="rounded-[1.7rem] bg-[linear-gradient(135deg,#ff2daa,#ff8a3d,#38bdf8)] p-1">
+          <div className="rounded-[1.5rem] bg-white/90 p-5">
+            <p className="technical-label">SPACELYT MATCH</p>
+            <h3 className="mt-6 font-display text-3xl font-semibold">Find your project route</h3>
+            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">A quick consultation helps define scope, budget, timeline, and the service mix you need.</p>
+            <a href="#contact" className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#111] px-5 py-4 text-sm font-semibold text-white">
+              Start Consultation
+            </a>
+          </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
 
-function WhySpacelytSection() {
-  const metrics = [
-    ["6", "core services"],
-    ["1", "dedicated project partner"],
-    ["100%", "turnkey coordination"]
+function TrustStrip() {
+  const trust = [
+    [ShieldCheck, "Clear Scope"],
+    [CalendarCheck, "Timeline Control"],
+    [BadgeCheck, "Quality Checks"]
   ];
   return (
-    <section className="section-shell">
-      <div className="content-grid">
-        <MotionBlock className="max-w-4xl">
-          <p className="technical-label text-[#ff2daa]">WHY SPACELYT</p>
-          <h2 className="font-display mt-4 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.04em] sm:text-7xl">Premium execution feels calm because the system is clear.</h2>
-        </MotionBlock>
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {whyCards.slice(0, 3).map((card, index) => (
-            <MotionBlock key={card} className="premium-card rounded-[2rem] p-7">
-              <span className="gradient-badge">0{index + 1}</span>
-              <h3 className="font-display mt-14 text-3xl font-semibold tracking-[-0.03em]">{card}</h3>
-              <p className="mt-4 text-sm leading-7 text-[var(--muted)]">{whyCards[index + 3]}</p>
-            </MotionBlock>
-          ))}
-        </div>
-        <div className="mt-5 grid gap-5 lg:grid-cols-3">
-          {metrics.map(([value, label]) => (
-            <MotionBlock key={label} className="rounded-[2rem] border border-white/70 bg-white/72 p-7 shadow-soft backdrop-blur-xl">
-              <p className="gradient-text font-display text-6xl font-semibold tracking-[-0.05em]">{value}</p>
-              <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-[var(--muted)]">{label}</p>
-            </MotionBlock>
+    <section className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto grid max-w-7xl gap-3 sm:grid-cols-3">
+        {trust.map(([Icon, label]) => {
+          const TrustIcon = Icon as typeof ShieldCheck;
+          return (
+            <Reveal key={label as string} className="flex items-center gap-4 rounded-[1.5rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
+              <TrustIcon className="h-6 w-6 text-[#ff2daa]" />
+              <span className="font-display text-xl font-semibold">{label as string}</span>
+            </Reveal>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function StorySection() {
+  return (
+    <section className="px-4 py-10 sm:px-6 lg:px-10">
+      <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+        <Reveal className="relative min-h-[30rem] overflow-hidden rounded-[2rem] shadow-soft">
+          <Image src={services[3].image} alt="Spacelyt story" fill sizes="(min-width: 1024px) 38vw, 92vw" className="object-cover" />
+        </Reveal>
+        <Reveal>
+          <p className="technical-label text-[#ff2daa]">Our Story</p>
+          <h2 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.05em] sm:text-7xl">
+            Spaces,
+            <br />
+            <span className="gradient-text">Designed to be delivered.</span>
+          </h2>
+          <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--muted)]">
+            Spacelyt is built around one idea: a better space comes from better coordination. Planning, architecture, construction, interiors, exteriors, and building solutions work together from day one.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function ServiceCollectionSections() {
+  return (
+    <section className="px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Collections" title="Swipe the service system." action="Book now" />
+        <div className="space-y-4">
+          {services.map((service, index) => (
+            <ServiceCollectionCard key={service.slug} service={service} index={index} />
           ))}
         </div>
       </div>
@@ -635,21 +482,74 @@ function WhySpacelytSection() {
   );
 }
 
-function FinalCTASection() {
+function ServiceCollectionCard({ service, index }: { service: Service; index: number }) {
+  const Icon = service.icon;
   return (
-    <section id="contact" className="section-shell flex items-center">
-      <div className="content-grid">
-        <MotionBlock className="relative overflow-hidden rounded-[2.5rem] border border-white/70 bg-white/78 px-6 py-20 text-center shadow-glow backdrop-blur-2xl sm:px-12 lg:py-28">
-          <div className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,#ff2daa35,#ff8a3d18,transparent_68%)]" />
-          <Sparkles className="relative z-10 mx-auto h-10 w-10 text-[#ff2daa]" strokeWidth={1.35} />
-          <h2 className="relative z-10 mx-auto mt-6 max-w-5xl text-balance font-display text-5xl font-semibold leading-[0.96] tracking-[-0.04em] sm:text-7xl">Let&apos;s Build Your Dream Space.</h2>
-          <p className="relative z-10 mx-auto mt-6 max-w-2xl text-balance text-base leading-8 text-[var(--muted)]">
-            Share your vision with Spacelyt. We&apos;ll plan, design, execute, and deliver it as one complete turnkey project.
-          </p>
-          <div className="relative z-10 mt-9">
-            <MagneticButton href="mailto:hello@spacelyt.com">Start Your Project</MagneticButton>
+    <Reveal id={service.slug} className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl md:grid md:grid-cols-[0.7fr_1.3fr] md:gap-6">
+      <div className="relative mb-5 min-h-[15rem] overflow-hidden rounded-[1.5rem] md:mb-0">
+        <Image src={service.image} alt={service.flowTitle} fill sizes="(min-width: 768px) 30vw, 88vw" className="object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/36 to-transparent" />
+      </div>
+      <div className="relative">
+        <div className="absolute inset-0 opacity-[0.12]">
+          <BlueprintArt type={service.art} />
+        </div>
+        <div className="relative z-10">
+          <div className="mb-7 flex items-center justify-between">
+            <p className="technical-label text-[#ff2daa]">{String(index + 1).padStart(2, "0")} - Service</p>
+            <Icon className="h-6 w-6 text-[#ff2daa]" />
           </div>
-        </MotionBlock>
+          <h3 className="font-display text-4xl font-semibold tracking-[-0.04em]">{service.title}</h3>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--muted)]">{service.short}</p>
+          <div className="mt-6 grid gap-2 sm:grid-cols-2">
+            {service.bullets.map((bullet) => (
+              <span key={bullet} className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm shadow-[0_12px_35px_rgba(17,17,17,.05)]">
+                <Check className="h-4 w-4 text-[#ff2daa]" />
+                {bullet}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+function HelpChoosing() {
+  return (
+    <section id="contact" className="px-4 py-8 sm:px-6 lg:px-10">
+      <Reveal className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-[#111] p-6 text-white shadow-glow lg:p-10">
+        <p className="technical-label text-[#ff5c8a]">Need guidance</p>
+        <h2 className="mt-4 font-display text-5xl font-semibold leading-[0.95] tracking-[-0.05em]">Need help choosing?</h2>
+        <p className="mt-5 max-w-2xl text-base leading-8 text-white/68">Tell us your site, budget, and goal. We will suggest the right mix of planning, design, construction, interiors, exteriors, and project delivery.</p>
+        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <a href="mailto:hello@spacelyt.com" className="inline-flex min-h-12 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-[#111]">Start Project</a>
+          <a href="#services" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/18 px-6 text-sm font-semibold text-white">Browse Services</a>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
+function FAQSection() {
+  const faqs = [
+    ["Do you handle complete turnkey projects?", "Yes. Spacelyt coordinates planning, architecture, construction, interiors, exteriors, and delivery."],
+    ["Can I start only with planning?", "Yes. You can begin with planning and expand into design or execution after scope is clear."],
+    ["Do you work on residential and commercial projects?", "Yes. The service model supports homes, commercial spaces, renovations, and full building solutions."],
+    ["How do I start?", "Share your project vision and site details. The first step is a consultation and scope mapping."]
+  ];
+  return (
+    <section className="px-4 py-10 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead label="Questions" title="Common curiosities." />
+        <div className="grid gap-3 lg:grid-cols-2">
+          {faqs.map(([question, answer]) => (
+            <Reveal key={question} className="rounded-[1.5rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl">
+              <h3 className="font-display text-xl font-semibold">{question}</h3>
+              <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{answer}</p>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -664,7 +564,7 @@ function Footer() {
           <h2 className="font-display text-3xl font-semibold tracking-[0.12em]">SPACELYT</h2>
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/62">One partner for planning, architecture, construction, interiors, exteriors, and complete building solutions.</p>
         </div>
-        <FooterList title="Services" items={["Planning", "Architecture", "Construction", "Interiors", "Exteriors", "Building Solutions"]} />
+        <FooterList title="Services" items={services.map((service) => service.flowTitle)} />
         <FooterList title="Studio" items={["Process", "Portfolio", "Why Spacelyt", "Consultation"]} />
         <FooterList title="Contact" items={["hello@spacelyt.com", "+91 - - -", "India"]} />
       </div>

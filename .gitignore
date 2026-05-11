@@ -19,6 +19,7 @@ pnpm-debug.log*
 # Local QA artifacts
 qa-screenshots/
 qa-screenshots-redesign/
+qa-screenshots*/
 
 # OS/editor files
 .DS_Store
