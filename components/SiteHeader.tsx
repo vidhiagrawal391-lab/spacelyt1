@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowRight, ChevronDown, Mail, Menu, MessageCircle, Phone, X } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, ChevronDown, Home, Mail, Menu, MessageCircle, Phone, Ruler, X } from "lucide-react";
 import { servicePages } from "@/lib/servicePages";
 
 const mobileNavLinks = [
@@ -17,6 +17,13 @@ const mobileNavLinks = [
 const mobileContactLinks = [
   { href: "/#contact", label: "WhatsApp / Call", detail: "Request a quick callback", icon: Phone },
   { href: "mailto:hello@spacelyt.com", label: "Email", detail: "hello@spacelyt.com", icon: Mail }
+];
+
+const mobileDockLinks = [
+  { href: "/", label: "Home", icon: Home },
+  { href: "/services", label: "Services", icon: BriefcaseBusiness },
+  { href: "/calculators", label: "Estimate", icon: Ruler },
+  { href: "/#contact", label: "Contact", icon: Phone }
 ];
 
 export default function SiteHeader() {
@@ -79,15 +86,15 @@ export default function SiteHeader() {
         </button>
       </div>
       <div
-        className={`fixed inset-0 z-[90] overflow-y-auto bg-[#0d0d0d] px-5 py-5 text-white transition duration-500 md:hidden ${
-          mobileMenuOpen ? "visible translate-x-0 opacity-100" : "invisible translate-x-full opacity-0"
+        className={`fixed inset-0 z-[90] overflow-hidden bg-[#0d0d0d] text-white transition duration-500 md:hidden ${
+          mobileMenuOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_12%,rgba(255,45,170,.28),transparent_18rem),radial-gradient(circle_at_88%_22%,rgba(255,138,61,.18),transparent_20rem),linear-gradient(145deg,#0b0b0b,#151111_48%,#080808)]" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-[linear-gradient(0deg,rgba(255,45,170,.16),transparent)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(255,45,170,.24),transparent_18rem),radial-gradient(circle_at_92%_18%,rgba(255,138,61,.18),transparent_20rem),linear-gradient(145deg,#090909,#151111_48%,#080808)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-[linear-gradient(0deg,rgba(255,45,170,.14),transparent)]" />
 
-        <div className="relative mx-auto flex min-h-full max-w-7xl flex-col">
-          <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
+        <div className={`relative mx-auto flex h-full max-w-7xl flex-col px-5 py-5 transition duration-500 ${mobileMenuOpen ? "translate-y-0 scale-100" : "translate-y-6 scale-[0.98]"}`}>
+          <div className="flex items-center justify-between gap-4">
             <Link href="/" className="font-display text-lg font-bold tracking-[0.18em]" onClick={closeMobileMenu}>
               SPACELYT
             </Link>
@@ -101,12 +108,33 @@ export default function SiteHeader() {
             </button>
           </div>
 
-          <nav className="flex flex-1 flex-col pt-8" aria-label="Mobile navigation">
-            <div>
-              <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[#ff5c8a]">Menu</p>
-              <div className="mt-4 divide-y divide-white/10 border-y border-white/10">
+          <nav className="mt-7 flex min-h-0 flex-1 flex-col overflow-y-auto pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Mobile navigation">
+            <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.06] p-4 backdrop-blur-2xl">
+              <p className="font-mono text-[0.64rem] uppercase tracking-[0.22em] text-[#ff5c8a]">Spacelyt Studio</p>
+              <h2 className="mt-4 font-display text-[clamp(2.55rem,14vw,4.8rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
+                Design.
+                <br />
+                Build.
+                <br />
+                Deliver.
+              </h2>
+              <p className="mt-4 max-w-xs text-sm leading-6 text-white/58">Premium spaces planned and executed by one accountable turnkey team.</p>
+            </div>
+
+            <div className="mt-5">
+              <div className="flex items-center justify-between">
+                <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-white/42">Navigate</p>
+                <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-white/28">01 / 06</span>
+              </div>
+              <div className="mt-3 divide-y divide-white/10 border-y border-white/10">
                 {mobileNavLinks.map((item) => (
-                  <MobileMenuLink key={item.href} href={item.href} label={item.label} onClick={closeMobileMenu} />
+                  <MobileMenuLink
+                    key={item.href}
+                    href={item.href}
+                    label={item.label}
+                    number={String(mobileNavLinks.indexOf(item) + 1).padStart(2, "0")}
+                    onClick={closeMobileMenu}
+                  />
                 ))}
               </div>
             </div>
@@ -120,25 +148,21 @@ export default function SiteHeader() {
               <MessageCircle className="h-4 w-4" />
             </Link>
 
-            <div className="mt-7 rounded-[1.5rem] border border-white/10 bg-white/[0.07] p-4 shadow-[0_22px_80px_rgba(0,0,0,.2)] backdrop-blur-2xl">
-              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Signature Services</p>
-              <div className="mt-4 grid gap-2">
-                {servicePages.slice(0, 4).map((service) => (
+            <div className="mt-5 grid grid-cols-2 gap-2">
+              {servicePages.slice(0, 4).map((service, index) => (
                   <Link
                     key={service.slug}
                     href={`/services/${service.slug}`}
                     onClick={closeMobileMenu}
-                    className="flex items-center justify-between rounded-full border border-white/10 bg-[#161616]/90 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.1]"
+                  className="min-h-28 rounded-[1.25rem] border border-white/10 bg-white/[0.06] p-4 transition hover:bg-white/[0.1]"
                   >
-                    {service.title}
-                    <ArrowRight className="h-4 w-4 text-[#ff5c8a]" />
-                  </Link>
-                ))}
-              </div>
+                  <span className="font-mono text-[0.65rem] text-[#ff5c8a]">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="mt-5 block font-display text-xl font-semibold leading-none tracking-[-0.04em]">{service.title}</span>
+                </Link>
+              ))}
             </div>
 
-            <div className="mt-5 grid gap-3 rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
-              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Quick Contact</p>
+            <div className="mt-5 grid gap-2 rounded-[1.4rem] border border-white/10 bg-black/20 p-3">
               {mobileContactLinks.map((contact) => {
                 const Icon = contact.icon;
                 return (
@@ -161,13 +185,16 @@ export default function SiteHeader() {
             </div>
           </nav>
 
-          <div className="mt-8 border-t border-white/10 pt-5">
-            <p className="font-display text-[clamp(2.4rem,13vw,4.2rem)] font-semibold leading-[0.88] tracking-[-0.05em]">
-              Premium spaces.
-              <br />
-              Built end-to-end.
-            </p>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-white/52">Architecture, interiors, exteriors, construction, and turnkey delivery under one accountable team.</p>
+          <div className="grid grid-cols-4 gap-1 rounded-[1.2rem] border border-white/10 bg-white/[0.08] p-1.5 backdrop-blur-2xl">
+            {mobileDockLinks.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link key={item.href} href={item.href} onClick={closeMobileMenu} className="flex min-h-14 flex-col items-center justify-center gap-1 rounded-[0.95rem] text-[0.68rem] font-semibold text-white/62 transition hover:bg-white/10 hover:text-white">
+                  <Icon className="h-4 w-4 text-[#ff5c8a]" />
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -175,10 +202,11 @@ export default function SiteHeader() {
   );
 }
 
-function MobileMenuLink({ href, label, onClick }: { href: string; label: string; onClick: () => void }) {
+function MobileMenuLink({ href, label, number, onClick }: { href: string; label: string; number: string; onClick: () => void }) {
   return (
-    <Link href={href} onClick={onClick} className="flex min-h-16 items-center justify-between font-display text-[clamp(2rem,10vw,3.4rem)] font-semibold leading-none tracking-[-0.04em] transition hover:text-[#ff8a3d]">
-      {label}
+    <Link href={href} onClick={onClick} className="flex min-h-16 items-center justify-between gap-4 transition hover:text-[#ff8a3d]">
+      <span className="font-mono text-[0.68rem] text-[#ff5c8a]">{number}</span>
+      <span className="mr-auto font-display text-[clamp(2rem,10vw,3.35rem)] font-semibold leading-none tracking-[-0.04em]">{label}</span>
       <ArrowRight className="h-5 w-5 text-white/38" />
     </Link>
   );
