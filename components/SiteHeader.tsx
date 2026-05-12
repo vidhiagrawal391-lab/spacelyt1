@@ -1,13 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { servicePages } from "@/lib/servicePages";
 
 export default function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-white/78 px-4 py-3 backdrop-blur-2xl">
@@ -56,44 +64,72 @@ export default function SiteHeader() {
         </button>
       </div>
       <div
-        className={`fixed inset-x-0 top-[4.35rem] z-40 origin-top bg-[#111] px-4 pb-6 pt-4 text-white shadow-[0_30px_90px_rgba(0,0,0,.28)] transition duration-300 md:hidden ${
-          mobileMenuOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-4 opacity-0"
+        className={`fixed inset-0 z-[80] overflow-y-auto bg-[#0d0d0d] px-5 py-5 text-white transition duration-300 md:hidden ${
+          mobileMenuOpen ? "visible translate-x-0 opacity-100" : "invisible translate-x-full opacity-0"
         }`}
       >
-        <nav className="mx-auto max-w-7xl" aria-label="Mobile navigation">
-          <div className="space-y-1 border-y border-white/12 py-4">
-            <MobileMenuLink href="/services" label="Services" onClick={closeMobileMenu} />
-            <MobileMenuLink href="/calculators" label="Calculators" onClick={closeMobileMenu} />
-            <MobileMenuLink href="/#projects" label="Projects" onClick={closeMobileMenu} />
-            <MobileMenuLink href="/#process" label="Process" onClick={closeMobileMenu} />
-            <MobileMenuLink href="/#contact" label="Contact" onClick={closeMobileMenu} />
+        <div className="mx-auto flex min-h-full max-w-7xl flex-col">
+          <div className="flex items-center justify-between gap-4">
+            <Link href="/" className="font-display text-lg font-bold tracking-[0.18em]" onClick={closeMobileMenu}>
+              SPACELYT
+            </Link>
+            <button
+              type="button"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white"
+              aria-label="Close mobile menu"
+              onClick={closeMobileMenu}
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
 
-          <div className="mt-5">
-            <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-white/42">Explore Services</p>
-            <div className="mt-3 grid gap-2">
+          <nav className="mt-10 flex-1" aria-label="Mobile navigation">
+            <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[#ff5c8a]">Menu</p>
+            <div className="mt-5 divide-y divide-white/10 border-y border-white/10">
+              <MobileMenuLink href="/services" label="Services" onClick={closeMobileMenu} />
+              <MobileMenuLink href="/calculators" label="Calculators" onClick={closeMobileMenu} />
+              <MobileMenuLink href="/#projects" label="Projects" onClick={closeMobileMenu} />
+              <MobileMenuLink href="/#process" label="Process" onClick={closeMobileMenu} />
+              <MobileMenuLink href="/#contact" label="Contact" onClick={closeMobileMenu} />
+            </div>
+
+            <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-4">
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Services</p>
+              <div className="mt-4 grid gap-2">
               {servicePages.map((service) => (
                 <Link
                   key={service.slug}
                   href={`/services/${service.slug}`}
                   onClick={closeMobileMenu}
-                  className="flex items-center justify-between rounded-[1.05rem] border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.1]"
+                  className="flex items-center justify-between rounded-full border border-white/10 bg-[#161616] px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.1]"
                 >
                   {service.title}
                   <ArrowRight className="h-4 w-4 text-[#ff5c8a]" />
                 </Link>
               ))}
+              </div>
             </div>
-          </div>
 
-          <Link
-            href="/#contact"
-            onClick={closeMobileMenu}
-            className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 text-sm font-semibold text-white"
-          >
-            Start Your Project
-          </Link>
-        </nav>
+            <Link
+              href="/#contact"
+              onClick={closeMobileMenu}
+              className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 text-sm font-semibold text-white shadow-[0_18px_60px_rgba(255,45,170,.25)]"
+            >
+              Start Your Project
+            </Link>
+          </nav>
+
+          <div className="mt-8 border-t border-white/10 pt-5">
+            <p className="font-display text-4xl font-semibold leading-none tracking-[-0.05em]">
+              Plan.
+              <br />
+              Design.
+              <br />
+              Build.
+            </p>
+            <p className="mt-4 text-sm leading-6 text-white/52">Turnkey spaces, handled from first sketch to final handover.</p>
+          </div>
+        </div>
       </div>
     </header>
   );
@@ -101,7 +137,7 @@ export default function SiteHeader() {
 
 function MobileMenuLink({ href, label, onClick }: { href: string; label: string; onClick: () => void }) {
   return (
-    <Link href={href} onClick={onClick} className="flex min-h-14 items-center justify-between font-display text-3xl font-semibold tracking-[-0.04em]">
+    <Link href={href} onClick={onClick} className="flex min-h-16 items-center justify-between font-display text-[2.15rem] font-semibold leading-none tracking-[-0.04em]">
       {label}
       <ArrowRight className="h-5 w-5 text-white/38" />
     </Link>
