@@ -2,18 +2,33 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Mail, Menu, MessageCircle, Phone, X } from "lucide-react";
 import { servicePages } from "@/lib/servicePages";
+
+const mobileNavLinks = [
+  { href: "/", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/services", label: "Services" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#process", label: "Process" },
+  { href: "/#contact", label: "Contact" }
+];
+
+const mobileContactLinks = [
+  { href: "/#contact", label: "WhatsApp / Call", detail: "Request a quick callback", icon: Phone },
+  { href: "mailto:hello@spacelyt.com", label: "Email", detail: "hello@spacelyt.com", icon: Mail }
+];
 
 export default function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : originalOverflow;
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = originalOverflow;
     };
   }, [mobileMenuOpen]);
 
@@ -64,18 +79,21 @@ export default function SiteHeader() {
         </button>
       </div>
       <div
-        className={`fixed inset-0 z-[80] overflow-y-auto bg-[#0d0d0d] px-5 py-5 text-white transition duration-300 md:hidden ${
+        className={`fixed inset-0 z-[90] overflow-y-auto bg-[#0d0d0d] px-5 py-5 text-white transition duration-500 md:hidden ${
           mobileMenuOpen ? "visible translate-x-0 opacity-100" : "invisible translate-x-full opacity-0"
         }`}
       >
-        <div className="mx-auto flex min-h-full max-w-7xl flex-col">
-          <div className="flex items-center justify-between gap-4">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_12%,rgba(255,45,170,.28),transparent_18rem),radial-gradient(circle_at_88%_22%,rgba(255,138,61,.18),transparent_20rem),linear-gradient(145deg,#0b0b0b,#151111_48%,#080808)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-[linear-gradient(0deg,rgba(255,45,170,.16),transparent)]" />
+
+        <div className="relative mx-auto flex min-h-full max-w-7xl flex-col">
+          <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
             <Link href="/" className="font-display text-lg font-bold tracking-[0.18em]" onClick={closeMobileMenu}>
               SPACELYT
             </Link>
             <button
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-xl transition hover:bg-white/15"
               aria-label="Close mobile menu"
               onClick={closeMobileMenu}
             >
@@ -83,51 +101,73 @@ export default function SiteHeader() {
             </button>
           </div>
 
-          <nav className="mt-10 flex-1" aria-label="Mobile navigation">
-            <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[#ff5c8a]">Menu</p>
-            <div className="mt-5 divide-y divide-white/10 border-y border-white/10">
-              <MobileMenuLink href="/services" label="Services" onClick={closeMobileMenu} />
-              <MobileMenuLink href="/calculators" label="Calculators" onClick={closeMobileMenu} />
-              <MobileMenuLink href="/#projects" label="Projects" onClick={closeMobileMenu} />
-              <MobileMenuLink href="/#process" label="Process" onClick={closeMobileMenu} />
-              <MobileMenuLink href="/#contact" label="Contact" onClick={closeMobileMenu} />
-            </div>
-
-            <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-white/[0.06] p-4">
-              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Services</p>
-              <div className="mt-4 grid gap-2">
-              {servicePages.map((service) => (
-                <Link
-                  key={service.slug}
-                  href={`/services/${service.slug}`}
-                  onClick={closeMobileMenu}
-                  className="flex items-center justify-between rounded-full border border-white/10 bg-[#161616] px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.1]"
-                >
-                  {service.title}
-                  <ArrowRight className="h-4 w-4 text-[#ff5c8a]" />
-                </Link>
-              ))}
+          <nav className="flex flex-1 flex-col pt-8" aria-label="Mobile navigation">
+            <div>
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[#ff5c8a]">Menu</p>
+              <div className="mt-4 divide-y divide-white/10 border-y border-white/10">
+                {mobileNavLinks.map((item) => (
+                  <MobileMenuLink key={item.href} href={item.href} label={item.label} onClick={closeMobileMenu} />
+                ))}
               </div>
             </div>
 
             <Link
               href="/#contact"
               onClick={closeMobileMenu}
-              className="mt-8 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 text-sm font-semibold text-white shadow-[0_18px_60px_rgba(255,45,170,.25)]"
+              className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 text-sm font-semibold text-white shadow-[0_18px_60px_rgba(255,45,170,.28)]"
             >
-              Start Your Project
+              Book Free Consultation
+              <MessageCircle className="h-4 w-4" />
             </Link>
+
+            <div className="mt-7 rounded-[1.5rem] border border-white/10 bg-white/[0.07] p-4 shadow-[0_22px_80px_rgba(0,0,0,.2)] backdrop-blur-2xl">
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Signature Services</p>
+              <div className="mt-4 grid gap-2">
+                {servicePages.slice(0, 4).map((service) => (
+                  <Link
+                    key={service.slug}
+                    href={`/services/${service.slug}`}
+                    onClick={closeMobileMenu}
+                    className="flex items-center justify-between rounded-full border border-white/10 bg-[#161616]/90 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.1]"
+                  >
+                    {service.title}
+                    <ArrowRight className="h-4 w-4 text-[#ff5c8a]" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-3 rounded-[1.5rem] border border-white/10 bg-black/20 p-4">
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Quick Contact</p>
+              {mobileContactLinks.map((contact) => {
+                const Icon = contact.icon;
+                return (
+                  <Link
+                    key={contact.label}
+                    href={contact.href}
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-3 rounded-[1rem] bg-white/[0.06] px-4 py-3 transition hover:bg-white/[0.1]"
+                  >
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-[#ff5c8a]">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-semibold">{contact.label}</span>
+                      <span className="mt-0.5 block text-xs text-white/52">{contact.detail}</span>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
           </nav>
 
           <div className="mt-8 border-t border-white/10 pt-5">
-            <p className="font-display text-4xl font-semibold leading-none tracking-[-0.05em]">
-              Plan.
+            <p className="font-display text-[clamp(2.4rem,13vw,4.2rem)] font-semibold leading-[0.88] tracking-[-0.05em]">
+              Premium spaces.
               <br />
-              Design.
-              <br />
-              Build.
+              Built end-to-end.
             </p>
-            <p className="mt-4 text-sm leading-6 text-white/52">Turnkey spaces, handled from first sketch to final handover.</p>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-white/52">Architecture, interiors, exteriors, construction, and turnkey delivery under one accountable team.</p>
           </div>
         </div>
       </div>
@@ -137,7 +177,7 @@ export default function SiteHeader() {
 
 function MobileMenuLink({ href, label, onClick }: { href: string; label: string; onClick: () => void }) {
   return (
-    <Link href={href} onClick={onClick} className="flex min-h-16 items-center justify-between font-display text-[2.15rem] font-semibold leading-none tracking-[-0.04em]">
+    <Link href={href} onClick={onClick} className="flex min-h-16 items-center justify-between font-display text-[clamp(2rem,10vw,3.4rem)] font-semibold leading-none tracking-[-0.04em] transition hover:text-[#ff8a3d]">
       {label}
       <ArrowRight className="h-5 w-5 text-white/38" />
     </Link>

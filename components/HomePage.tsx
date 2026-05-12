@@ -298,7 +298,7 @@ function ProjectCard({ project }: { project: (typeof portfolio)[number] }) {
 
 function AboutSection() {
   return (
-    <section className="px-4 py-10 sm:px-6 lg:px-10">
+    <section id="about" className="px-4 py-10 sm:px-6 lg:px-10">
       <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
         <Reveal className="relative min-h-[30rem] overflow-hidden rounded-[2rem] shadow-soft">
           <Image src={services[3].image} alt="Spacelyt coordinated interiors and build delivery" fill sizes="(min-width: 1024px) 38vw, 92vw" className="object-cover" />
