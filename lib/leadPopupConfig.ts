@@ -17,6 +17,7 @@ export type LeadPopupConfig = {
   cta: string;
   fields: LeadField[];
   serviceSlug?: string;
+  initialValues?: Record<string, string>;
 };
 
 export const projectTypeOptions = [
@@ -54,6 +55,31 @@ export const projectRequirementOptions = [
   "Exterior Design",
   "Full Turnkey"
 ];
+
+export function createConsultationPopupForService({
+  serviceName,
+  serviceSlug
+}: {
+  serviceName: string;
+  serviceSlug?: string;
+}): LeadPopupConfig {
+  return {
+    kind: "service",
+    serviceSlug,
+    title: `Start a ${serviceName} consultation`,
+    subtitle: "Share a few details and Spacelyt will help map the right direction for this stage of your project.",
+    cta: "Start Consultation",
+    initialValues: {
+      requirement: serviceName
+    },
+    fields: [
+      { name: "name", label: "Name", type: "text", required: true },
+      { name: "phone", label: "Phone Number", type: "tel", required: true },
+      { name: "city", label: "City", type: "text", required: true },
+      { name: "requirement", label: "Project Requirement", type: "select", required: true, options: projectRequirementOptions }
+    ]
+  };
+}
 
 export const homepageConsultationPopup: LeadPopupConfig = {
   kind: "homepage",

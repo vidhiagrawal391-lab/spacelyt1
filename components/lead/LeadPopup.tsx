@@ -21,7 +21,7 @@ export default function LeadPopup({ config, open, onClose, onSubmitted }: LeadPo
   const [values, setValues] = useState<LeadValues>(() => {
     const initial: LeadValues = {};
     config?.fields.forEach((field) => {
-      initial[field.name] = "";
+      initial[field.name] = config.initialValues?.[field.name] ?? "";
     });
     return initial;
   });

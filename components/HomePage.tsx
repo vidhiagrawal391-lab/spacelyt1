@@ -1,16 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
-  Check,
-  Menu
+  Check
 } from "lucide-react";
 import AnimatedConnectorLine from "@/components/AnimatedLinePath";
 import { BlueprintArt } from "@/components/BlueprintArt";
 import PopupManager from "@/components/lead/PopupManager";
 import ProcessJourneySection from "@/components/ProcessJourneySection";
+import SiteHeader from "@/components/SiteHeader";
 import WhyChooseSpacelyt from "@/components/WhyChooseSpacelyt";
 import { portfolio, services, type Service } from "@/lib/content";
 
@@ -37,7 +38,7 @@ export default function HomePage() {
     <main className="relative isolate overflow-hidden bg-[var(--background)] text-[var(--ink)]">
       <GradientBackground />
       <AnimatedConnectorLine />
-      <MobileHeader />
+      <SiteHeader />
       <HeroSection />
       <ServiceOverviewSection />
       <WhyChooseSpacelyt />
@@ -69,30 +70,6 @@ function GradientBackground() {
       />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(17,17,17,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(17,17,17,.035)_1px,transparent_1px)] bg-[size:72px_72px]" />
     </div>
-  );
-}
-
-function MobileHeader() {
-  return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/78 px-4 py-3 backdrop-blur-2xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
-        <a href="#" className="font-display text-lg font-bold tracking-[0.18em]">
-          SPACELYT
-        </a>
-        <nav className="hidden items-center gap-6 text-sm font-medium text-[var(--muted)] md:flex">
-          <a href="#services">Services</a>
-          <a href="#projects">Projects</a>
-          <a href="#process">Process</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <a href="#contact" className="hidden rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-2.5 text-sm font-semibold text-white shadow-glow md:inline-flex">
-          Start Your Project
-        </a>
-        <button className="flex h-11 w-11 items-center justify-center rounded-full border border-black/8 bg-white shadow-soft md:hidden" aria-label="Open menu">
-          <Menu className="h-5 w-5" />
-        </button>
-      </div>
-    </header>
   );
 }
 
@@ -192,7 +169,7 @@ function HeroSection() {
           </p>
           <div className="mt-7 grid gap-3 sm:flex">
             <MagneticButton href="#contact">Start Your Project</MagneticButton>
-            <MagneticButton href="#services" variant="secondary">Explore Services</MagneticButton>
+            <MagneticButton href="/services" variant="secondary">Explore Services</MagneticButton>
           </div>
         </Reveal>
 
@@ -226,7 +203,7 @@ function ServiceOverviewSection() {
           {services.map((service) => {
             const Icon = service.icon;
             return (
-              <a key={service.slug} href={`#${service.slug}`} className="relative min-w-[18.5rem] snap-start overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
+              <Link key={service.slug} href={`/services/${service.slug}`} className="relative min-w-[18.5rem] snap-start overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
                 <div className="absolute inset-0 opacity-[0.1]">
                   <BlueprintArt type={service.art} />
                 </div>
@@ -238,10 +215,10 @@ function ServiceOverviewSection() {
                   <h3 className="font-display text-2xl font-semibold tracking-[-0.03em]">{service.flowTitle}</h3>
                   <p className="mt-3 line-clamp-2 text-sm leading-6 text-[var(--muted)]">{service.short}</p>
                   <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#111] px-4 py-2 text-xs font-semibold text-white">
-                    Discuss This Service <ArrowRight className="h-4 w-4" />
+                    View Service <ArrowRight className="h-4 w-4" />
                   </span>
                 </div>
-              </a>
+              </Link>
             );
           })}
         </Carousel>
@@ -361,8 +338,8 @@ function ConsultationCTASection() {
             <p className="technical-label">SPACELYT MATCH</p>
             <h3 className="mt-6 font-display text-3xl font-semibold">Find your project route</h3>
             <p className="mt-3 text-sm leading-6 text-[var(--muted)]">A focused consultation helps define scope, budget, timeline, and the right service mix.</p>
-            <a href="mailto:hello@spacelyt.com" className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#111] px-5 py-4 text-sm font-semibold text-white">
-              Book a Consultation
+          <a href="#contact" className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#111] px-5 py-4 text-sm font-semibold text-white">
+              Start Consultation
             </a>
           </div>
         </div>
@@ -414,9 +391,9 @@ function ServiceCollectionCard({ service, index }: { service: Service; index: nu
               </span>
             ))}
           </div>
-          <a href="#contact" className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#111] px-5 text-sm font-semibold text-white">
+          <Link href={`/services/${service.slug}`} className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#111] px-5 text-sm font-semibold text-white">
             Start With This Service <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </Reveal>

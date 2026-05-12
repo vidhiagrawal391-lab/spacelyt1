@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { services } from "@/lib/content";
 import {
+  createConsultationPopupForService,
   createServicePopup,
   estimatePopup,
   exitIntentPopup,
@@ -15,6 +16,7 @@ const SUBMITTED_KEY = "spacelyt_lead_submitted";
 const LAST_POPUP_KEY = "spacelyt_last_popup_at";
 const CLOSED_PREFIX = "spacelyt_popup_closed_";
 const MIN_POPUP_GAP = 20_000;
+const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
 
 type PopupRequest = {
   config: LeadPopupConfig;
@@ -75,6 +77,25 @@ export function usePopupTriggers() {
     if (activeRef.current) return;
     setActive(floatingContactPopup, "floating");
   }, [setActive]);
+
+  const openServiceConsultation = useCallback((serviceName: string, serviceSlug?: string) => {
+    if (activeRef.current) return;
+    setActive(
+      createConsultationPopupForService({ serviceName, serviceSlug }),
+      `service-cta-${serviceSlug ?? serviceName.toLowerCase().replace(/\s+/g, "-")}`
+    );
+  }, [setActive]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleServiceCta = (event: Event) => {
+      const detail = (event as CustomEvent<{ serviceName?: string; serviceSlug?: string }>).detail;
+      if (!detail?.serviceName) return;
+      openServiceConsultation(detail.serviceName, detail.serviceSlug);
+    };
+    window.addEventListener(SERVICE_CTA_EVENT, handleServiceCta);
+    return () => window.removeEventListener(SERVICE_CTA_EVENT, handleServiceCta);
+  }, [openServiceConsultation]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
