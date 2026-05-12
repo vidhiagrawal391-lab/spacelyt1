@@ -174,45 +174,47 @@ function HeroSection() {
         </Reveal>
 
         <Reveal className="relative min-h-[34rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/70 p-3 shadow-glow backdrop-blur-2xl">
-          <Image src={portfolio[0].image} alt="Spacelyt featured project" fill sizes="(min-width: 1024px) 52vw, 92vw" className="object-cover" priority />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0)_32%),linear-gradient(0deg,rgba(10,10,10,0.76),rgba(10,10,10,0.08)_58%,rgba(255,255,255,0.1))]" />
+          <Image src={portfolio[0].image} alt="Spacelyt featured project" fill sizes="(min-width: 1024px) 52vw, 92vw" className="object-cover object-[50%_42%]" priority />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0)_36%),linear-gradient(0deg,rgba(0,0,0,0.58),rgba(0,0,0,0.08)_46%,rgba(255,255,255,0.04))]" />
           <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/80 px-4 py-2 text-xs font-semibold shadow-soft backdrop-blur-xl">
             Turnkey delivery studio
           </div>
-          <div className="absolute bottom-4 left-4 right-4 overflow-hidden rounded-[1.75rem] border border-white/18 bg-[#101010]/86 p-4 text-white shadow-[0_24px_70px_rgba(0,0,0,0.35)] backdrop-blur-2xl sm:p-5">
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:38px_38px] opacity-25" />
-            <div className="absolute -right-20 -top-24 h-48 w-48 rounded-full bg-[#ff2daa]/34 blur-3xl" />
-            <div className="absolute -bottom-24 left-10 h-48 w-48 rounded-full bg-[#ff8a3d]/28 blur-3xl" />
+          <div className="absolute bottom-4 left-4 right-4 overflow-hidden rounded-[1.75rem] border border-white/45 bg-white/18 p-4 text-white shadow-[0_24px_70px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:left-5 sm:right-auto sm:w-[min(34rem,calc(100%-2.5rem))] sm:p-5">
+            <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#ff2daa,#ff8a3d,transparent)]" />
             <div className="relative z-10">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="technical-label text-[#ffb36a]">Concept to completion</p>
-                <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-white/80">
-                  Studio route
-                </span>
-              </div>
-              <h2 className="mt-3 max-w-xl font-display text-[clamp(2rem,5vw,3.45rem)] font-semibold leading-[0.92] tracking-[-0.05em]">
+              <p className="technical-label text-[#ffdac2]">Concept to completion</p>
+              <h2 className="mt-3 max-w-lg font-display text-[clamp(1.75rem,4vw,2.8rem)] font-semibold leading-[0.95] tracking-[-0.04em] drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)]">
                 From first sketch to final handover.
               </h2>
-              <div className="mt-5 grid gap-2 sm:grid-cols-3">
-                {[
-                  ["01", "Plan", "Scope, budget, site logic"],
-                  ["02", "Design", "Drawings, finishes, approvals"],
-                  ["03", "Deliver", "Execution, checks, handover"]
-                ].map(([number, title, description]) => (
-                  <div key={title} className="min-h-24 rounded-[1.05rem] border border-white/10 bg-white/[0.08] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="font-display text-2xl font-semibold text-white/40">{number}</span>
-                      <span className="h-2 w-2 rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)]" />
-                    </div>
-                    <p className="mt-2 text-sm font-semibold">{title}</p>
-                    <p className="mt-1 text-xs leading-5 text-white/62">{description}</p>
-                  </div>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {["Plan", "Design", "Deliver"].map((title, index) => (
+                  <motion.div
+                    key={title}
+                    className="relative min-h-12 overflow-hidden rounded-full border border-white/35 bg-white/88 px-3 py-3 text-center text-xs font-bold text-[#111] shadow-[0_10px_32px_rgba(0,0,0,0.18)]"
+                    animate={{
+                      y: [0, -6, 0],
+                      scale: [1, 1.035, 1],
+                      boxShadow: [
+                        "0 10px 32px rgba(0,0,0,0.18)",
+                        "0 18px 42px rgba(255,45,170,0.28)",
+                        "0 10px 32px rgba(0,0,0,0.18)"
+                      ]
+                    }}
+                    transition={{
+                      duration: 2.8,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.28
+                    }}
+                  >
+                    <motion.span
+                      className="absolute inset-y-0 -left-10 w-10 bg-white/70 blur-md"
+                      animate={{ x: ["0%", "360%"] }}
+                      transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: index * 0.28 }}
+                    />
+                    <span className="relative">{title}</span>
+                  </motion.div>
                 ))}
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white/68">
-                <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2">Architecture</span>
-                <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2">Interiors</span>
-                <span className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-2">Turnkey build</span>
               </div>
             </div>
           </div>
