@@ -33,6 +33,7 @@ export default function SiteHeader() {
               ))}
             </div>
           </div>
+          <Link href="/calculators" className="transition hover:text-[var(--ink)]">Calculators</Link>
           <Link href="/#projects" className="transition hover:text-[var(--ink)]">Projects</Link>
           <Link href="/#process" className="transition hover:text-[var(--ink)]">Process</Link>
           <Link href="/#contact" className="transition hover:text-[var(--ink)]">Contact</Link>
@@ -43,6 +44,7 @@ export default function SiteHeader() {
       </div>
       <nav className="mx-auto mt-3 flex max-w-7xl gap-2 overflow-x-auto pb-1 text-xs font-semibold text-[var(--muted)] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden" aria-label="Mobile navigation">
         <Link href="/services" className="shrink-0 rounded-full bg-white px-4 py-2 shadow-soft">Services</Link>
+        <Link href="/calculators" className="shrink-0 rounded-full bg-white/78 px-4 py-2 shadow-soft">Calculators</Link>
         {servicePages.map((service) => (
           <Link key={service.slug} href={`/services/${service.slug}`} className="shrink-0 rounded-full bg-white/78 px-4 py-2 shadow-soft">
             {service.title}
