@@ -26,3 +26,4 @@ qa-screenshots*/
 Thumbs.db
 .vscode/
 .idea/
+.vercel
