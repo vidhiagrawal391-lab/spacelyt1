@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { servicePages } from "@/lib/servicePages";
 
-const mobileNavLinks = [
-  { href: "/services", label: "Services" },
+const mainNavLinks = [
+  { href: "/services", label: "Services", hasDropdown: true },
   { href: "/calculators", label: "Calculators" },
   { href: "/#projects", label: "Projects" },
   { href: "/#process", label: "Process" },
@@ -27,60 +27,68 @@ export default function SiteHeader() {
   }, [mobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/78 px-4 py-3 backdrop-blur-2xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
-        <Link href="/" className="font-display text-lg font-bold tracking-[0.18em]" onClick={closeMobileMenu}>
-          SPACELYT
-        </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium text-[var(--muted)] md:flex" aria-label="Main navigation">
-          <div className="group relative">
-            <Link href="/services" className="inline-flex items-center gap-1.5 py-3 transition hover:text-[var(--ink)]">
-              Services
-              <ChevronDown className="h-4 w-4" />
-            </Link>
-            <div className="invisible absolute left-1/2 top-full w-[22rem] -translate-x-1/2 translate-y-2 rounded-[1.4rem] border border-white/75 bg-white/92 p-2 opacity-0 shadow-soft backdrop-blur-2xl transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-              {servicePages.map((service) => (
-                <Link
-                  key={service.slug}
-                  href={`/services/${service.slug}`}
-                  className="flex items-center justify-between rounded-[1rem] px-4 py-3 text-[var(--ink)] transition hover:bg-[#fff5fb]"
-                >
-                  <span>
-                    <span className="block text-sm font-semibold">{service.title}</span>
-                    <span className="mt-1 block text-xs leading-5 text-[var(--muted)]">{service.shortDescription}</span>
-                  </span>
-                  <ArrowRight className="ml-3 h-4 w-4 shrink-0 text-[#ff2daa]" />
+    <>
+      <header className="sticky top-0 z-50 border-b border-black/5 bg-white/78 px-4 py-3 backdrop-blur-2xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+          <Link href="/" className="font-display text-lg font-bold tracking-[0.18em]" onClick={closeMobileMenu}>
+            SPACELYT
+          </Link>
+          <nav className="hidden items-center gap-6 text-sm font-medium text-[var(--muted)] md:flex" aria-label="Main navigation">
+            {mainNavLinks.map((item) =>
+              item.hasDropdown ? (
+                <div key={item.href} className="group relative">
+                  <Link href={item.href} className="inline-flex items-center gap-1.5 py-3 transition hover:text-[var(--ink)]">
+                    {item.label}
+                    <ChevronDown className="h-4 w-4" />
+                  </Link>
+                  <div className="invisible absolute left-1/2 top-full w-[22rem] -translate-x-1/2 translate-y-2 rounded-[1.4rem] border border-white/75 bg-white/92 p-2 opacity-0 shadow-soft backdrop-blur-2xl transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                    {servicePages.map((service) => (
+                      <Link
+                        key={service.slug}
+                        href={`/services/${service.slug}`}
+                        className="flex items-center justify-between rounded-[1rem] px-4 py-3 text-[var(--ink)] transition hover:bg-[#fff5fb]"
+                      >
+                        <span>
+                          <span className="block text-sm font-semibold">{service.title}</span>
+                          <span className="mt-1 block text-xs leading-5 text-[var(--muted)]">{service.shortDescription}</span>
+                        </span>
+                        <ArrowRight className="ml-3 h-4 w-4 shrink-0 text-[#ff2daa]" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link key={item.href} href={item.href} className="transition hover:text-[var(--ink)]">
+                  {item.label}
                 </Link>
-              ))}
-            </div>
-          </div>
-          <Link href="/calculators" className="transition hover:text-[var(--ink)]">Calculators</Link>
-          <Link href="/#projects" className="transition hover:text-[var(--ink)]">Projects</Link>
-          <Link href="/#process" className="transition hover:text-[var(--ink)]">Process</Link>
-          <Link href="/#contact" className="transition hover:text-[var(--ink)]">Contact</Link>
-        </nav>
-        <Link href="/#contact" className="hidden rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-2.5 text-sm font-semibold text-white shadow-glow md:inline-flex">
-          Start Your Project
-        </Link>
-        <button
-          type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-[var(--ink)] shadow-soft md:hidden"
-          aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
-          aria-expanded={mobileMenuOpen}
-          onClick={() => setMobileMenuOpen((open) => !open)}
-        >
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
+              )
+            )}
+          </nav>
+          <Link href="/#contact" className="hidden rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-2.5 text-sm font-semibold text-white shadow-glow md:inline-flex">
+            Start Your Project
+          </Link>
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-[var(--ink)] shadow-soft md:hidden"
+            aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((open) => !open)}
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </header>
+
       <div
-        className={`fixed inset-0 z-[90] overflow-hidden bg-[#0d0d0d] text-white transition duration-500 md:hidden ${
-          mobileMenuOpen ? "visible opacity-100" : "invisible opacity-0"
+        className={`fixed inset-0 z-[120] h-dvh overflow-y-auto bg-[#0d0d0d] text-white transition duration-500 md:hidden ${
+          mobileMenuOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-4 opacity-0"
         }`}
+        aria-hidden={!mobileMenuOpen}
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(255,45,170,.24),transparent_18rem),radial-gradient(circle_at_92%_18%,rgba(255,138,61,.18),transparent_20rem),linear-gradient(145deg,#090909,#151111_48%,#080808)]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-[linear-gradient(0deg,rgba(255,45,170,.14),transparent)]" />
 
-        <div className={`relative mx-auto flex h-full max-w-7xl flex-col px-5 py-5 transition duration-500 ${mobileMenuOpen ? "translate-y-0 scale-100" : "translate-y-6 scale-[0.98]"}`}>
+        <div className={`relative mx-auto flex min-h-dvh max-w-7xl flex-col px-5 py-5 transition duration-500 ${mobileMenuOpen ? "translate-y-0 scale-100" : "translate-y-6 scale-[0.98]"}`}>
           <div className="flex items-center justify-between gap-4">
             <Link href="/" className="font-display text-lg font-bold tracking-[0.18em]" onClick={closeMobileMenu}>
               SPACELYT
@@ -95,26 +103,14 @@ export default function SiteHeader() {
             </button>
           </div>
 
-          <nav className="mt-7 flex min-h-0 flex-1 flex-col overflow-y-auto pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Mobile navigation">
-            <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.06] p-4 backdrop-blur-2xl">
-              <p className="font-mono text-[0.64rem] uppercase tracking-[0.22em] text-[#ff5c8a]">Spacelyt Menu</p>
-              <h2 className="mt-4 font-display text-[clamp(2.55rem,14vw,4.8rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
-                From Blueprint
-                <br />
-                to Beautiful
-                <br />
-                Spaces.
-              </h2>
-              <p className="mt-4 max-w-xs text-sm leading-6 text-white/58">The same navigation as desktop, shaped for a premium mobile experience.</p>
-            </div>
-
-            <div className="mt-5">
+          <nav className="mt-7 flex flex-1 flex-col pb-5" aria-label="Mobile navigation">
+            <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.07] p-4 backdrop-blur-2xl">
               <div className="flex items-center justify-between">
-                <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-white/42">Navigate</p>
-                <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-white/28">01 / 05</span>
+                <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[#ff8a3d]">Main menu</p>
+                <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-white/34">Desktop links</span>
               </div>
-              <div className="mt-3 divide-y divide-white/10 border-y border-white/10">
-                {mobileNavLinks.map((item, index) => (
+              <div className="mt-4 divide-y divide-white/10 border-y border-white/10">
+                {mainNavLinks.map((item, index) => (
                   <MobileMenuLink
                     key={item.href}
                     href={item.href}
@@ -126,35 +122,41 @@ export default function SiteHeader() {
               </div>
             </div>
 
-            <Link
-              href="/#contact"
-              onClick={closeMobileMenu}
-              className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 text-sm font-semibold text-white shadow-[0_18px_60px_rgba(255,45,170,.28)]"
-            >
-              Start Your Project
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-
-            <div className="mt-5 rounded-[1.4rem] border border-white/10 bg-black/20 p-3">
-              <p className="px-1 pb-2 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Services</p>
-              <div className="grid grid-cols-2 gap-2">
-                {servicePages.slice(0, 4).map((service, index) => (
+            <div className="mt-4 rounded-[1.4rem] border border-white/10 bg-black/20 p-3">
+              <div className="flex items-center justify-between px-1 pb-2">
+                <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Services dropdown</p>
+                <ChevronDown className="h-4 w-4 text-[#ff8a3d]" />
+              </div>
+              <div className="grid gap-2">
+                {servicePages.map((service) => (
                   <Link
                     key={service.slug}
                     href={`/services/${service.slug}`}
                     onClick={closeMobileMenu}
-                    className="min-h-24 rounded-[1.25rem] border border-white/10 bg-white/[0.06] p-4 transition hover:bg-white/[0.1]"
+                    className="flex items-center justify-between rounded-[1rem] border border-white/10 bg-white/[0.06] px-4 py-3 transition hover:bg-white/[0.1]"
                   >
-                    <span className="font-mono text-[0.65rem] text-[#ff5c8a]">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="mt-4 block font-display text-lg font-semibold leading-none tracking-[-0.04em]">{service.title}</span>
+                    <span>
+                      <span className="block text-sm font-semibold">{service.title}</span>
+                      <span className="mt-1 line-clamp-1 block text-xs text-white/48">{service.shortDescription}</span>
+                    </span>
+                    <ArrowRight className="ml-3 h-4 w-4 shrink-0 text-[#ff8a3d]" />
                   </Link>
                 ))}
               </div>
             </div>
+
+            <Link
+              href="/#contact"
+              onClick={closeMobileMenu}
+              className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 text-sm font-semibold text-white shadow-[0_18px_60px_rgba(255,45,170,.28)]"
+            >
+              Start Your Project
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </nav>
         </div>
       </div>
-    </header>
+    </>
   );
 }
 
