@@ -6,16 +6,22 @@ import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { servicePages } from "@/lib/servicePages";
 
 const mainNavLinks = [
+  { href: "/#about", label: "About" },
   { href: "/services", label: "Services", hasDropdown: true },
   { href: "/calculators", label: "Calculators" },
-  { href: "/#projects", label: "Projects" },
+  { href: "/#projects", label: "Project" },
   { href: "/#process", label: "Process" },
+  { href: "/blog", label: "Blog" },
   { href: "/#contact", label: "Contact" }
 ];
 
 export default function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileServicesOpen(false);
+  };
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
@@ -110,38 +116,26 @@ export default function SiteHeader() {
                 <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-white/34">Desktop links</span>
               </div>
               <div className="mt-4 divide-y divide-white/10 border-y border-white/10">
-                {mainNavLinks.map((item, index) => (
-                  <MobileMenuLink
-                    key={item.href}
-                    href={item.href}
-                    label={item.label}
-                    number={String(index + 1).padStart(2, "0")}
-                    onClick={closeMobileMenu}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-4 rounded-[1.4rem] border border-white/10 bg-black/20 p-3">
-              <div className="flex items-center justify-between px-1 pb-2">
-                <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/42">Services dropdown</p>
-                <ChevronDown className="h-4 w-4 text-[#ff8a3d]" />
-              </div>
-              <div className="grid gap-2">
-                {servicePages.map((service) => (
-                  <Link
-                    key={service.slug}
-                    href={`/services/${service.slug}`}
-                    onClick={closeMobileMenu}
-                    className="flex items-center justify-between rounded-[1rem] border border-white/10 bg-white/[0.06] px-4 py-3 transition hover:bg-white/[0.1]"
-                  >
-                    <span>
-                      <span className="block text-sm font-semibold">{service.title}</span>
-                      <span className="mt-1 line-clamp-1 block text-xs text-white/48">{service.shortDescription}</span>
-                    </span>
-                    <ArrowRight className="ml-3 h-4 w-4 shrink-0 text-[#ff8a3d]" />
-                  </Link>
-                ))}
+                {mainNavLinks.map((item, index) =>
+                  item.hasDropdown ? (
+                    <MobileServicesMenuItem
+                      key={item.href}
+                      label={item.label}
+                      number={String(index + 1).padStart(2, "0")}
+                      open={mobileServicesOpen}
+                      onToggle={() => setMobileServicesOpen((open) => !open)}
+                      onClick={closeMobileMenu}
+                    />
+                  ) : (
+                    <MobileMenuLink
+                      key={item.href}
+                      href={item.href}
+                      label={item.label}
+                      number={String(index + 1).padStart(2, "0")}
+                      onClick={closeMobileMenu}
+                    />
+                  )
+                )}
               </div>
             </div>
 
@@ -157,6 +151,50 @@ export default function SiteHeader() {
         </div>
       </div>
     </>
+  );
+}
+
+function MobileServicesMenuItem({
+  label,
+  number,
+  open,
+  onToggle,
+  onClick
+}: {
+  label: string;
+  number: string;
+  open: boolean;
+  onToggle: () => void;
+  onClick: () => void;
+}) {
+  return (
+    <div>
+      <button type="button" onClick={onToggle} className="flex min-h-16 w-full items-center justify-between gap-4 text-left transition hover:text-[#ff8a3d]">
+        <span className="font-mono text-[0.68rem] text-[#ff5c8a]">{number}</span>
+        <span className="mr-auto font-display text-[clamp(2rem,10vw,3.35rem)] font-semibold leading-none tracking-[-0.04em]">{label}</span>
+        <ChevronDown className={`h-5 w-5 text-white/38 transition ${open ? "rotate-180 text-[#ff8a3d]" : ""}`} />
+      </button>
+      <div className={`grid overflow-hidden transition-all duration-300 ${open ? "grid-rows-[1fr] pb-4" : "grid-rows-[0fr]"}`}>
+        <div className="min-h-0">
+          <div className="grid gap-2 pl-10">
+            {servicePages.map((service) => (
+              <Link
+                key={service.slug}
+                href={`/services/${service.slug}`}
+                onClick={onClick}
+                className="flex items-center justify-between rounded-[1rem] border border-white/10 bg-white/[0.06] px-4 py-3 transition hover:bg-white/[0.1]"
+              >
+                <span>
+                  <span className="block text-sm font-semibold">{service.title}</span>
+                  <span className="mt-1 line-clamp-1 block text-xs text-white/48">{service.shortDescription}</span>
+                </span>
+                <ArrowRight className="ml-3 h-4 w-4 shrink-0 text-[#ff8a3d]" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
