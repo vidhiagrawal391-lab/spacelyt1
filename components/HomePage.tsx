@@ -175,29 +175,38 @@ function HeroSection() {
 
         <Reveal className="relative min-h-[34rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/70 p-3 shadow-glow backdrop-blur-2xl">
           <Image src={portfolio[0].image} alt="Spacelyt featured project" fill sizes="(min-width: 1024px) 52vw, 92vw" className="object-cover object-[50%_42%]" priority />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0)_36%),linear-gradient(0deg,rgba(0,0,0,0.58),rgba(0,0,0,0.08)_46%,rgba(255,255,255,0.04))]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0)_38%),linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.04)_48%,rgba(255,255,255,0.04))]" />
           <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/80 px-4 py-2 text-xs font-semibold shadow-soft backdrop-blur-xl">
             Turnkey delivery studio
           </div>
-          <div className="absolute bottom-4 left-4 right-4 overflow-hidden rounded-[1.75rem] border border-white/45 bg-white/18 p-4 text-white shadow-[0_24px_70px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:left-5 sm:right-auto sm:w-[min(34rem,calc(100%-2.5rem))] sm:p-5">
-            <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#ff2daa,#ff8a3d,transparent)]" />
+          <div className="absolute bottom-4 left-4 right-4 overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/88 p-4 text-[#111] shadow-[0_24px_70px_rgba(0,0,0,0.18)] backdrop-blur-2xl sm:left-5 sm:right-auto sm:w-[min(34rem,calc(100%-2.5rem))] sm:p-5">
+            <div className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-[linear-gradient(90deg,#ff2daa,#ff8a3d,#38bdf8)]" />
+            <div className="absolute -right-16 -top-20 h-40 w-40 rounded-full bg-[#ff2daa]/18 blur-3xl" />
             <div className="relative z-10">
-              <p className="technical-label text-[#ffdac2]">Concept to completion</p>
-              <h2 className="mt-3 max-w-lg font-display text-[clamp(1.75rem,4vw,2.8rem)] font-semibold leading-[0.95] tracking-[-0.04em] drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)]">
+              <div className="inline-flex rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-3.5 py-2 shadow-[0_14px_32px_rgba(255,45,170,0.22)]">
+                <p className="technical-label text-white">Concept to completion</p>
+              </div>
+              <h2 className="mt-4 max-w-lg font-display text-[clamp(1.75rem,4vw,2.8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
                 From first sketch to final handover.
               </h2>
-              <div className="mt-4 grid grid-cols-3 gap-2">
+              <div className="mt-5 grid grid-cols-3 gap-2 rounded-[1.2rem] border border-black/8 bg-[#111]/[0.04] p-2">
                 {["Plan", "Design", "Deliver"].map((title, index) => (
                   <motion.div
                     key={title}
-                    className="relative min-h-12 overflow-hidden rounded-full border border-white/35 bg-white/88 px-3 py-3 text-center text-xs font-bold text-[#111] shadow-[0_10px_32px_rgba(0,0,0,0.18)]"
+                    className="relative min-h-12 overflow-hidden rounded-full border border-black/8 bg-white px-2 py-3 text-center text-xs font-bold text-[#111] shadow-[0_10px_28px_rgba(17,17,17,0.1)]"
                     animate={{
                       y: [0, -6, 0],
                       scale: [1, 1.035, 1],
+                      color: ["#111111", "#ffffff", "#111111"],
+                      background: [
+                        "linear-gradient(135deg,#ffffff,#ffffff)",
+                        "linear-gradient(135deg,#ff2daa,#ff8a3d)",
+                        "linear-gradient(135deg,#ffffff,#ffffff)"
+                      ],
                       boxShadow: [
-                        "0 10px 32px rgba(0,0,0,0.18)",
-                        "0 18px 42px rgba(255,45,170,0.28)",
-                        "0 10px 32px rgba(0,0,0,0.18)"
+                        "0 10px 28px rgba(17,17,17,0.1)",
+                        "0 18px 42px rgba(255,45,170,0.32)",
+                        "0 10px 28px rgba(17,17,17,0.1)"
                       ]
                     }}
                     transition={{
@@ -208,7 +217,7 @@ function HeroSection() {
                     }}
                   >
                     <motion.span
-                      className="absolute inset-y-0 -left-10 w-10 bg-white/70 blur-md"
+                      className="absolute inset-y-0 -left-10 w-10 bg-white/60 blur-md"
                       animate={{ x: ["0%", "360%"] }}
                       transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: index * 0.28 }}
                     />
