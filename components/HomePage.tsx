@@ -174,8 +174,8 @@ function HeroSection() {
           </div>
         </Reveal>
 
-        <Reveal className="relative mx-auto min-h-[36rem] w-full max-w-[28rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/70 p-3 shadow-glow backdrop-blur-2xl sm:min-h-[42rem] lg:min-h-[46rem]">
-          <Image src={heroShowcaseImage} alt="Premium vertical turnkey interior showcase" fill sizes="(min-width: 1024px) 28rem, 92vw" className="object-cover object-[50%_50%]" priority />
+        <Reveal className="relative mx-auto min-h-[36rem] w-full max-w-[28rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/70 p-3 shadow-glow backdrop-blur-2xl sm:min-h-[42rem] lg:min-h-[46rem] lg:max-w-[34.875rem]">
+          <Image src={heroShowcaseImage} alt="Premium vertical turnkey interior showcase" fill sizes="(min-width: 1024px) 34.875rem, 92vw" className="object-cover object-[50%_50%]" priority />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0)_38%),linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.04)_48%,rgba(255,255,255,0.04))]" />
           <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/80 px-4 py-2 text-xs font-semibold shadow-soft backdrop-blur-xl">
             Turnkey delivery studio
