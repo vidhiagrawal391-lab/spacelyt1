@@ -16,6 +16,7 @@ import WhyChooseSpacelyt from "@/components/WhyChooseSpacelyt";
 import { portfolio, services, type Service } from "@/lib/content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const heroShowcaseImage = "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=84";
 
 function Reveal({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   const reduced = useReducedMotion();
@@ -174,7 +175,7 @@ function HeroSection() {
         </Reveal>
 
         <Reveal className="relative min-h-[34rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/70 p-3 shadow-glow backdrop-blur-2xl">
-          <Image src={portfolio[0].image} alt="Spacelyt featured project" fill sizes="(min-width: 1024px) 52vw, 92vw" className="object-cover object-[50%_42%]" priority />
+          <Image src={heroShowcaseImage} alt="Premium turnkey interior and architecture showcase" fill sizes="(min-width: 1024px) 52vw, 92vw" className="object-cover object-[50%_46%]" priority />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0)_38%),linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.04)_48%,rgba(255,255,255,0.04))]" />
           <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/80 px-4 py-2 text-xs font-semibold shadow-soft backdrop-blur-xl">
             Turnkey delivery studio
