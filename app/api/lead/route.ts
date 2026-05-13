@@ -18,6 +18,7 @@ export async function POST(request: Request) {
     const values = payload.values ?? {};
     const name = values.name?.trim() || "Spacelyt website visitor";
     const phone = values.phone?.trim();
+    const pageUrl = payload.pageUrl ?? request.headers.get("origin") ?? "https://spacelyt1-psi.vercel.app/";
 
     if (!phone) {
       return NextResponse.json({ error: "Phone number is required." }, { status: 400 });
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
     formData.append("Popup Type", payload.popup?.kind ?? "Unknown");
     formData.append("Popup Title", payload.popup?.title ?? "Unknown");
     formData.append("Service Slug", payload.popup?.serviceSlug ?? "Not applicable");
-    formData.append("Page URL", payload.pageUrl ?? "Unknown");
+    formData.append("Page URL", pageUrl);
     formData.append("Submitted At", new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
     formData.append("Name", name);
 
@@ -41,16 +42,22 @@ export async function POST(request: Request) {
     const response = await fetch(`https://formsubmit.co/ajax/${leadRecipientEmail}`, {
       method: "POST",
       headers: {
-        Accept: "application/json"
+        Accept: "application/json",
+        Origin: new URL(pageUrl).origin,
+        Referer: pageUrl
       },
       body: formData
     });
 
-    if (!response.ok) {
-      return NextResponse.json({ error: "Email delivery failed." }, { status: 502 });
+    const result = (await response.json().catch(() => null)) as { success?: string; message?: string } | null;
+    const message = result?.message ?? "";
+    const requiresActivation = message.toLowerCase().includes("activation");
+
+    if (!response.ok || (result?.success && result.success !== "true" && !requiresActivation)) {
+      return NextResponse.json({ error: message || "Email delivery failed." }, { status: 502 });
     }
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, activationRequired: requiresActivation });
   } catch {
     return NextResponse.json({ error: "Invalid lead request." }, { status: 400 });
   }
