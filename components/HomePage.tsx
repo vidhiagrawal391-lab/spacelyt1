@@ -16,7 +16,7 @@ import WhyChooseSpacelyt from "@/components/WhyChooseSpacelyt";
 import { portfolio, services, type Service } from "@/lib/content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const heroShowcaseImage = "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=84";
+const heroShowcaseImage = "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=84";
 
 function Reveal({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   const reduced = useReducedMotion();
@@ -174,13 +174,13 @@ function HeroSection() {
           </div>
         </Reveal>
 
-        <Reveal className="relative min-h-[34rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/70 p-3 shadow-glow backdrop-blur-2xl">
-          <Image src={heroShowcaseImage} alt="Premium turnkey interior and architecture showcase" fill sizes="(min-width: 1024px) 52vw, 92vw" className="object-cover object-[50%_46%]" priority />
+        <Reveal className="relative mx-auto min-h-[36rem] w-full max-w-[28rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/70 p-3 shadow-glow backdrop-blur-2xl sm:min-h-[42rem] lg:min-h-[46rem]">
+          <Image src={heroShowcaseImage} alt="Premium vertical turnkey interior showcase" fill sizes="(min-width: 1024px) 28rem, 92vw" className="object-cover object-[50%_50%]" priority />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0)_38%),linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.04)_48%,rgba(255,255,255,0.04))]" />
           <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/80 px-4 py-2 text-xs font-semibold shadow-soft backdrop-blur-xl">
             Turnkey delivery studio
           </div>
-          <div className="absolute bottom-4 left-4 right-4 overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/88 p-4 text-[#111] shadow-[0_24px_70px_rgba(0,0,0,0.18)] backdrop-blur-2xl sm:left-5 sm:right-auto sm:w-[min(34rem,calc(100%-2.5rem))] sm:p-5">
+          <div className="absolute bottom-4 left-4 right-4 overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/88 p-4 text-[#111] shadow-[0_24px_70px_rgba(0,0,0,0.18)] backdrop-blur-2xl sm:p-5">
             <div className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-[linear-gradient(90deg,#ff2daa,#ff8a3d,#38bdf8)]" />
             <div className="absolute -right-16 -top-20 h-40 w-40 rounded-full bg-[#ff2daa]/18 blur-3xl" />
             <div className="relative z-10">
