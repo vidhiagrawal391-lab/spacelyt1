@@ -9,16 +9,16 @@ type FloatingContactWidgetProps = {
 
 export default function FloatingContactWidget({ onRequestCallback, whatsappUrl }: FloatingContactWidgetProps) {
   return (
-    <div className="fixed bottom-5 right-4 z-[80] flex flex-col items-end gap-3.5 sm:bottom-6 sm:right-6">
+    <>
       {whatsappUrl ? (
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat with Spacelyt on WhatsApp"
-          className="group relative mr-1 inline-flex h-[3.35rem] w-[3.35rem] items-center justify-center rounded-[0.85rem] border border-black/5 bg-white shadow-[0_12px_34px_rgba(17,17,17,.16)] transition hover:-translate-y-1 hover:shadow-[0_18px_54px_rgba(37,211,102,.22)] sm:mr-2 sm:h-14 sm:w-14"
+          className="group fixed left-0 top-1/2 z-[80] inline-flex h-[3.35rem] w-[3.35rem] -translate-y-1/2 items-center justify-center rounded-r-[0.95rem] border-y border-r border-black/5 bg-white shadow-[0_12px_34px_rgba(17,17,17,.18)] transition hover:w-14 hover:shadow-[0_18px_54px_rgba(37,211,102,.24)] sm:h-14 sm:w-14"
         >
-          <span className="absolute -left-36 hidden rounded-full bg-[#111] px-4 py-2 text-xs font-semibold text-white opacity-0 shadow-soft transition group-hover:opacity-100 sm:block">
+          <span className="absolute left-full ml-3 hidden whitespace-nowrap rounded-full bg-[#111] px-4 py-2 text-xs font-semibold text-white opacity-0 shadow-soft transition group-hover:opacity-100 sm:block">
             Chat on WhatsApp
           </span>
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#31d66b] text-white shadow-[inset_0_0_0_2px_rgba(255,255,255,.38),0_8px_18px_rgba(49,214,107,.34)] sm:h-9 sm:w-9">
@@ -26,15 +26,17 @@ export default function FloatingContactWidget({ onRequestCallback, whatsappUrl }
           </span>
         </a>
       ) : null}
-      <button
-        type="button"
-        onClick={onRequestCallback}
-        className="inline-flex h-12 items-center gap-2 rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] px-4 text-xs font-semibold text-white shadow-glow sm:h-14 sm:gap-3 sm:px-5 sm:text-sm"
-      >
-        <Phone className="h-5 w-5" />
-        Request Callback
-      </button>
-    </div>
+      <div className="fixed bottom-5 right-4 z-[80] sm:bottom-6 sm:right-6">
+        <button
+          type="button"
+          onClick={onRequestCallback}
+          className="inline-flex h-12 items-center gap-2 rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] px-4 text-xs font-semibold text-white shadow-glow sm:h-14 sm:gap-3 sm:px-5 sm:text-sm"
+        >
+          <Phone className="h-5 w-5" />
+          Request Callback
+        </button>
+      </div>
+    </>
   );
 }
 
