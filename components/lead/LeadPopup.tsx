@@ -26,7 +26,7 @@ export default function LeadPopup({ config, open, onClose, onSubmitted }: LeadPo
     return initial;
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   useEffect(() => {
     if (!open) return;
@@ -85,18 +85,39 @@ export default function LeadPopup({ config, open, onClose, onSubmitted }: LeadPo
   };
 
   const submitLead = async () => {
-    // TODO: Connect this payload to the production CRM/contact API when the endpoint is available.
-    await new Promise((resolve) => setTimeout(resolve, 350));
+    const response = await fetch("/api/lead", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        popup: {
+          kind: config.kind,
+          title: config.title,
+          serviceSlug: config.serviceSlug
+        },
+        values,
+        pageUrl: window.location.href
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Lead submission failed");
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validate()) return;
     setStatus("submitting");
-    await submitLead();
-    setStatus("success");
-    onSubmitted();
-    window.setTimeout(onClose, 2000);
+    try {
+      await submitLead();
+      setStatus("success");
+      onSubmitted();
+      window.setTimeout(onClose, 2000);
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -164,6 +185,11 @@ export default function LeadPopup({ config, open, onClose, onSubmitted }: LeadPo
                 >
                   {status === "submitting" ? "Submitting..." : config.cta}
                 </button>
+                {status === "error" ? (
+                  <p className="text-center text-sm font-semibold text-red-600">
+                    Something went wrong. Please try again or contact us on WhatsApp.
+                  </p>
+                ) : null}
               </form>
             )}
           </motion.div>
