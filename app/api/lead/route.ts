@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 const leadRecipientEmail = "hello@spacelyt.com";
+const fallbackSiteUrl = "https://spacelyt1-psi.vercel.app/";
 
 type LeadPayload = {
   popup?: {
@@ -18,7 +19,8 @@ export async function POST(request: Request) {
     const values = payload.values ?? {};
     const name = values.name?.trim() || "Spacelyt website visitor";
     const phone = values.phone?.trim();
-    const pageUrl = payload.pageUrl ?? request.headers.get("origin") ?? "https://spacelyt1-psi.vercel.app/";
+    const pageUrl = payload.pageUrl ?? request.headers.get("origin") ?? fallbackSiteUrl;
+    const pageOrigin = getOrigin(pageUrl);
 
     if (!phone) {
       return NextResponse.json({ error: "Phone number is required." }, { status: 400 });
@@ -43,22 +45,31 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         Accept: "application/json",
-        Origin: new URL(pageUrl).origin,
+        Origin: pageOrigin,
         Referer: pageUrl
       },
       body: formData
     });
 
-    const result = (await response.json().catch(() => null)) as { success?: string; message?: string } | null;
+    const result = (await response.json().catch(() => null)) as { success?: boolean | string; message?: string } | null;
+    const success = result?.success === true || result?.success === "true";
     const message = result?.message ?? "";
     const requiresActivation = message.toLowerCase().includes("activation");
 
-    if (!response.ok || (result?.success && result.success !== "true" && !requiresActivation)) {
+    if (!response.ok || (!success && !requiresActivation)) {
       return NextResponse.json({ error: message || "Email delivery failed." }, { status: 502 });
     }
 
-    return NextResponse.json({ ok: true, activationRequired: requiresActivation });
+    return NextResponse.json({ ok: true, activationRequired: requiresActivation, message });
   } catch {
     return NextResponse.json({ error: "Invalid lead request." }, { status: 400 });
+  }
+}
+
+function getOrigin(url: string) {
+  try {
+    return new URL(url).origin;
+  } catch {
+    return new URL(fallbackSiteUrl).origin;
   }
 }
