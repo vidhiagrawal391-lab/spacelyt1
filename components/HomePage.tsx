@@ -19,6 +19,14 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const heroShowcaseImage = "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=84";
 const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
 const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
+const footerServiceLinks = [
+  { label: "Planning", href: "/services/planning" },
+  { label: "Architecture", href: "/services/architecture" },
+  { label: "Construction", href: "/services/construction" },
+  { label: "Interiors", href: "/services/interior-design" },
+  { label: "Exteriors", href: "/services/exterior-design" },
+  { label: "Building Solutions", href: "/services/building-solutions" }
+];
 
 function openFloatingCallbackPopup() {
   window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT));
@@ -523,7 +531,7 @@ function Footer() {
           <h2 className="font-display text-3xl font-semibold tracking-[0.12em]">SPACELYT</h2>
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/62">One partner for planning, architecture, construction, interiors, exteriors, and complete building solutions.</p>
         </div>
-        <FooterList title="Services" items={["Planning", "Architecture", "Construction", "Interiors", "Exteriors", "Building Solutions"]} />
+        <FooterList title="Services" items={footerServiceLinks} />
         <FooterList title="Studio" items={["Process", "Projects", "Why Spacelyt", "Consultation"]} />
         <FooterList title="Contact" items={["hello@spacelyt.com", "+91 - - -", "India"]} />
       </div>
@@ -535,13 +543,21 @@ function Footer() {
   );
 }
 
-function FooterList({ title, items }: { title: string; items: string[] }) {
+function FooterList({ title, items }: { title: string; items: Array<string | { label: string; href: string }> }) {
   return (
     <div>
       <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-white/78">{title}</h3>
       <ul className="mt-5 space-y-3 text-sm text-white/56">
         {items.map((item) => (
-          <li key={item}>{item}</li>
+          <li key={typeof item === "string" ? item : item.href}>
+            {typeof item === "string" ? (
+              item
+            ) : (
+              <Link href={item.href} className="transition hover:text-white">
+                {item.label}
+              </Link>
+            )}
+          </li>
         ))}
       </ul>
     </div>
