@@ -5,6 +5,15 @@ import { ArrowRight, ClipboardList, HardHat, KeyRound, MessagesSquare, PenTool, 
 import { motion, useReducedMotion } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
+
+function openStartProjectPopup() {
+  window.dispatchEvent(
+    new CustomEvent(SERVICE_CTA_EVENT, {
+      detail: { serviceName: "Building Solutions", serviceSlug: "building-solutions" }
+    })
+  );
+}
 
 type ProcessStep = {
   title: string;
@@ -81,15 +90,16 @@ export default function ProcessJourneySection() {
               A Clear Journey From Idea to Handover
             </h2>
           </div>
-          <motion.a
-            href="#contact"
+          <motion.button
+            type="button"
+            onClick={openStartProjectPopup}
             className="hidden min-h-12 items-center justify-center gap-3 rounded-full bg-white/82 px-6 text-sm font-semibold text-[var(--ink)] shadow-soft backdrop-blur-xl md:inline-flex"
             whileHover={{ y: -3, scale: 1.015 }}
             whileTap={{ scale: 0.985 }}
           >
             Start Your Project
             <ArrowRight className="h-4 w-4" />
-          </motion.a>
+          </motion.button>
         </div>
 
         <div className="mt-8 hidden min-h-[34rem] rounded-[3rem] border border-white/76 bg-white/48 p-8 shadow-glow backdrop-blur-2xl lg:block">
@@ -148,10 +158,14 @@ export default function ProcessJourneySection() {
             <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{activeStep.description}</p>
           </motion.div>
 
-          <a href="#contact" className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] px-6 text-sm font-semibold text-white shadow-glow">
+          <button
+            type="button"
+            onClick={openStartProjectPopup}
+            className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] px-6 text-sm font-semibold text-white shadow-glow"
+          >
             Start Your Project
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </button>
         </div>
       </div>
     </section>

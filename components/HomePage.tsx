@@ -18,9 +18,18 @@ import { portfolio, services, type Service } from "@/lib/content";
 const ease = [0.22, 1, 0.36, 1] as const;
 const heroShowcaseImage = "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=84";
 const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
+const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
 
 function openFloatingCallbackPopup() {
   window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT));
+}
+
+function openStartProjectPopup() {
+  window.dispatchEvent(
+    new CustomEvent(SERVICE_CTA_EVENT, {
+      detail: { serviceName: "Building Solutions", serviceSlug: "building-solutions" }
+    })
+  );
 }
 
 function Reveal({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
@@ -82,20 +91,39 @@ function GradientBackground() {
 function MagneticButton({
   href,
   children,
-  variant = "primary"
+  variant = "primary",
+  popup
 }: {
   href: string;
   children: React.ReactNode;
   variant?: "primary" | "secondary";
+  popup?: "start-project";
 }) {
+  const className = `inline-flex min-h-12 items-center justify-center gap-3 rounded-full px-6 text-sm font-semibold transition ${
+    variant === "primary"
+      ? "bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] text-white shadow-glow"
+      : "border border-black/8 bg-white/78 text-[var(--ink)] shadow-soft backdrop-blur-xl"
+  }`;
+
+  if (popup === "start-project") {
+    return (
+      <motion.button
+        type="button"
+        onClick={openStartProjectPopup}
+        className={className}
+        whileHover={{ y: -3, scale: 1.015 }}
+        whileTap={{ scale: 0.985 }}
+      >
+        {children}
+        <ArrowRight className="h-4 w-4" />
+      </motion.button>
+    );
+  }
+
   return (
     <motion.a
       href={href}
-      className={`inline-flex min-h-12 items-center justify-center gap-3 rounded-full px-6 text-sm font-semibold transition ${
-        variant === "primary"
-          ? "bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] text-white shadow-glow"
-          : "border border-black/8 bg-white/78 text-[var(--ink)] shadow-soft backdrop-blur-xl"
-      }`}
+      className={className}
       whileHover={{ y: -3, scale: 1.015 }}
       whileTap={{ scale: 0.985 }}
     >
@@ -186,7 +214,7 @@ function HeroSection() {
             Spacelyt brings planning, architecture, construction, interiors, exteriors, and building solutions together into one seamless turnkey experience.
           </p>
           <div className="mt-7 grid gap-3 sm:flex">
-            <MagneticButton href="#contact">Start Your Project</MagneticButton>
+            <MagneticButton href="#contact" popup="start-project">Start Your Project</MagneticButton>
             <MagneticButton href="/services" variant="secondary">Explore Services</MagneticButton>
           </div>
         </Reveal>

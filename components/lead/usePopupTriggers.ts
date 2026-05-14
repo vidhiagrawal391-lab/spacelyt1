@@ -87,6 +87,13 @@ export function usePopupTriggers() {
 
   const openServiceConsultation = useCallback((serviceName: string, serviceSlug?: string) => {
     if (activeRef.current) return;
+    const matchedService = services.find(
+      (service) => service.slug === serviceSlug || service.title === serviceName || service.flowTitle === serviceName
+    );
+    if (matchedService) {
+      setActive(createServicePopup(matchedService), `service-cta-${matchedService.slug}`);
+      return;
+    }
     setActive(
       createConsultationPopupForService({ serviceName, serviceSlug }),
       `service-cta-${serviceSlug ?? serviceName.toLowerCase().replace(/\s+/g, "-")}`

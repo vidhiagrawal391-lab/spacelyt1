@@ -13,6 +13,15 @@ import {
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
+
+function openStartProjectPopup() {
+  window.dispatchEvent(
+    new CustomEvent(SERVICE_CTA_EVENT, {
+      detail: { serviceName: "Building Solutions", serviceSlug: "building-solutions" }
+    })
+  );
+}
 
 type WhyChooseItem = {
   title: string;
@@ -147,15 +156,16 @@ export default function WhyChooseSpacelyt() {
             ))}
           </div>
 
-          <motion.a
-            href="#contact"
+          <motion.button
+            type="button"
+            onClick={openStartProjectPopup}
             className="mt-8 hidden min-h-12 items-center justify-center gap-3 rounded-full bg-[#111] px-6 text-sm font-semibold text-white shadow-soft transition lg:inline-flex"
             whileHover={{ y: -3, scale: 1.015 }}
             whileTap={{ scale: 0.985 }}
           >
             Start Your Project
             <ArrowRight className="h-4 w-4" />
-          </motion.a>
+          </motion.button>
         </motion.div>
 
         <div className="relative hidden min-h-[42rem] lg:block">
@@ -202,10 +212,14 @@ export default function WhyChooseSpacelyt() {
           {whyChooseItems.map((item, index) => (
             <MobileBenefitItem key={item.title} item={item} index={index} />
           ))}
-          <a href="#contact" className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[#111] px-6 text-sm font-semibold text-white">
+          <button
+            type="button"
+            onClick={openStartProjectPopup}
+            className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[#111] px-6 text-sm font-semibold text-white"
+          >
             Start Your Project
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </button>
         </div>
       </div>
     </section>

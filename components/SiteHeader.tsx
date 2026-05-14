@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { servicePages } from "@/lib/servicePages";
 
-const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
+const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
 
 const mainNavLinks = [
   { href: "/#about", label: "About" },
@@ -24,9 +24,13 @@ export default function SiteHeader() {
     setMobileMenuOpen(false);
     setMobileServicesOpen(false);
   };
-  const openConsultationPopup = () => {
+  const openStartProjectPopup = () => {
     closeMobileMenu();
-    window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT));
+    window.dispatchEvent(
+      new CustomEvent(SERVICE_CTA_EVENT, {
+        detail: { serviceName: "Building Solutions", serviceSlug: "building-solutions" }
+      })
+    );
   };
 
   useEffect(() => {
@@ -78,7 +82,7 @@ export default function SiteHeader() {
           </nav>
           <button
             type="button"
-            onClick={openConsultationPopup}
+            onClick={openStartProjectPopup}
             className="hidden rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-2.5 text-sm font-semibold text-white shadow-glow md:inline-flex"
           >
             Start Your Project
@@ -151,7 +155,7 @@ export default function SiteHeader() {
 
             <button
               type="button"
-              onClick={openConsultationPopup}
+              onClick={openStartProjectPopup}
               className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 text-sm font-semibold text-white shadow-[0_18px_60px_rgba(255,45,170,.28)]"
             >
               Start Your Project
