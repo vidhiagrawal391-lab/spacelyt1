@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import SocialLinks from "@/components/SocialLinks";
 import { servicePages } from "@/lib/servicePages";
 
 const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
@@ -15,6 +16,7 @@ export default function SiteFooter() {
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/62">
             Planning, architecture, construction, interiors, exteriors, and building solutions under one coordinated turnkey system.
           </p>
+          <SocialLinks />
         </div>
         <div>
           <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-white/78">Services</h3>

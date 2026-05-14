@@ -12,6 +12,7 @@ import { BlueprintArt } from "@/components/BlueprintArt";
 import PopupManager from "@/components/lead/PopupManager";
 import ProcessJourneySection from "@/components/ProcessJourneySection";
 import SiteHeader from "@/components/SiteHeader";
+import SocialLinks from "@/components/SocialLinks";
 import WhyChooseSpacelyt from "@/components/WhyChooseSpacelyt";
 import { portfolio, services, type Service } from "@/lib/content";
 
@@ -539,6 +540,7 @@ function Footer() {
         <div>
           <h2 className="font-display text-3xl font-semibold tracking-[0.12em]">SPACELYT</h2>
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/62">One partner for planning, architecture, construction, interiors, exteriors, and complete building solutions.</p>
+          <SocialLinks />
         </div>
         <FooterList title="Services" items={footerServiceLinks} />
         <FooterList title="Studio" items={["Process", "Projects", "Why Spacelyt", "Consultation"]} />
