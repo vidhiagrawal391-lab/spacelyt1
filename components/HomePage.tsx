@@ -108,11 +108,13 @@ function MagneticButton({
 function SectionHead({
   label,
   title,
-  action
+  action,
+  actionHref
 }: {
   label?: string;
   title: React.ReactNode;
   action?: string;
+  actionHref?: string;
 }) {
   return (
     <div className="mb-6 flex items-end justify-between gap-4 px-1">
@@ -120,7 +122,11 @@ function SectionHead({
         {label ? <p className="technical-label mb-2 text-[#ff2daa]">{label}</p> : null}
         <h2 className="font-display text-balance text-[clamp(2rem,8vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.04em]">{title}</h2>
       </div>
-      {action ? (
+      {action && actionHref ? (
+        <Link href={actionHref} className="shrink-0 rounded-full border border-black/8 bg-white/70 px-4 py-2 text-xs font-semibold shadow-soft">
+          {action}
+        </Link>
+      ) : action ? (
         <button
           type="button"
           onClick={openFloatingCallbackPopup}
@@ -291,7 +297,7 @@ function ProjectTypesSection() {
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <SectionHead label="Project Types" title="Spaces We Create" action="Get Project Estimate" />
+        <SectionHead label="Project Types" title="Spaces We Create" action="Get Project Estimate" actionHref="/calculators" />
         <Carousel className="gap-4 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
           {projectTypes.map(([title, text], index) => (
             <Reveal key={title} className="min-w-[17.5rem] snap-start rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-soft backdrop-blur-xl lg:min-w-0">
