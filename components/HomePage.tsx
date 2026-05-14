@@ -547,7 +547,17 @@ function Footer() {
         <FooterList title="Contact" items={footerContactLinks} />
       </div>
       <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-3 border-t border-white/12 pt-6 font-mono text-[0.68rem] uppercase tracking-[0.18em] text-white/46 sm:flex-row">
-        <span>© 2016 Spacelyt.com All Rights Reserved. Website Designed By OreoDigi.com.</span>
+        <span>
+          © 2016{" "}
+          <a href="https://spacelyt.com" target="_blank" rel="noreferrer" className="transition hover:text-white">
+            Spacelyt
+          </a>{" "}
+          All Rights Reserved. Website Designed By{" "}
+          <a href="https://oreodigi.com" target="_blank" rel="noreferrer" className="transition hover:text-white">
+            OreoDigi
+          </a>
+          .
+        </span>
         <span className="text-[#ff5c8a]">Plan / Design / Build / Deliver</span>
       </div>
     </footer>
