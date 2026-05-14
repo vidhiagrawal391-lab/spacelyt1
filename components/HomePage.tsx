@@ -184,8 +184,8 @@ function HeroSection() {
             <div className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-[linear-gradient(90deg,#ff2daa,#ff8a3d,#38bdf8)]" />
             <div className="absolute -right-16 -top-20 h-40 w-40 rounded-full bg-[#ff2daa]/18 blur-3xl" />
             <div className="relative z-10">
-              <div className="inline-flex rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-3.5 py-2 shadow-[0_14px_32px_rgba(255,45,170,0.22)]">
-                <p className="technical-label text-white">Concept to completion</p>
+              <div className="inline-flex rounded-full border border-[#111]/10 bg-[#111] px-3.5 py-2 shadow-[0_14px_32px_rgba(17,17,17,0.18)]">
+                <p className="technical-label text-[#ff8a3d]">Concept to completion</p>
               </div>
               <h2 className="mt-4 max-w-lg font-display text-[clamp(1.75rem,4vw,2.8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
                 From first sketch to final handover.
