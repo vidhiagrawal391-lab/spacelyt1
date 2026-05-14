@@ -46,19 +46,30 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         Accept: "application/json",
+        "User-Agent": "Mozilla/5.0 Spacelyt Lead Form",
+        "X-Requested-With": "XMLHttpRequest",
         Origin: pageOrigin,
         Referer: pageUrl
       },
       body: formData
     });
 
-    const result = (await response.json().catch(() => null)) as { success?: boolean | string; message?: string } | null;
+    const responseText = await response.text();
+    const result = parseFormSubmitResponse(responseText);
     const success = result?.success === true || result?.success === "true";
     const message = result?.message ?? "";
     const requiresActivation = message.toLowerCase().includes("activation");
 
     if (!response.ok || (!success && !requiresActivation)) {
-      return NextResponse.json({ error: message || "Email delivery failed.", version: leadApiVersion }, { status: 502 });
+      return NextResponse.json(
+        {
+          error: message || "Email delivery failed.",
+          upstreamStatus: response.status,
+          upstreamResponse: responseText.slice(0, 220),
+          version: leadApiVersion
+        },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json({ ok: true, activationRequired: requiresActivation, message, version: leadApiVersion });
@@ -72,5 +83,19 @@ function getOrigin(url: string) {
     return new URL(url).origin;
   } catch {
     return new URL(fallbackSiteUrl).origin;
+  }
+}
+
+function parseFormSubmitResponse(text: string) {
+  try {
+    return JSON.parse(text) as { success?: boolean | string; message?: string };
+  } catch {
+    if (text.includes('"success":"true"') || text.includes('"success":true')) {
+      return { success: true, message: "The form was submitted successfully." };
+    }
+    if (text.toLowerCase().includes("activation")) {
+      return { success: false, message: text };
+    }
+    return null;
   }
 }
