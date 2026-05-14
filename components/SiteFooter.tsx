@@ -4,6 +4,7 @@ import Link from "next/link";
 import { servicePages } from "@/lib/servicePages";
 
 const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
+const MAP_URL = "https://www.google.com/maps/search/?api=1&query=Kochar%20Petrol%20Pump%20Chand%20Chaura%20Gaya%2C%20Bihar%2C%20823001%2C%20India";
 
 export default function SiteFooter() {
   return (
@@ -37,8 +38,21 @@ export default function SiteFooter() {
                 Start Consultation
               </button>
             </li>
-            <li>hello@spacelyt.com</li>
-            <li>India</li>
+            <li>
+              <a href="mailto:hello@spacelyt.com" className="transition hover:text-white">
+                hello@spacelyt.com
+              </a>
+            </li>
+            <li>
+              <a href="tel:+918002234888" className="transition hover:text-white">
+                +918002234888
+              </a>
+            </li>
+            <li>
+              <a href={MAP_URL} target="_blank" rel="noreferrer" className="transition hover:text-white">
+                Kochar Petrol Pump Chand Chaura Gaya, Bihar, 823001, India
+              </a>
+            </li>
           </ul>
         </div>
       </div>

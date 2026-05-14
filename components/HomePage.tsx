@@ -27,6 +27,15 @@ const footerServiceLinks = [
   { label: "Exteriors", href: "/services/exterior-design" },
   { label: "Building Solutions", href: "/services/building-solutions" }
 ];
+const footerContactLinks = [
+  { label: "hello@spacelyt.com", href: "mailto:hello@spacelyt.com" },
+  { label: "+918002234888", href: "tel:+918002234888" },
+  {
+    label: "Kochar Petrol Pump Chand Chaura Gaya, Bihar, 823001, India",
+    href: "https://www.google.com/maps/search/?api=1&query=Kochar%20Petrol%20Pump%20Chand%20Chaura%20Gaya%2C%20Bihar%2C%20823001%2C%20India",
+    external: true
+  }
+];
 
 function openFloatingCallbackPopup() {
   window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT));
@@ -533,7 +542,7 @@ function Footer() {
         </div>
         <FooterList title="Services" items={footerServiceLinks} />
         <FooterList title="Studio" items={["Process", "Projects", "Why Spacelyt", "Consultation"]} />
-        <FooterList title="Contact" items={["hello@spacelyt.com", "+91 - - -", "India"]} />
+        <FooterList title="Contact" items={footerContactLinks} />
       </div>
       <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-3 border-t border-white/12 pt-6 font-mono text-[0.68rem] uppercase tracking-[0.18em] text-white/46 sm:flex-row">
         <span>© Spacelyt 2026</span>
@@ -543,7 +552,7 @@ function Footer() {
   );
 }
 
-function FooterList({ title, items }: { title: string; items: Array<string | { label: string; href: string }> }) {
+function FooterList({ title, items }: { title: string; items: Array<string | { label: string; href: string; external?: boolean }> }) {
   return (
     <div>
       <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-white/78">{title}</h3>
@@ -552,6 +561,10 @@ function FooterList({ title, items }: { title: string; items: Array<string | { l
           <li key={typeof item === "string" ? item : item.href}>
             {typeof item === "string" ? (
               item
+            ) : item.external ? (
+              <a href={item.href} target="_blank" rel="noreferrer" className="transition hover:text-white">
+                {item.label}
+              </a>
             ) : (
               <Link href={item.href} className="transition hover:text-white">
                 {item.label}
