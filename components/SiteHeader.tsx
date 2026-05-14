@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { servicePages } from "@/lib/servicePages";
 
+const CONSULTATION_CTA_EVENT = "spacelyt:open-consultation";
+
 const mainNavLinks = [
   { href: "/#about", label: "About" },
   { href: "/services", label: "Services", hasDropdown: true },
@@ -21,6 +23,10 @@ export default function SiteHeader() {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
     setMobileServicesOpen(false);
+  };
+  const openConsultationPopup = () => {
+    closeMobileMenu();
+    window.dispatchEvent(new CustomEvent(CONSULTATION_CTA_EVENT));
   };
 
   useEffect(() => {
@@ -70,9 +76,13 @@ export default function SiteHeader() {
               )
             )}
           </nav>
-          <Link href="/#contact" className="hidden rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-2.5 text-sm font-semibold text-white shadow-glow md:inline-flex">
+          <button
+            type="button"
+            onClick={openConsultationPopup}
+            className="hidden rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 py-2.5 text-sm font-semibold text-white shadow-glow md:inline-flex"
+          >
             Start Your Project
-          </Link>
+          </button>
           <button
             type="button"
             className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-[var(--ink)] shadow-soft md:hidden"
@@ -139,14 +149,14 @@ export default function SiteHeader() {
               </div>
             </div>
 
-            <Link
-              href="/#contact"
-              onClick={closeMobileMenu}
+            <button
+              type="button"
+              onClick={openConsultationPopup}
               className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d)] px-5 text-sm font-semibold text-white shadow-[0_18px_60px_rgba(255,45,170,.28)]"
             >
               Start Your Project
               <ArrowRight className="h-4 w-4" />
-            </Link>
+            </button>
           </nav>
         </div>
       </div>
