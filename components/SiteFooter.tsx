@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { servicePages } from "@/lib/servicePages";
 
+const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
+
 export default function SiteFooter() {
   return (
     <footer className="mt-10 bg-[#111] px-4 py-12 text-white sm:px-6 lg:px-10">
@@ -26,7 +28,15 @@ export default function SiteFooter() {
         <div>
           <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-white/78">Contact</h3>
           <ul className="mt-5 grid gap-3 text-sm text-white/56">
-            <li><Link href="/#contact" className="transition hover:text-white">Start Consultation</Link></li>
+            <li>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT))}
+                className="transition hover:text-white"
+              >
+                Start Consultation
+              </button>
+            </li>
             <li>hello@spacelyt.com</li>
             <li>India</li>
           </ul>

@@ -17,6 +17,11 @@ import { portfolio, services, type Service } from "@/lib/content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const heroShowcaseImage = "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1200&q=84";
+const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
+
+function openFloatingCallbackPopup() {
+  window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT));
+}
 
 function Reveal({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   const reduced = useReducedMotion();
@@ -103,13 +108,11 @@ function MagneticButton({
 function SectionHead({
   label,
   title,
-  action,
-  href = "#contact"
+  action
 }: {
   label?: string;
   title: React.ReactNode;
   action?: string;
-  href?: string;
 }) {
   return (
     <div className="mb-6 flex items-end justify-between gap-4 px-1">
@@ -118,9 +121,13 @@ function SectionHead({
         <h2 className="font-display text-balance text-[clamp(2rem,8vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.04em]">{title}</h2>
       </div>
       {action ? (
-        <a href={href} className="shrink-0 rounded-full border border-black/8 bg-white/70 px-4 py-2 text-xs font-semibold shadow-soft">
+        <button
+          type="button"
+          onClick={openFloatingCallbackPopup}
+          className="shrink-0 rounded-full border border-black/8 bg-white/70 px-4 py-2 text-xs font-semibold shadow-soft"
+        >
           {action}
-        </a>
+        </button>
       ) : null}
     </div>
   );
@@ -140,13 +147,17 @@ function Carousel({
   );
 }
 
-function SectionCTA({ href = "#contact", children = "Start Your Project" }: { href?: string; children?: React.ReactNode }) {
+function SectionCTA({ children = "Start Your Project" }: { children?: React.ReactNode }) {
   return (
     <div className="mt-5 px-1">
-      <a href={href} className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] px-6 text-sm font-semibold text-white shadow-glow sm:w-auto">
+      <button
+        type="button"
+        onClick={openFloatingCallbackPopup}
+        className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] px-6 text-sm font-semibold text-white shadow-glow sm:w-auto"
+      >
         {children}
         <ArrowRight className="h-4 w-4" />
-      </a>
+      </button>
     </div>
   );
 }
@@ -378,9 +389,13 @@ function ConsultationCTASection() {
             <p className="technical-label">SPACELYT MATCH</p>
             <h3 className="mt-6 font-display text-3xl font-semibold">Find your project route</h3>
             <p className="mt-3 text-sm leading-6 text-[var(--muted)]">A focused consultation helps define scope, budget, timeline, and the right service mix.</p>
-          <a href="#contact" className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#111] px-5 py-4 text-sm font-semibold text-white">
+          <button
+            type="button"
+            onClick={openFloatingCallbackPopup}
+            className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#111] px-5 py-4 text-sm font-semibold text-white"
+          >
               Start Consultation
-            </a>
+            </button>
           </div>
         </div>
       </Reveal>

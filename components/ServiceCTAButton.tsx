@@ -3,7 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
+const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
 
 type ServiceCTAButtonProps = {
   serviceName: string;
@@ -14,8 +14,6 @@ type ServiceCTAButtonProps = {
 };
 
 export default function ServiceCTAButton({
-  serviceName,
-  serviceSlug,
   children = "Start Consultation",
   variant = "primary",
   className = ""
@@ -34,11 +32,7 @@ export default function ServiceCTAButton({
       whileHover={{ y: -3, scale: 1.015 }}
       whileTap={{ scale: 0.985 }}
       onClick={() => {
-        window.dispatchEvent(
-          new CustomEvent(SERVICE_CTA_EVENT, {
-            detail: { serviceName, serviceSlug }
-          })
-        );
+        window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT));
       }}
     >
       {children}

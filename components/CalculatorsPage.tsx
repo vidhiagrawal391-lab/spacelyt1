@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowRight, Calculator, Check, ChevronRight, Home, IndianRupee, Layers3, MapPin, PackageCheck, Ruler, Sofa, type LucideIcon } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
+
+const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
 
 type CalculatorType = "home" | "kitchen" | "wardrobe";
 type Finish = "essential" | "premium" | "luxury";
@@ -178,9 +179,13 @@ export default function CalculatorsPage() {
               <div className="mt-5 h-2 rounded-full bg-[#f1e8ea]">
                 <div className="h-2 w-[72%] rounded-full bg-[linear-gradient(135deg,#ff2daa,#ff8a3d,#38bdf8)]" />
               </div>
-              <Link href="/#contact" className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#111] px-5 text-sm font-semibold text-white">
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT))}
+                className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#111] px-5 text-sm font-semibold text-white"
+              >
                 Book Free Consultation <ArrowRight className="h-4 w-4" />
-              </Link>
+              </button>
             </div>
           </aside>
 

@@ -18,6 +18,7 @@ const CLOSED_PREFIX = "spacelyt_popup_closed_";
 const MIN_POPUP_GAP = 20_000;
 const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
 const CONSULTATION_CTA_EVENT = "spacelyt:open-consultation";
+const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
 
 type PopupRequest = {
   config: LeadPopupConfig;
@@ -81,7 +82,7 @@ export function usePopupTriggers() {
 
   const openHomepageConsultation = useCallback(() => {
     if (activeRef.current) return;
-    setActive(homepageConsultationPopup, "header-consultation");
+    setActive(floatingContactPopup, "header-consultation");
   }, [setActive]);
 
   const openServiceConsultation = useCallback((serviceName: string, serviceSlug?: string) => {
@@ -106,8 +107,12 @@ export function usePopupTriggers() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     window.addEventListener(CONSULTATION_CTA_EVENT, openHomepageConsultation);
-    return () => window.removeEventListener(CONSULTATION_CTA_EVENT, openHomepageConsultation);
-  }, [openHomepageConsultation]);
+    window.addEventListener(FLOATING_CALLBACK_EVENT, openFloating);
+    return () => {
+      window.removeEventListener(CONSULTATION_CTA_EVENT, openHomepageConsultation);
+      window.removeEventListener(FLOATING_CALLBACK_EVENT, openFloating);
+    };
+  }, [openFloating, openHomepageConsultation]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

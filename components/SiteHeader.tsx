@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { servicePages } from "@/lib/servicePages";
 
-const CONSULTATION_CTA_EVENT = "spacelyt:open-consultation";
+const FLOATING_CALLBACK_EVENT = "spacelyt:open-floating-callback";
 
 const mainNavLinks = [
   { href: "/#about", label: "About" },
@@ -26,7 +26,7 @@ export default function SiteHeader() {
   };
   const openConsultationPopup = () => {
     closeMobileMenu();
-    window.dispatchEvent(new CustomEvent(CONSULTATION_CTA_EVENT));
+    window.dispatchEvent(new CustomEvent(FLOATING_CALLBACK_EVENT));
   };
 
   useEffect(() => {
