@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 const leadRecipientEmail = "hello@spacelyt.com";
 const fallbackSiteUrl = "https://spacelyt1-psi.vercel.app/";
+const leadApiVersion = "2026-05-14-v2";
 
 type LeadPayload = {
   popup?: {
@@ -57,12 +58,12 @@ export async function POST(request: Request) {
     const requiresActivation = message.toLowerCase().includes("activation");
 
     if (!response.ok || (!success && !requiresActivation)) {
-      return NextResponse.json({ error: message || "Email delivery failed." }, { status: 502 });
+      return NextResponse.json({ error: message || "Email delivery failed.", version: leadApiVersion }, { status: 502 });
     }
 
-    return NextResponse.json({ ok: true, activationRequired: requiresActivation, message });
+    return NextResponse.json({ ok: true, activationRequired: requiresActivation, message, version: leadApiVersion });
   } catch {
-    return NextResponse.json({ error: "Invalid lead request." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid lead request.", version: leadApiVersion }, { status: 400 });
   }
 }
 
