@@ -61,6 +61,7 @@ export default function ContactPage() {
       <ContactHero />
       <ContactInfoSection />
       <ContactFormSection />
+      <MapSection />
       <SiteFooter />
       <PopupManager />
     </main>
@@ -135,15 +136,47 @@ function ContactFormSection() {
           <p className="mt-5 text-base leading-8 text-white/62">
             Share your site, budget direction, project type, and requirement. Our team will help you understand the right service path for planning, architecture, construction, interiors, exteriors, or full turnkey delivery.
           </p>
-          <div className="mt-8 rounded-[1.6rem] border border-white/12 bg-white/[0.06] p-5">
-            <p className="font-display text-2xl font-semibold tracking-[-0.04em]">Office Address</p>
-            <a href={mapUrl} target="_blank" rel="noreferrer" className="mt-3 block text-sm leading-7 text-white/62 transition hover:text-white">
-              Kochar Petrol Pump Chand Chaura Gaya, Bihar, 823001, India
-            </a>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link href="/services" className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-white px-6 text-sm font-semibold text-[#111] shadow-soft">
+              Explore Service <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link href="/services/building-solutions" className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-white/18 bg-white/[0.08] px-6 text-sm font-semibold text-white shadow-soft transition hover:bg-white/14">
+              Start Your Project <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </Reveal>
         <Reveal>
           <ContactForm />
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function MapSection() {
+  return (
+    <section className="px-4 py-10 sm:px-6 lg:px-10">
+      <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[0.75fr_1.25fr] lg:items-stretch">
+        <Reveal className="rounded-[2.1rem] border border-white/76 bg-white/78 p-6 shadow-soft backdrop-blur-2xl">
+          <p className="technical-label text-[#ff2daa]">Office Location</p>
+          <h2 className="mt-4 font-display text-[clamp(2rem,6vw,4.2rem)] font-semibold leading-[0.94] tracking-[-0.05em]">
+            Visit our office
+          </h2>
+          <a href={mapUrl} target="_blank" rel="noreferrer" className="mt-5 block text-sm leading-7 text-[var(--muted)] transition hover:text-[var(--ink)]">
+            Kochar Petrol Pump Chand Chaura Gaya, Bihar, 823001, India
+          </a>
+          <a href={mapUrl} target="_blank" rel="noreferrer" className="mt-6 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-[#111] px-6 text-sm font-semibold text-white shadow-soft">
+            Open In Google Maps <ArrowRight className="h-4 w-4" />
+          </a>
+        </Reveal>
+        <Reveal className="min-h-[24rem] overflow-hidden rounded-[2.1rem] border border-white/76 bg-white/76 p-2 shadow-glow backdrop-blur-2xl">
+          <iframe
+            title="Spacelyt office location map"
+            src="https://www.google.com/maps?q=Kochar%20Petrol%20Pump%20Chand%20Chaura%20Gaya%2C%20Bihar%2C%20823001%2C%20India&output=embed"
+            className="h-full min-h-[23rem] w-full rounded-[1.75rem] border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </Reveal>
       </div>
     </section>
