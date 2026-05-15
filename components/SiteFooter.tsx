@@ -10,8 +10,8 @@ const MAP_URL = "https://www.google.com/maps/search/?api=1&query=Kochar%20Petrol
 export default function SiteFooter() {
   return (
     <footer className="mt-10 bg-[#111] px-5 py-10 text-white sm:px-6 sm:py-12 lg:px-10">
-      <div className="mx-auto grid max-w-7xl gap-4 md:gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
-        <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-5 text-center md:border-0 md:bg-transparent md:p-0 md:text-left">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 md:gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
+        <div className="col-span-2 rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-5 text-center md:col-span-1 md:border-0 md:bg-transparent md:p-0 md:text-left">
           <Link href="/" className="font-display text-2xl font-bold tracking-[0.18em]">SPACELYT</Link>
           <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-white/62 md:mx-0">
             Planning, architecture, construction, interiors, exteriors, and building solutions under one coordinated turnkey system.
@@ -20,7 +20,7 @@ export default function SiteFooter() {
         </div>
         <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 md:border-0 md:bg-transparent md:p-0">
           <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-white/78">Services</h3>
-          <ul className="mt-4 grid grid-cols-2 gap-3 text-sm leading-6 text-white/56 md:mt-5 md:grid-cols-1">
+          <ul className="mt-4 grid gap-3 text-[0.8rem] leading-6 text-white/56 sm:grid-cols-2 sm:text-sm md:mt-5 md:grid-cols-1">
             {servicePages.map((service) => (
               <li key={service.slug}>
                 <Link href={`/services/${service.slug}`} className="transition hover:text-white">{service.title}</Link>
@@ -30,7 +30,7 @@ export default function SiteFooter() {
         </div>
         <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 md:border-0 md:bg-transparent md:p-0">
           <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-white/78">Contact</h3>
-          <ul className="mt-4 grid gap-3 text-sm leading-6 text-white/56 md:mt-5">
+          <ul className="mt-4 grid gap-3 text-[0.8rem] leading-6 text-white/56 sm:text-sm md:mt-5">
             <li>
               <button
                 type="button"

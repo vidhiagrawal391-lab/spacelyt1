@@ -536,14 +536,14 @@ function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[#111] px-5 py-10 text-white sm:px-10 sm:py-12">
       <div className="absolute -left-20 -top-24 h-80 w-80 rounded-full bg-[#ff2daa]/20 blur-3xl" />
-      <div className="mx-auto grid max-w-7xl gap-4 md:gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-5 text-center md:border-0 md:bg-transparent md:p-0 md:text-left">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 md:gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="col-span-2 rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-5 text-center md:col-span-1 md:border-0 md:bg-transparent md:p-0 md:text-left">
           <h2 className="font-display text-2xl font-semibold tracking-[0.12em] sm:text-3xl">SPACELYT</h2>
           <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-white/62 md:mx-0">One partner for planning, architecture, construction, interiors, exteriors, and complete building solutions.</p>
           <SocialLinks />
         </div>
         <FooterList title="Services" items={footerServiceLinks} />
-        <FooterList title="Studio" items={["Process", "Projects", "Why Spacelyt", "Consultation"]} />
+        <FooterList title="Studio" items={["Process", "Projects", "Why Spacelyt", "Consultation"]} className="hidden md:block" />
         <FooterList title="Contact" items={footerContactLinks} />
       </div>
       <div className="mx-auto mt-8 flex max-w-7xl flex-col justify-between gap-3 border-t border-white/12 pt-6 text-center font-mono text-[0.66rem] leading-5 tracking-[0.08em] text-white/46 sm:mt-12 sm:flex-row sm:text-left sm:text-[0.68rem] sm:uppercase sm:tracking-[0.18em]">
@@ -564,11 +564,11 @@ function Footer() {
   );
 }
 
-function FooterList({ title, items }: { title: string; items: Array<string | { label: string; href: string; external?: boolean }> }) {
+function FooterList({ title, items, className = "" }: { title: string; items: Array<string | { label: string; href: string; external?: boolean }>; className?: string }) {
   return (
-    <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 md:border-0 md:bg-transparent md:p-0">
+    <div className={`rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 md:border-0 md:bg-transparent md:p-0 ${className}`}>
       <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-white/78">{title}</h3>
-      <ul className="mt-4 grid gap-3 text-sm leading-6 text-white/56 sm:grid-cols-2 md:mt-5 md:block md:space-y-3">
+      <ul className="mt-4 grid gap-3 text-[0.8rem] leading-6 text-white/56 sm:grid-cols-2 sm:text-sm md:mt-5 md:block md:space-y-3">
         {items.map((item) => (
           <li key={typeof item === "string" ? item : item.href}>
             {typeof item === "string" ? (
