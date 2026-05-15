@@ -5,7 +5,8 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
-  Check
+  Check,
+  Phone
 } from "lucide-react";
 import AnimatedConnectorLine from "@/components/AnimatedLinePath";
 import { BlueprintArt } from "@/components/BlueprintArt";
@@ -176,9 +177,13 @@ function SectionHead({
         <button
           type="button"
           onClick={openFloatingCallbackPopup}
-          className="shrink-0 rounded-full border border-black/8 bg-white/70 px-4 py-2 text-xs font-semibold shadow-soft"
+          aria-label={action}
+          title={action}
+          className={`shrink-0 rounded-full border border-black/8 bg-white/70 text-xs font-semibold shadow-soft ${
+            action === "Request Callback" ? "inline-flex h-10 w-10 items-center justify-center p-0" : "px-4 py-2"
+          }`}
         >
-          {action}
+          {action === "Request Callback" ? <Phone className="h-4 w-4" /> : action}
         </button>
       ) : null}
     </div>

@@ -30,10 +30,13 @@ export default function FloatingContactWidget({ onRequestCallback, whatsappUrl }
         <button
           type="button"
           onClick={onRequestCallback}
-          className="inline-flex h-12 items-center gap-2 rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] px-4 text-xs font-semibold text-white shadow-glow sm:h-14 sm:gap-3 sm:px-5 sm:text-sm"
+          aria-label="Request Callback"
+          className="group inline-flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#4b1232,#ff2daa,#ff8a3d)] text-white shadow-glow transition hover:scale-105 sm:h-14 sm:w-14"
         >
+          <span className="absolute right-full mr-3 hidden whitespace-nowrap rounded-full bg-[#111] px-4 py-2 text-xs font-semibold text-white opacity-0 shadow-soft transition group-hover:opacity-100 sm:block">
+            Request Callback
+          </span>
           <Phone className="h-5 w-5" />
-          Request Callback
         </button>
       </div>
     </>
