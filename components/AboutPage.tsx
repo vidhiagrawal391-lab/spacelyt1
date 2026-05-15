@@ -84,7 +84,7 @@ function HeroSection() {
           <h1 className="mt-6 max-w-6xl font-display text-[clamp(3.4rem,10vw,8rem)] font-semibold leading-[0.86] tracking-[-0.07em]">
             About Our
             <br />
-            <span className="gradient-text">Turnkey Studio</span>
+            <span className="gradient-text">Company</span>
           </h1>
         </Reveal>
       </div>
