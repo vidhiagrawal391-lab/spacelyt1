@@ -159,9 +159,9 @@ const servicePopupCopy: Record<string, Pick<LeadPopupConfig, "title" | "subtitle
     cta: "Discuss Exterior Design"
   },
   "building-solutions": {
-    title: "Need complete building support?",
-    subtitle: "Get coordinated solutions for your project from one reliable team.",
-    cta: "Start Discussion"
+    title: "Need full turnkey support?",
+    subtitle: "Get one coordinated team for your project from planning to final handover.",
+    cta: "Start Full Turnkey Discussion"
   }
 };
 

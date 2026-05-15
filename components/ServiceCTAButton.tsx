@@ -39,7 +39,7 @@ export default function ServiceCTAButton({
           window.dispatchEvent(
             new CustomEvent(SERVICE_CTA_EVENT, {
               detail: {
-                serviceName: serviceName || "Building Solutions",
+                serviceName: serviceName || "Full Turnkey",
                 serviceSlug: serviceSlug || "building-solutions"
               }
             })

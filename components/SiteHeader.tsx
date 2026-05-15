@@ -28,7 +28,7 @@ export default function SiteHeader() {
     closeMobileMenu();
     window.dispatchEvent(
       new CustomEvent(SERVICE_CTA_EVENT, {
-        detail: { serviceName: "Building Solutions", serviceSlug: "building-solutions" }
+        detail: { serviceName: "Full Turnkey", serviceSlug: "building-solutions" }
       })
     );
   };

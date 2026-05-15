@@ -79,9 +79,9 @@ export const services: Service[] = [
   {
     number: "06",
     slug: "building-solutions",
-    title: "Complete Building Solutions Under One Roof",
-    flowTitle: "Building Solutions",
-    short: "Residential, commercial, renovation, turnkey execution, project management, and final delivery connected.",
+    title: "Full Turnkey Projects Under One Roof",
+    flowTitle: "Full Turnkey",
+    short: "Residential, commercial, renovation, turnkey execution, project management, and final handover connected.",
     bullets: ["Residential projects", "Commercial projects", "Renovations", "Turnkey execution", "Project management", "End-to-end delivery"],
     icon: Boxes,
     image: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=82",

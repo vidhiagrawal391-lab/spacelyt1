@@ -18,7 +18,7 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Spacelyt | From Blueprint to Beautiful Spaces",
   description:
-    "Planning, architecture, construction, interiors, exteriors, and building solutions delivered as one seamless turnkey experience."
+    "Planning, architecture, construction, interiors, exteriors, and full turnkey delivery as one seamless experience."
 };
 
 export default function RootLayout({

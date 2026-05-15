@@ -343,15 +343,15 @@ export const servicePages: ServicePageData[] = [
   },
   {
     slug: "building-solutions",
-    title: "Building Solutions",
-    eyebrow: "Service 06 / Complete Delivery",
-    heroTitle: "Complete Building Solutions Under One Roof",
+    title: "Full Turnkey",
+    eyebrow: "Service 06 / Complete Turnkey",
+    heroTitle: "Full Turnkey Projects Under One Roof",
     heroSubtitle:
       "One coordinated system for planning, design, construction, interiors, exteriors, project management, and final delivery.",
     shortDescription:
-      "Residential, commercial, renovation, turnkey execution, project management, and final delivery connected.",
+      "Residential, commercial, renovation, turnkey execution, project management, and final handover connected.",
     longDescription:
-      "Building solutions bring every major service together. Spacelyt helps clients avoid scattered vendors by connecting the complete project journey under one coordinated process.",
+      "Full turnkey brings every major service together. Spacelyt helps clients avoid scattered vendors by connecting the complete project journey under one coordinated process.",
     image: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1600&q=82",
     benefits: [
       "One coordinated project system",
@@ -386,7 +386,7 @@ export const servicePages: ServicePageData[] = [
     ],
     faqs: [
       {
-        question: "What does building solutions include?",
+        question: "What does full turnkey include?",
         answer:
           "It includes planning, design, construction, interiors, exteriors, project coordination, and handover support based on the project requirement."
       },
@@ -400,9 +400,9 @@ export const servicePages: ServicePageData[] = [
       }
     ],
     relatedServices: ["planning", "architecture", "construction"],
-    seoTitle: "Building Solutions | Complete Turnkey Project Services | Spacelyt",
+    seoTitle: "Full Turnkey | Complete Turnkey Project Services | Spacelyt",
     seoDescription:
-      "Spacelyt offers complete building solutions for residential, commercial, renovation, and turnkey projects from planning to final handover.",
+      "Spacelyt offers full turnkey support for residential, commercial, renovation, and turnkey projects from planning to final handover.",
     primaryCTA: "Start Consultation",
     secondaryCTA: "View Process"
   }

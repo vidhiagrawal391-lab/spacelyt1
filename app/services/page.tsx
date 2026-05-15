@@ -4,11 +4,11 @@ import ServicesListingPage from "@/components/ServicesListingPage";
 export const metadata: Metadata = {
   title: "Services | Complete Turnkey Services | Spacelyt",
   description:
-    "Planning, architecture, construction, interiors, exteriors, and building solutions coordinated under one Spacelyt system.",
+    "Planning, architecture, construction, interiors, exteriors, and full turnkey delivery coordinated under one Spacelyt system.",
   openGraph: {
     title: "Services | Complete Turnkey Services | Spacelyt",
     description:
-      "Planning, architecture, construction, interiors, exteriors, and building solutions coordinated under one Spacelyt system.",
+      "Planning, architecture, construction, interiors, exteriors, and full turnkey delivery coordinated under one Spacelyt system.",
     url: "/services"
   }
 };

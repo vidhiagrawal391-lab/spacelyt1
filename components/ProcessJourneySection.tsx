@@ -10,7 +10,7 @@ const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
 function openStartProjectPopup() {
   window.dispatchEvent(
     new CustomEvent(SERVICE_CTA_EVENT, {
-      detail: { serviceName: "Building Solutions", serviceSlug: "building-solutions" }
+      detail: { serviceName: "Full Turnkey", serviceSlug: "building-solutions" }
     })
   );
 }

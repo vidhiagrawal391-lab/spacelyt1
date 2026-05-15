@@ -27,7 +27,7 @@ const footerServiceLinks = [
   { label: "Construction", href: "/services/construction" },
   { label: "Interiors", href: "/services/interior-design" },
   { label: "Exteriors", href: "/services/exterior-design" },
-  { label: "Building Solutions", href: "/services/building-solutions" }
+  { label: "Full Turnkey", href: "/services/building-solutions" }
 ];
 const footerContactLinks = [
   { label: "hello@spacelyt.com", href: "mailto:hello@spacelyt.com" },
@@ -46,7 +46,7 @@ function openFloatingCallbackPopup() {
 function openStartProjectPopup() {
   window.dispatchEvent(
     new CustomEvent(SERVICE_CTA_EVENT, {
-      detail: { serviceName: "Building Solutions", serviceSlug: "building-solutions" }
+      detail: { serviceName: "Full Turnkey", serviceSlug: "building-solutions" }
     })
   );
 }
@@ -234,7 +234,7 @@ function HeroSection() {
             One partner for planning, design, build and delivery.
           </p>
           <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--muted)]">
-            Spacelyt brings planning, architecture, construction, interiors, exteriors, and building solutions together into one seamless turnkey experience.
+            Spacelyt brings planning, architecture, construction, interiors, exteriors, and full turnkey delivery together into one seamless turnkey experience.
           </p>
           <div className="mt-7 grid gap-3 sm:flex">
             <MagneticButton href="#contact" popup="start-project">Start Your Project</MagneticButton>
@@ -419,7 +419,7 @@ function AboutSection() {
             <span className="gradient-text">Designed to be delivered.</span>
           </h2>
           <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--muted)]">
-            Spacelyt is built around one idea: better spaces come from better coordination. We connect planning, architecture, construction, interiors, exteriors, and building solutions from day one, so clients get clarity from concept to completion.
+            Spacelyt is built around one idea: better spaces come from better coordination. We connect planning, architecture, construction, interiors, exteriors, and full turnkey delivery from day one, so clients get clarity from concept to completion.
           </p>
         </Reveal>
       </div>
@@ -516,7 +516,7 @@ function FAQSection() {
   const faqs = [
     ["Do you handle complete turnkey projects?", "Yes. Spacelyt coordinates planning, architecture, construction, interiors, exteriors, and delivery."],
     ["Can I start only with planning?", "Yes. You can begin with planning and expand into design or execution after scope is clear."],
-    ["Do you work on residential and commercial projects?", "Yes. The service model supports homes, commercial spaces, renovations, and full building solutions."],
+    ["Do you work on residential and commercial projects?", "Yes. The service model supports homes, commercial spaces, renovations, and full turnkey projects."],
     ["How do I start?", "Share your project vision and site details. The first step is a consultation and scope mapping."]
   ];
   return (
@@ -544,7 +544,7 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 md:gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="col-span-2 rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-5 text-center md:col-span-1 md:border-0 md:bg-transparent md:p-0 md:text-left">
           <h2 className="font-display text-2xl font-semibold tracking-[0.12em] sm:text-3xl">SPACELYT</h2>
-          <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-white/62 md:mx-0">One partner for planning, architecture, construction, interiors, exteriors, and complete building solutions.</p>
+          <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-white/62 md:mx-0">One partner for planning, architecture, construction, interiors, exteriors, and complete full turnkey delivery.</p>
           <SocialLinks />
         </div>
         <FooterList title="Services" items={footerServiceLinks} />

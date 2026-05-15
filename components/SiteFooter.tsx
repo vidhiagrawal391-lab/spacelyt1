@@ -14,7 +14,7 @@ export default function SiteFooter() {
         <div className="col-span-2 rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-5 text-center md:col-span-1 md:border-0 md:bg-transparent md:p-0 md:text-left">
           <Link href="/" className="font-display text-2xl font-bold tracking-[0.18em]">SPACELYT</Link>
           <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-white/62 md:mx-0">
-            Planning, architecture, construction, interiors, exteriors, and building solutions under one coordinated turnkey system.
+            Planning, architecture, construction, interiors, exteriors, and full turnkey delivery under one coordinated system.
           </p>
           <SocialLinks />
         </div>

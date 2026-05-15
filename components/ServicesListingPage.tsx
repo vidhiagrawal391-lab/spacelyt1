@@ -29,7 +29,7 @@ export default function ServicesListingPage() {
               Complete Turnkey Services for Every Stage of Your Space
             </h1>
             <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--muted)] md:text-lg">
-              Planning, architecture, construction, interiors, exteriors, and building solutions coordinated under one Spacelyt system.
+              Planning, architecture, construction, interiors, exteriors, and full turnkey delivery coordinated under one Spacelyt system.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <ServiceCTAButton serviceName="Full Turnkey">Start Your Project</ServiceCTAButton>
