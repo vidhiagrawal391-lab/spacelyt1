@@ -12,6 +12,7 @@ const mainNavLinks = [
   { href: "/services", label: "Services", hasDropdown: true },
   { href: "/calculators", label: "Calculators" },
   { href: "/#projects", label: "Project" },
+  { href: "/gallery", label: "Gallery" },
   { href: "/#process", label: "Process" },
   { href: "/blog", label: "Blog" },
   { href: "/#contact", label: "Contact" }
