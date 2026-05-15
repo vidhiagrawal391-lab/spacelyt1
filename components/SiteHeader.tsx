@@ -8,7 +8,7 @@ import { servicePages } from "@/lib/servicePages";
 const SERVICE_CTA_EVENT = "spacelyt:open-service-consultation";
 
 const mainNavLinks = [
-  { href: "/#about", label: "About" },
+  { href: "/about", label: "About" },
   { href: "/services", label: "Services", hasDropdown: true },
   { href: "/calculators", label: "Calculators" },
   { href: "/#projects", label: "Project" },
